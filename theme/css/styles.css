@@ -1,3 +1,4 @@
+/*@import "./pygment.css";*/
 
 body {
     background-color: #839F28;
@@ -151,3 +152,7 @@ h1 a:hover {
     /*float: right;*/
 }
 
+.highlight pre {
+    background-color: #aaaaaa;
+    outline: 1px;
+}
