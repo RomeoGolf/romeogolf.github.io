@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!--html lang="en"-->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pelican и наполнение сайта хоть чем-нибудь.</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<link rel="stylesheet" href="./theme/css/styles.css" type="text/css" />
+<link rel="stylesheet" type="text/css"  href="./theme/css/pygments.css"/>
+<link rel="shortcut icon" type="image/png" href="./images/RG32.ico" />
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="./images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=. id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav>
+      <ul class="main-nav">
+
+          <li class="active"><a href="./category/blog.html">Блог</a></li>
+          <li ><a href="./category/triangulum-soft.html">Triangulum soft</a></li>
+          <li ><a href="./category/tvorchestvo.html">Творчество</a></li>
+
+            <li ><a href="./pages/o-saite.html">О сайте</a></li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      Теги:
+      <ul class="tagcloud">
+        <li class="tag-1">
+          <a href="./tag/pelican.html">
+            pelican
+              <span class="badge">2</span>
+          </a>
+        </li>
+        <li class="tag-4">
+          <a href="./tag/rfquiz.html">
+            rfquiz
+              <span class="badge">1</span>
+          </a>
+        </li>
+        <li class="tag-4">
+          <a href="./tag/triangulum.html">
+            triangulum
+              <span class="badge">1</span>
+          </a>
+        </li>
+        <li class="tag-4">
+          <a href="./tag/raznoe.html">
+            разное
+              <span class="badge">1</span>
+          </a>
+        </li>
+        <li class="tag-4">
+          <a href="./tag/stikhi.html">
+            стихи
+              <span class="badge">1</span>
+          </a>
+        </li>
+      </ul>
+	
+    </div> <!-- sidebar -->
+
+    <div class="content">
+
+<section class="main-section blog-section" id="blog-posts">
+	<h3 class="date">Пт 15 Январь 2016</h3>
+  <article>
+	<hgroup>
+	
+	<h2><a href="./pelican-i-napolnenie-saita-khot-chem-nibud.html">Pelican и наполнение сайта хоть чем-нибудь.</a></h2>
+    
+	</hgroup>
+<h2>Фундамент готов</h2>
+<p>Но до финишной отделки еще далеко, пока даже стены не возведены. Разработка сайта на Pelican складывается из таких пунктов:</p>
+<ul>
+<li>контент;</li>
+<li>тема;</li>
+<li>плагины;</li>
+<li>настройка.</li>
+</ul>
+<p>Пункты равнозначны по важности и во многом зависят друг от друга. Ни одним из этих моментов нельзя пренебрегать или откладывать на потом, кроме, разве что, плагинов. Плагинами можно заняться ближе к концу, когда стандартных возможностей станет недостаточно.</p>
+<ul>
+<li>
+<p>Контент. Собственно статьи, блогпосты, сообщения разного рода, составляющие информационную ценность сайта. Пишется на reStructuredText или Markdown, лично я предпочел второй вариант, хотя первый обеспечивается пеликаном сразу, а для второго надо ставить соответствующий модуль Python. Каждый пост пишется в отдельном файле и складывается в папку &laquo;content&raquo;, логично, не правда ли? Pelican сам разберется, в каком виде и в какое место сайта впихнуть написанное, основываясь на метаданных в начале контентного файла и на структуре шаблонов.</p>
+</li>
+<li>
+<p>Тема. Влияет на внешний вид сайта. Включает в себя разметку веб-страниц, для чего содержит шаблоны для разных их вариантов, и оформление, задаваемое таблицами стилей в файлах css, которых может быть и несколько. Здесь же могут храниться общие для всего сайта и привязанные к теме иконки, шрифты, сценарии JavaScript. Шаблоны основаны на шаблонизаторе Jinja2 (&laquo;дзиндзя&raquo;). Обычно присутствует базовый, задающий общий стиль, и его наследники, определяющие особенности отображения статичных страниц, статей, привязанных к дате, страниц со списками статей по тегам, категориям, авторам, датам, еще каких-нибудь страниц, не предусмотренных авторами Pelican, но придуманных автором сайта.</p>
+</li>
+<li>
+<p>Плагины. Дополнительные модули Python, обеспечивающие функциональность, не заложенную в базе. Могут повышать удобство написания и быть незаметны для посетителей сайта (типа assets) или помогать в разработке непосредственно внешнего вида страниц (например, tag_cloud, который делает модное облако тегов).</p>
+</li>
+<li>
+<p>Настройка. Файлы конфигурации pelicanconf.py и publishconf.py в корне проекта сайта. Определяют массу всяческих деталей, влияющих на процесс генерации страниц сайта. По сути, содержат набор переменных, которые либо управляют процессом генерации, либо используются непосредственно в коде страниц.</p>
+</li>
+</ul>
+<p>Контент &mdash; это то, с чем придется работать постоянно на протяжени всего времени жизни сайта. Если перестать писать &mdash; сайт закончится. Он не сразу пропадет с просторов сети, но живым его уже нельзя будет назвать.</p>
+<p>Тему можно взять готовую и использовать так. Можно взять готовую и чуть-чуть подкорректировать ее до полной неузнаваемости. Можно взять, и написать с нуля самому. </p>
+<p>С темой можно определиться в самом начале и больше не трогать. Хотя, скорее всего по мере развития сайта ее придется расширять, дополнять, исправлять. То же и с настройками: основные придется сделать сразу, иначе невозможно работать. На этом можно остановиться, но наверняка будет нужно со временем вносить дополнения, особенно, если это будет требоваться при изменениях в теме или при добавлении плагинов.</p>
+<p>Добавление плагинов отложим на попозже.</p>
+<h2>Заготовка для контента</h2>
+<p>Начнем, пожалуй, с текстового наполнения. Дальнейшие эксперименты с внешним видом и поведением надо все-таки на чем-то проверять. Сделаем файл <code>first.md</code> (непременно UTF-8) следующего содержания: </p>
+<div class="highlight"><pre>Title: Заголовок первой статьи
+Date: 2016-01-20 10:00
+Modified: 2016-01-20 11:00
+Category: Рыба
+Tags: блог, разное, тест, проверка
+Slug: fish
+Lang: ru
+Translation: false
+Status: published
+Authors: Аноним, Аполлинарий Афиногенович Семиникейский-Дудытченко
+Summary: Сильно сокращенное описание, из которого можно понять, зачем вообще 
+читать эту статью в развернутом виде.
+
+Собственно, статья. Некоторый пост, не несущий на самом деле никакой смысловой
+нагрузки, предназначенный исключительно для заполнения отведенного ему
+пространства в области отображения контента. На жаргончике <span class="ni">&amp;mdash;</span> <span class="ni">&amp;laquo;</span>рыба<span class="ni">&amp;raquo;</span>.
+
+Может делиться на абзацы[^1]. Может **усиливать** и *выделять*. Может
+использовать <span class="nt">&lt;abbr</span> <span class="na">title=</span><span class="s">&quot;HyperText Markup Languige&quot;</span><span class="nt">&gt;</span>HTML<span class="nt">&lt;/abbr&gt;</span>-теги напрямую.
+
+[^1]: И это далеко не все возможности<span class="ni">&amp;hellip;</span>
+
+## Может включать заголовки и подзаголовки
+
+* может содержать списки
+* из нескольких пунктов,
+* например, ненумерованных.
+
+Может [ссылаться](http://example.link.com) на какую-нибудь несуществующую фигню, 
+или даже проще: <span class="nt">&lt;http:</span><span class="err">//example.link.com</span><span class="nt">&gt;</span>
+</pre></div>
+
+
+<p>Как видно, файл начинается с метаданных, из которых Pelican понимает, как его обрабатывать и куда засовывать. Далее идет текст, при написании которого надо использовать некоторые правила &mdash; соблюдать синтаксис языка Markdown. Тогда статья будет корректно преобразована в HTML, то есть, в нужные места будут вставлены соответствующие теги. Коротких шпаргалок по Markdown в интернете достаточно, например, <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">здесь</a> или <a href="https://en.support.wordpress.com/markdown-quick-reference/">тут</a>, можно посмотреть и описание синтаксиса, допустим, <a href="http://www.daringfireball.net/projects/markdown/syntax">вот</a> и <a href="http://learn.getgrav.org/content/markdown">еще</a></p>
+<h3>Подробнее о метаданных</h3>
+<ul>
+<li>
+<p>Title: Заголовок статьи. Будет отображаться в браузере (в панели и вкладке), а также использоваться в разных местах, где перечисляются статьи, если эта статья попадает под соответствующее условие: в списках статей по выбранному тегу, по категории, по автору и тому подобное.</p>
+</li>
+<li>
+<p>Date: Дата написания статьи. Может отображаться в самой статье, будет использоваться для сортировки статей по дате в ленте. Если не поставить, то будет выставлена в зависимости от настройки в файле конфигурации, параметр DEFAULT_DATE, который можно поставпть 'fs', тогда будет браться системная дата создания файла.</p>
+</li>
+<li>
+<p>Modified: Дата правки статьи. Может использоваться в некоторых темах или самостоятельно.</p>
+</li>
+<li>
+<p>Category: Категория, которая является верхним уровнем навигации, наравне со страницами и пользовательскими пунктами. Если есть несколько статей с одинаковыми категориямти &mdash; они будут выведены списком при клике по этой категории в меню. В папке &laquo;content&raquo; для статей должна быть папка &laquo;articles&raquo;. В ней можно сделать папки с именами категорий и складывать статьи по соответствующим папкам, тогда этот пункт метаданных при настройках по умолчанию не нужен. Если же статья будет в корне &laquo;articles&raquo;, но без этого пункта метаданных, будет использоваться опция файла конфигурации DEFAULT_CATEGORY, по умолчанию &mdash; 'misc'.</p>
+</li>
+<li>
+<p>Tags: Тэги, метки, ярлыки &mdash; ключевые слова, по которым можно найти статьи схожей тематики, если это предусмотрено навигацией по сайту. Можно использовать для создания облака тегов, можно просто отображать внизу каждой статьи. Вещь необязательная, но полезная.</p>
+</li>
+<li>
+<p>Slug: Ключевое слово, используемое для создания имени HTML-файла статьи. Если отсутствует, будет сделано автоматически из Title, с использованием транслитерации при необходимости, поэтому в большинстве случаев может отсутствовать. Не должно повторяться у разных статей, иначе будет сгенерирована только последняя статья из имеющих одинаковый Slug, остальные затруться. Полезная вещь при создании многоязычных версий: у версий одной статьи на разных языках надо ставить одинаковый Slug, но разные Lang.</p>
+</li>
+<li>
+<p>Lang: Язык статьи. Может отсутствовать, используется опция файла конфигурации DEFAULT_LANG, по умолчанию &mdash; 'en'.</p>
+</li>
+<li>
+<p>Translation: Не нужная пока что штука, устанавливается в true, чтобы не дать пеликану скрыть в навигации статью с языком, отличающимся от DEFAULT_LANG, например, чтобы показать оригинал переведенной статьи.</p>
+</li>
+<li>
+<p>Status: Может быть published (по умолчанию) или draft. В последнем случае статья считается черновиком и не используется при формировании навигации. Ее можно будет найти на сайте, только если точно знать ее адрес. Используется, например, в том случае, чтобы дать почитать ограниченному кругу, которому автор разошлет URL личной почтой.</p>
+</li>
+<li>
+<p>Authors: Если авторов, пишущих для сайта, несколько, то можно сделать поиск статей, принадлежащих конкретному перу. Если отсутствует, будет использоваться значение опции файла конфигурации AUTHOR.</p>
+</li>
+<li>
+<p>Summary: Отображается в лентах статей &mdash; в списках, отсортированных по времени, тегу, автору и все такое.</p>
+</li>
+</ul>
+<p>Как видно, не все метаданные являются настоятельно необходимыми, можно использовать лишь часть. Верно и обратное &mdash; если вдруг понадобится какая-то хитрая переменная, не предусмотренная разработчиками Pelican, можно ее добавить в заголовок, а потом в шаблоне использовать, типа того:</p>
+<div class="highlight"><pre><span class="n">Danger</span><span class="o">:</span> <span class="n">red</span>
+</pre></div>
+
+
+<p>А потом где-нибудь в шаблоне статьи (придется немного править тему), рядом с заголовком, вставить такое:</p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">article.danger</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">Класс опасности: </span><span class="cp">{{</span> <span class="nv">article.danger</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+
+
+<p>И тогда в месте, определенном шаблоном, для статей с этой метаинформацией появится &laquo;Класс опасности: red&raquo;. А для прочих статей не появится ничего.</p>
+<h2>Переплавка заготовок</h2>
+<p>Стоит для массовости сделать еще одну заготовку-рыбу, с учетом необязательности тегов, файл <code>second.md</code></p>
+<div class="highlight"><pre><span class="n">Title</span><span class="o">:</span> <span class="err">Заголовок</span> <span class="err">второй</span> <span class="err">статьи</span>
+<span class="n">Date</span><span class="o">:</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">20</span> <span class="mi">15</span><span class="o">:</span><span class="mi">00</span>
+<span class="n">Category</span><span class="o">:</span> <span class="err">Разное</span>
+<span class="n">Tags</span><span class="o">:</span> <span class="err">блог</span><span class="o">,</span> <span class="err">разное</span><span class="o">,</span> <span class="err">тест</span>
+<span class="n">Summary</span><span class="o">:</span> <span class="err">Еще</span> <span class="err">одна</span> <span class="err">рыба</span><span class="o">,</span> <span class="err">просто</span> <span class="err">для</span> <span class="err">массовости</span><span class="o">.</span>
+
+<span class="err">Снова</span> <span class="err">рыба</span><span class="o">,</span> <span class="err">снова</span> <span class="err">заготовка</span> <span class="err">текста</span><span class="o">,</span> <span class="err">просто</span> <span class="err">так</span><span class="o">,</span> <span class="err">для</span> <span class="err">заполнения</span> <span class="err">места</span><span class="o">.</span> <span class="err">Ну</span><span class="o">,</span> <span class="err">в</span> 
+<span class="err">самом</span> <span class="err">деле</span><span class="o">,</span> <span class="err">не</span> <span class="err">цитировать</span> <span class="err">же</span> <span class="err">снова</span> <span class="err">Цицерона</span> <span class="o">&amp;</span><span class="n">laquo</span><span class="o">;</span><span class="err">О</span> <span class="err">пределах</span> <span class="err">добра</span> <span class="err">и</span> 
+<span class="err">зла</span><span class="o">&amp;</span><span class="n">raquo</span><span class="o">;,</span> <span class="err">да</span> <span class="err">еще</span> <span class="err">и</span> <span class="err">в</span> <span class="err">этом</span> <span class="err">ужасном</span><span class="o">,</span> <span class="err">хотя</span> <span class="err">и</span> <span class="err">общепринятом</span><span class="o">,</span> <span class="err">подрезанном</span> <span class="err">и</span> 
+<span class="err">искаженном</span> <span class="err">виде</span><span class="o">.</span>
+</pre></div>
+
+
+<p>Теперь надо сделать вручную папку &laquo;articles&raquo; в папке &laquo;content&raquo; и перенести туда оба файла. Даем команду в консоли</p>
+<div class="highlight"><pre>c:\python<span class="m">33</span>\Scripts\pelican.exe content
+</pre></div>
+
+
+<p>Получаем в ответ</p>
+<div class="highlight"><pre>Done: Processed <span class="m">2</span> articles<span class="p">,</span> <span class="m">0</span> drafts<span class="p">,</span> <span class="m">0</span> pages and <span class="m">0</span> hidden pages in <span class="m">4</span>.<span class="m">30</span> seconds.
+</pre></div>
+
+
+<p>Видим, что в обработке участвовало 2 статьи. При желании можно в папке &laquo;content&raquo; добавить папку &laquo;pages&raquo;, и сложить туда что-то подобное статье, чтобы посмотреть, чем в конечном итоге отличаются статьи от страниц, но это не принципиально. Интересно, что в папке &laquo;output&raquo; появились файлы, в том числе, <code>fish.html</code> и <code>zagolovok-vtoroi-stati.html</code>: одна именована по Slug, заданному явно, а другая &mdash; по преобразованному автоматически. Это и есть наши статьи. Они появились на странице, открывающейся при запуске <code>index.html</code>, причем, вторая, как ближайшая по времени &mdash; выше по тексту и полностью, а первая &mdash; в ленте, после &laquo;Other articles&raquo;, и с использованием Summary.</p>
+<p>Дизайн по-прежнему не то, чтобы ужасен &mdash; он просто отсутствует напрочь. И ссылки работают плохо: &laquo;Заголовок первой статьи&raquo; или &laquo;read more&raquo; не дают возможности почитать первую статью. Никуда не ведут теги и категории. Пока что их можно посмотреть, прямо запустив соотвествующий файл (например, <code>tags.html</code> или <code>first.html</code>), заодно можно посмотреть, как Markdown-разметка переплавилась в HTML-разметку.</p>
+<p>Ну что же, теперь мы поднялись чуть выше фундамента и разобрались в основах написания контента. С вопросами дизайна &mdash; к теме, с вопросами ссылок &mdash; к файлам конфигурации. Но в следующий раз.</p>
+	<br/>	
+	<footer>
+	<div>
+	<!--h4>Теги:</h4-->
+	  <div>Теги:</div>
+	  <div class="taglist">
+	    <ul class="tags">
+              <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
+            </ul>
+          </div>
+        </div>
+
+	<br/>
+	<div class="comments">
+			<div id="disqus_thread"></div>
+			<script type="text/javascript">
+					var disqus_identifier = "pelican-i-napolnenie-saita-khot-chem-nibud.html";
+					(function() {
+					 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+					 dsq.src = 'http://romeogolf.disqus.com/embed.js';
+					 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					 })();
+			 </script>
+		     </div>
+	</footer>
+	</article>
+</section>
+
+
+
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+  </div> <!-- footer -->
+
+</body>
