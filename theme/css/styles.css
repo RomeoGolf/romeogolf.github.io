@@ -165,3 +165,7 @@ code {
     outline: 1px;
 }
 
+.badge {
+    /*width: 150px;*/
+    height: 115px;
+}
