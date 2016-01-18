@@ -153,11 +153,26 @@ h1 a:hover {
     /*float: right;*/
 }
 
-.highlight pre {
-    padding: 5px;
+.highlight {
+    background: #111;
+    padding:.2em .9em;
+    margin-bottom:1em;
+    /*font:normal normal normal 115%/normal Monaco,'Courier New','DejaVu Sans Mono','Bitstream Vera Sans Mono',monospace!important;*/
+    line-height:1.1em;
+    border:1px solid #CCC;
+
+    overflow: auto;
+    /*padding: 5px;*/
     color: #eee;
-    background-color: #111111;
-    outline: 1px;
+/*    background-color: #111111;*/
+    /*outline: 1px;*/
+    -moz-border-radius:7px;
+    -webkit-border-radius:7px;
+    border-radius:7px
+}
+
+
+.highlight pre {
 }
 
 code {
