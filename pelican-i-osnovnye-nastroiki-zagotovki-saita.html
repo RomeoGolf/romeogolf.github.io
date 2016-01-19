@@ -67,15 +67,13 @@
 
     <div class="content">
 
-<section class="main-section blog-section" id="blog-posts">
-	<h3 class="date">Сб 16 Январь 2016</h3>
-  <article>
-	<hgroup>
-	
-	<h2><a href="./pelican-i-osnovnye-nastroiki-zagotovki-saita.html">Pelican и основные настройки заготовки сайта</a></h2>
-    
-	</hgroup>
-<h2>Настройки и тема</h2>
+  <section class="main-section blog-section" id="blog-posts">
+    <h3 class="date">Сб 16 Январь 2016</h3>
+    <article>
+      <!--h2><a href="./pelican-i-osnovnye-nastroiki-zagotovki-saita.html">Pelican и основные настройки заготовки сайта</a></h2-->
+      <h2>Pelican и основные настройки заготовки сайта</h2>
+      
+      <h2>Настройки и тема</h2>
 <p>То, что вышло на предыдущем шаге, уже является веб-страницей. Заготовка отображается в браузере (не так, как хотелось бы, но именно так, как задано в ее коде), худо-бедно размечена и содержит гиперссылки. Однако, гиперссылки между страницами сайта не работают, а внешний вид &mdash; именно, что &laquo;худо&raquo; и &laquo;бедно&raquo;.</p>
 <p>Настала пора заняться темой и конфигурацией.</p>
 <h3>О темах</h3>
@@ -195,35 +193,32 @@ Title: О сайте
 <p>Теперь мы имеем серенький фончик, шапку в виде названия сайта крупными буквами и горизонтального меню с категориями (&laquo;Разное&raquo; и &laquo;Рыба&raquo;) и страницами (&laquo;О сайте&raquo;). Меню, контент и футер на белом фоне со скругленными уголками. На первой странице последняя статья полностью и список остальных статей (в котором пока одна &mdash; первая). В статье добавлен справа плавающий блок с метаданными &mdash; категория, автор, теги и дата публикации. Сайдбаров нет. В футере ссылки, встроенные в шаблон и не убираемые при помощи файла конфигурации. Заголовок в шапке является ссылкой на корень папки output, что логично &mdash; будь это корнем для сервера, тот подставил бы index.html, а нам придется делать это вручную. Верстка фиксированная. Ссылки &mdash; что приятно &mdash; теперь рабочие.</p>
 <p>В общем, бери, да радуйся. Можно пользоваться и так. Но, несмотря на то, что результат разительно отличается от &laquo;бестемного&raquo;, хочется улучшений. Да не просто хочется, а мы все-таки надеемся, что это творение будут смотреть люди. И читать эти люди будут, скорее всего, по-русски, а у нас метаданные отмечены на английском. Да и ссылки в футере&hellip; Нет, я тоже благодарен авторам Python, Pelican и этой темы, но не до такой степени, чтобы на каждой странице давать ссылки на них. А еще хочется добавить рюшечек-финтифлюшечек, типа карты сайта, облака тегов, отсортировать меню иначе&hellip;</p>
 <p>Короче говоря, надо бы взять тему за основу и поправить ее по своим надобностям. А может, вообще свою с нуля написать, а?</p>
-	<br/>	
-	<footer>
-	<div>
-	<!--h4>Теги:</h4-->
-	  <div>Теги:</div>
-	  <div class="taglist">
-	    <ul class="tags">
-              <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
-            </ul>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <!--li><a href="./tag/pelican.html" class="tag">pelican</a></li-->
+                <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
+              </ul>
+            </div>
           </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "pelican-i-osnovnye-nastroiki-zagotovki-saita.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
         </div>
-
-	<br/>
-	<div class="comments">
-			<div id="disqus_thread"></div>
-			<script type="text/javascript">
-					var disqus_identifier = "pelican-i-osnovnye-nastroiki-zagotovki-saita.html";
-					(function() {
-					 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-					 dsq.src = 'http://romeogolf.disqus.com/embed.js';
-					 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					 })();
-			 </script>
-		     </div>
-	</footer>
-	</article>
-</section>
-
-
+      </footer>
+    </article>
+  </section>
 
     </div> <!-- content -->
     

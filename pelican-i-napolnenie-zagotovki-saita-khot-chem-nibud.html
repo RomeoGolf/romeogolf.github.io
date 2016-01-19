@@ -67,15 +67,13 @@
 
     <div class="content">
 
-<section class="main-section blog-section" id="blog-posts">
-	<h3 class="date">Пт 15 Январь 2016</h3>
-  <article>
-	<hgroup>
-	
-	<h2><a href="./pelican-i-napolnenie-zagotovki-saita-khot-chem-nibud.html">Pelican и наполнение заготовки сайта хоть чем-нибудь</a></h2>
-    
-	</hgroup>
-<h2>Фундамент готов</h2>
+  <section class="main-section blog-section" id="blog-posts">
+    <h3 class="date">Пт 15 Январь 2016</h3>
+    <article>
+      <!--h2><a href="./pelican-i-napolnenie-zagotovki-saita-khot-chem-nibud.html">Pelican и наполнение заготовки сайта хоть чем-нибудь</a></h2-->
+      <h2>Pelican и наполнение заготовки сайта хоть чем-нибудь</h2>
+      
+      <h2>Фундамент готов</h2>
 <p>Но до финишной отделки еще далеко, пока даже стены не возведены. Разработка сайта на Pelican складывается из таких пунктов:</p>
 <ul>
 <li>контент;</li>
@@ -215,35 +213,32 @@ Summary: Еще одна рыба, просто для массовости.
 <p>Видим, что в обработке участвовало 2 статьи. При желании можно в папке &laquo;content&raquo; добавить папку &laquo;pages&raquo;, и сложить туда что-то подобное статье, чтобы посмотреть, чем в конечном итоге отличаются статьи от страниц, но это не принципиально. Интересно, что в папке &laquo;output&raquo; появились файлы, в том числе, <code>fish.html</code> и <code>zagolovok-vtoroi-stati.html</code>: одна именована по Slug, заданному явно, а другая &mdash; по преобразованному автоматически. Это и есть наши статьи. Они появились на странице, открывающейся при запуске <code>index.html</code>, причем, вторая, как ближайшая по времени &mdash; выше по тексту и полностью, а первая &mdash; в ленте, после &laquo;Other articles&raquo;, и с использованием Summary.</p>
 <p>Дизайн по-прежнему не то, чтобы ужасен &mdash; он просто отсутствует напрочь. И ссылки работают плохо: &laquo;Заголовок первой статьи&raquo; или &laquo;read more&raquo; не дают возможности почитать первую статью. Никуда не ведут теги и категории. Пока что их можно посмотреть, прямо запустив соотвествующий файл (например, <code>tags.html</code> или <code>first.html</code>), заодно можно посмотреть, как Markdown-разметка переплавилась в HTML-разметку.</p>
 <p>Ну что же, теперь мы поднялись чуть выше фундамента и разобрались в основах написания контента. С вопросами дизайна &mdash; к теме, с вопросами ссылок &mdash; к файлам конфигурации. Но в следующий раз.</p>
-	<br/>	
-	<footer>
-	<div>
-	<!--h4>Теги:</h4-->
-	  <div>Теги:</div>
-	  <div class="taglist">
-	    <ul class="tags">
-              <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
-            </ul>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <!--li><a href="./tag/pelican.html" class="tag">pelican</a></li-->
+                <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
+              </ul>
+            </div>
           </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "pelican-i-napolnenie-zagotovki-saita-khot-chem-nibud.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
         </div>
-
-	<br/>
-	<div class="comments">
-			<div id="disqus_thread"></div>
-			<script type="text/javascript">
-					var disqus_identifier = "pelican-i-napolnenie-zagotovki-saita-khot-chem-nibud.html";
-					(function() {
-					 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-					 dsq.src = 'http://romeogolf.disqus.com/embed.js';
-					 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					 })();
-			 </script>
-		     </div>
-	</footer>
-	</article>
-</section>
-
-
+      </footer>
+    </article>
+  </section>
 
     </div> <!-- content -->
     

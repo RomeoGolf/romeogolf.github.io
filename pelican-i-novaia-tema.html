@@ -67,15 +67,13 @@
 
     <div class="content">
 
-<section class="main-section blog-section" id="blog-posts">
-	<h3 class="date">Вт 19 Январь 2016</h3>
-  <article>
-	<hgroup>
-	
-	<h2><a href="./pelican-i-novaia-tema.html">Pelican и новая тема</a></h2>
-    
-	</hgroup>
-<h2>Начнем с нуля</h2>
+  <section class="main-section blog-section" id="blog-posts">
+    <h3 class="date">Вт 19 Январь 2016</h3>
+    <article>
+      <!--h2><a href="./pelican-i-novaia-tema.html">Pelican и новая тема</a></h2-->
+      <h2>Pelican и новая тема</h2>
+      
+      <h2>Начнем с нуля</h2>
 <p>Тема notmyidea сама по себе выглядит неплохо и вполне допускает правку под свои нужды. Но поступим экстремальнее &mdash; сделаем всё с самого начала. В корне проекта сайта, в нашем случае &mdash; <code>D:\site\</code>, создаем папку themes, там делаем папку nanotheme, а в ней &mdash; папки static и templates. Почему nano? Во-первых, это модно, во-вторых, в этой теме будет предельный минимум, только для примера, чтобы хоть как-то работало.</p>
 <p>В папке templates создадим base.html, текстовый файл в UTF-8. Непременный, обязательный базовый шаблон, который будет определять общую разметку для всех страниц, подчиняющихся нашей теме. Ну, и набросаем общий внешний вид:</p>
 <div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
@@ -383,35 +381,32 @@ Site
 <p>Чтобы сайт не вызывал отвращения у посетителей, надо быть хоть немного дизайнером, ну, или хотя бы обладать зачатками вкуса. К сожалению, этот параметр трудно оценить у себя самостоятельно&hellip;</p>
 <p>Чтобы наполнять сайт контентом, надо уметь пользоваться языком разметки Markdown, но местами придется вставлять и HTML, при этом, надо знать язык статьи (русский, например, но хотелось бы иногда и английский) хотя бы на четверочку, владеть словом, а для привлекательного оформления уметь рисовать и фотографировать.</p>
 <p>Как же много требований&hellip; Но не надо сдаваться! Тем более, никто не будет подходить к оценке блога с той же позиции, что и к оценке сайта профессионала-дизайнера или серезной промышленной компании. В конце концов, можно остановиться на простом минималистичном дизайне и наращивать только удобство пользования.</p>
-	<br/>	
-	<footer>
-	<div>
-	<!--h4>Теги:</h4-->
-	  <div>Теги:</div>
-	  <div class="taglist">
-	    <ul class="tags">
-              <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
-            </ul>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <!--li><a href="./tag/pelican.html" class="tag">pelican</a></li-->
+                <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
+              </ul>
+            </div>
           </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "pelican-i-novaia-tema.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
         </div>
-
-	<br/>
-	<div class="comments">
-			<div id="disqus_thread"></div>
-			<script type="text/javascript">
-					var disqus_identifier = "pelican-i-novaia-tema.html";
-					(function() {
-					 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-					 dsq.src = 'http://romeogolf.disqus.com/embed.js';
-					 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					 })();
-			 </script>
-		     </div>
-	</footer>
-	</article>
-</section>
-
-
+      </footer>
+    </article>
+  </section>
 
     </div> <!-- content -->
     
