@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="description" content="Title: Pelican и новая тема; Date: 2016-01-19; Summary: <p>Блог на Pelican - 4. Создание собственной темы для Pelican. Получение несложной заготовки для пояснения общих принципов. Попытка сделать своё с нуля позволит лучше понять чужое творчество, чтобы поправить стороннюю тему под свои нужды. А может, и допилить свою тему до совершенства. Подключение темы без ее установки.</p>">  
+  <meta name="keywords" content="">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pelican и новая тема</title>
   <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -16,62 +17,65 @@
       <img src="./images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=. id="home-link">RomeoGolf</a>
     </div>
   </header>
-    <nav>
+    <nav class="nav_base">
       <ul class="main-nav">
-
           <li class="active"><a href="./category/blog.html">Блог</a></li>
-          <li ><a href="./category/triangulum-soft.html">Triangulum soft</a></li>
           <li ><a href="./category/tvorchestvo.html">Творчество</a></li>
 
-            <li ><a href="./pages/o-saite.html">О сайте</a></li>
+
+          <li >
+            <a href="./pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li >
+            <a href="./pages/o-saite.html">О сайте</a>
+          </li>
       </ul>
     </nav>
   <div class="layout">
 
     <div class="sidebar">
-      Теги:
-      <ul class="tagcloud">
-        <li class="tag-1">
-          <a href="./tag/pelican.html">
-            pelican
-              <span class="badge">4</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/rfquiz.html">
-            rfquiz
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/triangulum.html">
-            triangulum
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/raznoe.html">
-            разное
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/stikhi.html">
-            стихи
-              <span class="badge">1</span>
-          </a>
-        </li>
-      </ul>
-	
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-1">
+            <a href="./tag/pelican.html">
+              pelican
+                <span class="badge">4</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/stikhi.html">
+              стихи
+                <span class="badge">1</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
     </div> <!-- sidebar -->
 
     <div class="content">
-
   <section class="main-section blog-section" id="blog-posts">
     <h3 class="date">Вт 19 Январь 2016</h3>
     <article>
-      <!--h2><a href="./pelican-i-novaia-tema.html">Pelican и новая тема</a></h2-->
-      <h2>Pelican и новая тема</h2>
+      <h1>Pelican и новая тема</h1>
       
       <h2>Начнем с нуля</h2>
 <p>Тема notmyidea сама по себе выглядит неплохо и вполне допускает правку под свои нужды. Но поступим экстремальнее &mdash; сделаем всё с самого начала. В корне проекта сайта, в нашем случае &mdash; <code>D:\site\</code>, создаем папку themes, там делаем папку nanotheme, а в ней &mdash; папки static и templates. Почему nano? Во-первых, это модно, во-вторых, в этой теме будет предельный минимум, только для примера, чтобы хоть как-то работало.</p>
@@ -387,7 +391,6 @@ Site
             <div>Теги:</div>
             <div class="taglist">
               <ul class="tags">
-                <!--li><a href="./tag/pelican.html" class="tag">pelican</a></li-->
                 <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
               </ul>
             </div>
@@ -407,13 +410,13 @@ Site
       </footer>
     </article>
   </section>
-
     </div> <!-- content -->
     
   </div> <!-- layout -->
 
   <div class="footer">
     &copy; 2016 RomeoGolf
+
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

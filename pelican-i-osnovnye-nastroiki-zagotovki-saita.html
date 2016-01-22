@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="description" content="Title: Pelican и основные настройки заготовки сайта; Date: 2016-01-16; Summary: <p>Блог на Pelican - 3. Приведение заготовки сайта к более-менее удобоваримому виду. Подключение темы, правка файла конфигурации. Использование готовых тем для блога, основные настройки.</p>">  
+  <meta name="keywords" content="">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pelican и основные настройки заготовки сайта</title>
   <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -16,62 +17,65 @@
       <img src="./images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=. id="home-link">RomeoGolf</a>
     </div>
   </header>
-    <nav>
+    <nav class="nav_base">
       <ul class="main-nav">
-
           <li class="active"><a href="./category/blog.html">Блог</a></li>
-          <li ><a href="./category/triangulum-soft.html">Triangulum soft</a></li>
           <li ><a href="./category/tvorchestvo.html">Творчество</a></li>
 
-            <li ><a href="./pages/o-saite.html">О сайте</a></li>
+
+          <li >
+            <a href="./pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li >
+            <a href="./pages/o-saite.html">О сайте</a>
+          </li>
       </ul>
     </nav>
   <div class="layout">
 
     <div class="sidebar">
-      Теги:
-      <ul class="tagcloud">
-        <li class="tag-1">
-          <a href="./tag/pelican.html">
-            pelican
-              <span class="badge">4</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/rfquiz.html">
-            rfquiz
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/triangulum.html">
-            triangulum
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/raznoe.html">
-            разное
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/stikhi.html">
-            стихи
-              <span class="badge">1</span>
-          </a>
-        </li>
-      </ul>
-	
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-1">
+            <a href="./tag/pelican.html">
+              pelican
+                <span class="badge">4</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/stikhi.html">
+              стихи
+                <span class="badge">1</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
     </div> <!-- sidebar -->
 
     <div class="content">
-
   <section class="main-section blog-section" id="blog-posts">
     <h3 class="date">Сб 16 Январь 2016</h3>
     <article>
-      <!--h2><a href="./pelican-i-osnovnye-nastroiki-zagotovki-saita.html">Pelican и основные настройки заготовки сайта</a></h2-->
-      <h2>Pelican и основные настройки заготовки сайта</h2>
+      <h1>Pelican и основные настройки заготовки сайта</h1>
       
       <h2>Настройки и тема</h2>
 <p>То, что вышло на предыдущем шаге, уже является веб-страницей. Заготовка отображается в браузере (не так, как хотелось бы, но именно так, как задано в ее коде), худо-бедно размечена и содержит гиперссылки. Однако, гиперссылки между страницами сайта не работают, а внешний вид &mdash; именно, что &laquo;худо&raquo; и &laquo;бедно&raquo;.</p>
@@ -199,7 +203,6 @@ Title: О сайте
             <div>Теги:</div>
             <div class="taglist">
               <ul class="tags">
-                <!--li><a href="./tag/pelican.html" class="tag">pelican</a></li-->
                 <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
               </ul>
             </div>
@@ -219,13 +222,13 @@ Title: О сайте
       </footer>
     </article>
   </section>
-
     </div> <!-- content -->
     
   </div> <!-- layout -->
 
   <div class="footer">
     &copy; 2016 RomeoGolf
+
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

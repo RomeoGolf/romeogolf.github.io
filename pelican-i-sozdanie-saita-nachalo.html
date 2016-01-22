@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="description" content="Title: Pelican и создание сайта &mdash; начало; Date: 2016-01-15; Summary: <p>Использование генератора статических сайтов Pelican для создания блога или чего-то блогоподобного, или, как это сегодня модно говорить, блог на Pelican своими руками. Общие слова и первые шаги. Установка программ и получение первой заготовки.</p>">  
+  <meta name="keywords" content="">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pelican и создание сайта &mdash; начало</title>
   <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -16,62 +17,65 @@
       <img src="./images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=. id="home-link">RomeoGolf</a>
     </div>
   </header>
-    <nav>
+    <nav class="nav_base">
       <ul class="main-nav">
-
           <li class="active"><a href="./category/blog.html">Блог</a></li>
-          <li ><a href="./category/triangulum-soft.html">Triangulum soft</a></li>
           <li ><a href="./category/tvorchestvo.html">Творчество</a></li>
 
-            <li ><a href="./pages/o-saite.html">О сайте</a></li>
+
+          <li >
+            <a href="./pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li >
+            <a href="./pages/o-saite.html">О сайте</a>
+          </li>
       </ul>
     </nav>
   <div class="layout">
 
     <div class="sidebar">
-      Теги:
-      <ul class="tagcloud">
-        <li class="tag-1">
-          <a href="./tag/pelican.html">
-            pelican
-              <span class="badge">4</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/rfquiz.html">
-            rfquiz
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/triangulum.html">
-            triangulum
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/raznoe.html">
-            разное
-              <span class="badge">1</span>
-          </a>
-        </li>
-        <li class="tag-4">
-          <a href="./tag/stikhi.html">
-            стихи
-              <span class="badge">1</span>
-          </a>
-        </li>
-      </ul>
-	
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-1">
+            <a href="./tag/pelican.html">
+              pelican
+                <span class="badge">4</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/stikhi.html">
+              стихи
+                <span class="badge">1</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
     </div> <!-- sidebar -->
 
     <div class="content">
-
   <section class="main-section blog-section" id="blog-posts">
     <h3 class="date">Пт 15 Январь 2016</h3>
     <article>
-      <!--h2><a href="./pelican-i-sozdanie-saita-nachalo.html">Pelican и создание сайта &mdash; начало</a></h2-->
-      <h2>Pelican и создание сайта &mdash; начало</h2>
+      <h1>Pelican и создание сайта &mdash; начало</h1>
       
       <h3>Почему статический сайт, почему Pelican и с чего начать</h3>
 <p>Стоит ли заводить сайт &mdash; вопрос ставить не будем. Мотивы у всех разные, но если уж определился &mdash; так тому и быть. Кто считает, что не стоит &mdash; можно дальше не читать.</p>
@@ -206,7 +210,6 @@
             <div>Теги:</div>
             <div class="taglist">
               <ul class="tags">
-                <!--li><a href="./tag/pelican.html" class="tag">pelican</a></li-->
                 <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
               </ul>
             </div>
@@ -226,13 +229,13 @@
       </footer>
     </article>
   </section>
-
     </div> <!-- content -->
     
   </div> <!-- layout -->
 
   <div class="footer">
     &copy; 2016 RomeoGolf
+
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

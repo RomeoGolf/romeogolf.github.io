@@ -1,5 +1,7 @@
 /*@import "./pygment.css";*/
 
+/* main-color: 3EC000 */
+
 body {
     /*background-color: #839F28;*/
     background-color: #FFF;
@@ -20,7 +22,7 @@ body {
     /*border-width: 1px; /*  */
     /*border: solid 1px #000; /*  */
     outline: solid 1px #000; /*  */
-    background: #e3e8cc; /*  */
+    background: #287D00; /*  */
 }
 
 .layout {
@@ -104,9 +106,11 @@ h1 a:hover {
     top: -25px;
 }
 
-.main-nav {
+/*.main-nav {*/
+.nav_base {
     height: 30px;
-    margin-top: -30px;
+    /*margin-top: -30px;*/
+    margin-top: -45px;
 }
 
 .main-nav li {
@@ -184,3 +188,26 @@ code {
     /*width: 150px;*/
     height: 115px;
 }
+
+.soft_description {
+    border: #999 1px solid;
+}
+
+.soft_summary, .soft_img {
+    height: 144px;
+    margin: 15px;
+    padding: 7px;
+    border: #AAA 1px solid;
+}
+
+.soft_summary  {
+    background: #CBE969
+}
+
+.soft_img {
+    float: left;
+    width: 144px;
+    background: #005F44
+}
+
+
