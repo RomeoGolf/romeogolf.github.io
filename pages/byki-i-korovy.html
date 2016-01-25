@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="">  
+  <meta name="keywords" content="">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Быки и коровы</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="../theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="../theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="../images/RG32.ico" />
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="../images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=.. id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li ><a href="../category/blog.html">Блог</a></li>
+          <li ><a href="../category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li >
+            <a href="../pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li >
+            <a href="../pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-1">
+            <a href="../tag/pelican.html">
+              pelican
+                <span class="badge">4</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="../tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="../tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="../tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="../tag/stikhi.html">
+              стихи
+                <span class="badge">1</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+<section class="main-section">
+  <h1 class="entry-title">Быки и коровы</h1>
+  
+  <br /><br />
+  <div align="center">
+
+<div style="float:right">
+<a aria-label="Watch romeogolf/bc on GitHub" data-count-aria-label="# watchers on GitHub" data-count-api="/repos/romeogolf/bc#subscribers_count" data-count-href="/romeogolf/bc/watchers" data-style="mega" data-icon="octicon-eye" href="https://github.com/romeogolf/bc" class="github-button">Watch</a>
+
+<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+</div>
+
+</div>
+
+<p>Логическая комбинаторная игра, придуманная сравнительно недавно, в 70-е годы 20 века.</p>
+<p>Замечательная игра для двух человек, которым потребуется всего лишь блокнот и карандаш каждому. Она позволяет интересно провести время в поезде и самолете, в зале ожидания, на переменах и в перерывах, даже на привале или на рыбалке (если не клюет).</p>
+<p>Целью игры является угадывание четырехзначной комбинации цифр, загаданных противником. Существует классический вариант, основным отличием которого является использование комбинаций из неповторяющихся десятичных цифр, и его разновидности. Пожалуй, самая известная в мире разновидность &mdash; Mastermind &mdash; использует цветные фишки, причем, цвета в комбинации могут повторяться.</p>
+<p>Данная программа использует правила классического варианта.</p>
+<p>По кнопке или <a href="https://github.com/romeogolf/bc">ссылке</a> можно заглянуть на страницу проекта на GitHub, где в разделе <a href="https://github.com/RomeoGolf/BC/releases">releases</a> можно скачать исполняемый JAR-файл.</p>
+<h4>Особенности программы:</h4>
+<ul>
+<li>Позволяет играть в одиночку, если больше не с кем.</li>
+<li>Позволяет играть с противником, наблюдая процесс его отгадывания. Хоть противник и виртуальный, это все же интереснее и острее, чем просто отгадывать сгенерированное компьютером число. Кроме того, количество ходов, которое остается у игрока для отгадки, зависит от выбранных компьютером начального заполнения массива цифр для отгадки и колеблется от 1 до 14 достаточно случайным образом.</li>
+<li>Имеет три игровых режима &mdash; угадывание игроком цифр, загаданных компьютером, игра против компьютера и угадывание цифр, загаданных компьютером, наперегонки с компьютером. Также реализован четвертый учебно-демонстрационный режим &mdash; угадывание цифр компьютером с демонстрацией ходов.</li>
+<li>При игре против компьютера есть возможность сгенерировать цифры для компьютера случайным образом или задать вручную.</li>
+<li>В программе исключена возможность неправильного подсчета быков и коров, так как данная функция возложена на компьютер, а он не то, чтобы никогда не ошибается, но эту задачу способен выполнить надежно.</li>
+<li>Виртуальный игрок не умеет подсматривать &mdash; это отдельный обособленный модуль программы, который спрашивает о результатах своей попытки и получает свои быки и коровы совершенно таким же образом, как и игрок-человек.</li>
+<li>Игра реализована на языке Java. Предполагается, что она кроссплатформенная, по крайней мере, должна работать в любой операционной системе при условии наличия JRE &mdash; виртуальной машины Java. Честно говоря, пока проверено только в ОС Windows XP и Windows 7.</li>
+</ul>
+<p>Программа написана скорее в учебно-тренировочных целях, однако, вполне может использоваться в качестве игры. Сделано это довольно давно, и пока руки не доходят довести до более интересного варианта.</p>
+  <br>
+
+	<div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+	      var disqus_identifier = "../pages/byki-i-korovy.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      </div>
+	
+
+</section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+  </div> <!-- footer -->
+
+</body>
+</html>
