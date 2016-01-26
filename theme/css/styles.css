@@ -12,6 +12,7 @@ body {
     padding: 10px; /* */
     outline: solid 1px #000; /*  */
     background-color: #FFF; /*  */
+    overflow: auto;
 }
 
 .main-header { 
