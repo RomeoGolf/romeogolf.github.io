@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Title: Pelican и использование Markdown; Date: 2016-01-27; Summary: <p>Блог на Pelican - 5. Особенности использования языка разметки Markdown при написании статей, страниц и прочего контента для сайта на Pelican. Примеры использования, некоторые особенности, дополнительные возможности.</p>">  
+  <meta name="keywords" content="">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pelican и использование Markdown</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="./theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="./theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="./images/RG32.ico" />
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="./images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=. id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="./category/blog.html">Блог</a></li>
+          <li><a href="./category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="./pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="./pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="./tag/markdown.html">
+              Markdown
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="./tag/pelican.html">
+              pelican
+                <span class="badge">5</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/stikhi.html">
+              стихи
+                <span class="badge">1</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h3 class="date">Ср 27 Январь 2016</h3>
+    <article>
+      <h1>Pelican и использование Markdown</h1>
+      
+      <h2 id="markdown">Зачем Markdown</h2>
+<p>Строго говоря, написанное под этим заголовком существенной частью относится и к reStructuredText, но беглый взгляд на два текста, написанных в этих форматах, лично меня склонил именно к .md, хотя и пришлось ставить дополнительный модуль для Python.</p>
+<p>Markdown &mdash; упрощенный (или облегченный) язык разметки. В отличие от, скажем, HTML, который тоже язык разметки, но не упрощенный и не облегченный, Markdown сам по себе практически не используется, а служит промежуточным &raquo;буфером&laquo; для последующего преобразования в другой язык, который будет отображаться, в нашем случае &mdash; в HTML, но можно и в Rich Text, XML или еще куда-нибудь.</p>
+<p>Markdown хорош тем, что с его использованием писать статью существенно быстрее и проще, нежели непосредственно на HTML. В ряде случаев необходимые HTML-теги будут вставлены в сгенерированный текст в соответствии с контекстом (и ничего специально писать не надо), например, абзацы или списки. В других случаях некие пометки добавить все же надо &mdash; например, два пробела в конце строки вместо тега <code>&lt;br&gt;</code> или <code>##</code> перед заголовком вместо обрамления ее тегами <code>&lt;h2&gt; .. &lt;/h2&gt;</code>, однако эти символы добавляются проще и быстрее тегов. Их использование нисколько не ухудшает человекочитаемость, ведь строчка из звездочек больше похожа на линию отчеркивания, чем знакосочетание <code>&lt;hr&gt;</code> Кроме того, можно довольно быстро переделать форматированием в Markdown готовый текст, написанный без разметки.</p>
+<p>Вольный перевод кусочка из официальной документации:</p>
+<blockquote>
+<p>Markdown &mdash; не замена HTML. Его синтаксис охватывает только очень малое подмножество HTML-тегов. Идея состоит не в том, чтобы упростить ввод тегов. По моему мнению, HTML-теги и так уже просты для вставки. Идея Markdown в том, чтобы упростить чтение, запись и редактирование прозы. HTML &mdash; это формат для <em>публикации</em>, а Markdown &mdash; формат для <em>написания</em>.</p>
+</blockquote>
+<p>На заметку тем, кто знает HTML, как родной, и предпочитает писать сразу на нем, благо, Pelican это позволяет: еще одно преимущество Markdown, весьма заметное при желании поделиться в тексте примером кода, с красиво (ну, или хоть как-нибудь) подсвеченным синтаксисом &mdash; pygments (который это умеет) работает в связке именно с &raquo;буфером&laquo;, Markdown или reStructuredText. На HTML будет недостаточно окружить код тегами <code>&lt;code&gt; .. &lt;/code&gt;</code>, придется каждый элемент кода, который надо выделить особым образом, окружать соответствующими тегами, типа <code>&lt;span class="n"&gt;href&lt;/span&gt;</code>, а потом писать в CSS-файле способ отображения класса &raquo;n&laquo;. А pygments может сделать все это самостоятельно.</p>
+<h2 id="_1">Простые примеры</h2>
+<p>Как я уже упоминал в другой статье, описания и примеров этого дела в интернете немало. Но добавлю все же и здесь, в формате &raquo;код &mdash; вид&laquo;. Основные синтаксические штучки, доступные в пеликане &raquo;из коробки&laquo;, что надо написать, и как это будет выглядеть:</p>
+<h3 id="_2">Заголовки</h3>
+<p>Статья начинается с заголовка, так что и здесь начнем с них же &mdash; заголовки (количество символов <code>#</code> соответствует числу в теге <code>&lt;h &gt;</code>):
+<div markdown="1" class="equi_height">
+<div markdown="1"></p>
+<div class="highlight"><pre><span class="k"># </span><span class="gh">Заголовок 1</span>
+<span class="k">## </span><span class="gh">Заголовок 2 с id для ссылки {#id_header2}</span>
+<span class="k">###### </span><span class="gh">Заголовок 6</span>
+####### Заголовок 7
+
+<span class="gh">заголовок</span>
+<span class="k">=========</span>
+
+<span class="gh">заголовок</span>
+<span class="k">---------</span>
+</pre></div>
+
+
+</div>
+
+<div>
+<h1 id="1">Заголовок 1</h1>
+<h2 id="id_header2">Заголовок 2 с id для ссылки</h2>
+<h6 id="6">Заголовок 6</h6>
+<h6 id="7"># Заголовок 7</h6>
+<h1 id="_3">заголовок</h1>
+<h2 id="_4">заголовок</h2>
+</div>
+<p></div>
+Забавно, что если поставить больше 6 знаков <code>#</code>, то 6 из них воспримутся в качестве уровня заголовка, а остальные войдут в текст заголовка. Остальные будут отображаться в соответствии с таблицами стилей, как задано для <code>&lt;h1&gt;</code> &ndash; <code>&lt;h6&gt;</code>. А еще заголовок можно отчеркнуть минусами или знаком равенства, получится второй и первый уровни соответственно, при этом, надо такой заголовок отделить с обеих сторон пустыми строками, как абзац.</p>
+<h3 id="_5">Горизонтальные линии</h3>
+<p>Линии отчеркивания можно нарисовать звездочками, минусами или символом подчеркивания, слитно или через пробелы. Только надо следить, чтобы у них тоже сверху и снизу были пустые строки, а то при обработке их могут принять за часть заголовка или маркированного списка. А вот линия из знаков равенства ничего особенного не делает и рисуется, как есть:
+<div markdown="1" class="equi_height">
+<div markdown="1"></p>
+<div class="highlight"><pre><span class="k">**</span><span class="gs">*</span><span class="k">**</span>*
+
+<span class="k">* * * *</span>
+
+<span class="k">-------</span>
+
+<span class="k">- - - -</span>
+
+<span class="k">_______</span>
+
+<span class="k">_ _ _ _</span>
+
+
+=====================
+</pre></div>
+
+
+</div>
+
+<div>
+<hr />
+<hr />
+<hr />
+<hr />
+<hr />
+<hr />
+<p>=====================</p>
+</div>
+</div>
+
+<h3 id="_6">Таблицы</h3>
+<p>Таблицы можно разметить псевдографикой. Границы по умолчанию не прорисовываются, заголовки по умолчанию центруются (поведение корректируется при помощи CSS), а выравнивание строк в столбце можно отрегулировать двоеточими в разделительной линии ниже заголовка, как в примере:
+<div markdown="1" class="equi_height">
+<div markdown="1"></p>
+<div class="highlight"><pre>| 1 | 2 (правый) | 3 (центр) |
+|---|-----------:|:---------:|
+| ячейка 1.1 | ячейка 2.1 | ячейка 3.1 
+| 1.2 | 2.2 | 3.2 так
+| 1.3 | 2.3 с буквами | 3.3 и сяк
+</pre></div>
+
+
+</div>
+
+<div>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th align="right">2 (правый)</th>
+<th align="center">3 (центр)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ячейка 1.1</td>
+<td align="right">ячейка 2.1</td>
+<td align="center">ячейка 3.1</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td align="right">2.2</td>
+<td align="center">3.2 так</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td align="right">2.3 с буквами</td>
+<td align="center">3.3 и сяк</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3 id="_7">Абзацы и внутристрочные элементы</h3>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre><span class="k">&lt;!--</span><span class="c-MultiLine"> Можно использовать комментарии</span>
+<span class="c-MultiLine">в стиле HTML, чтобы не показывать </span>
+<span class="c-MultiLine">часть текста в обработанной странице </span><span class="k">--&gt;</span>
+
+Пример Footnote[^1] в тексте. Будет
+вынесена вниз страницы.
+<span class="k">&lt;!--</span><span class="c-MultiLine"> Такие штуки надо размещать сразу же: </span><span class="k">--&gt;</span>
+[^1]: Footnote по-русски <span class="ss">&amp;mdash;</span> сноска
+
+Словарь
+: книга, содержащая перечень слов
+с пояснениями и толкованиями
+
+пример аббревиатуры: ИМХО
+<span class="k">&lt;!--</span><span class="c-MultiLine"> Такие штуки тоже надо размещать сразу же: </span><span class="k">--&gt;</span>
+*[ИМХО]: Имею Мнение <span class="ss">&amp;mdash;</span> Хрен Оспоришь
+
+Абзац создается разделением
+пустыми строками, 
+даже если строки абзаца
+имеют простые переносы.
+
+Однако, по два пробела  
+на концах строк делают  
+перенос строки без абзаца:  
+<span class="k">**</span><span class="gs">выделение</span><span class="k">**</span> тегом <span class="k">__</span><span class="gs">strong</span><span class="k">__</span>  
+<span class="k">*</span><span class="ge">выделение</span><span class="k">*</span> тегом <span class="k">_</span><span class="ge">emphasize</span><span class="k">_</span>  
+<span class="k">**</span><span class="gs">*можно</span><span class="k">**</span>* оба <span class="k">__</span><span class="gs">*сразу*</span><span class="k">__</span>  
+внутристрочный <span class="k">`</span><span class="sb">&lt;h1&gt;блок кода&lt;/h1&gt;</span><span class="k">`</span>  
+</pre></div>
+
+
+</div>
+<div style="max-width:350px">
+<!-- Можно использовать комментарии
+в стиле HTML, чтобы не показывать 
+часть текста в обработанной странице -->
+
+<p>Пример Footnote<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> в тексте. Будет
+вынесена вниз страницы.
+<!-- Такие штуки надо размещать сразу же: --></p>
+<dl>
+<dt>Словарь</dt>
+<dd>книга, содержащая перечень слов
+с пояснениями и толкованиями</dd>
+</dl>
+<p>пример аббревиатуры: <abbr title="Имею Мнение &amp;mdash; Хрен Оспоришь">ИМХО</abbr>
+<!-- Такие штуки тоже надо размещать сразу же: --></p>
+<p>Абзац создается разделением
+пустыми строками, 
+даже если строки абзаца
+имеют простые переносы.</p>
+<p>Однако, по два пробела<br />
+на концах строк делают<br />
+перенос строки без абзаца:<br />
+<strong>выделение</strong> тегом <strong>strong</strong><br />
+<em>выделение</em> тегом <em>emphasize</em><br />
+<strong><em>можно</em></strong> оба <strong><em>сразу</em></strong><br />
+внутристрочный <code>&lt;h1&gt;блок кода&lt;/h1&gt;</code>  </p>
+</div>
+</div>
+
+<p>Некоторые символы могут иметь особое значение. Вот пример их использования:
+<div markdown="1" class="equi_height">
+<div markdown="1"></p>
+<div class="highlight"><pre>Использование HTML-тегов:
+<span class="c1">&lt;span style=&quot;text-shadow: black</span>
+<span class="c1">1px 1px 2px, red 0 0 1em;</span>
+<span class="c1">text-transform: uppercase;&quot;&gt;пример&lt;/span&gt;</span>
+
+использование спецсимволов  
+(пример): <span class="ss">&amp;copy;</span> <span class="ss">&amp;laquo;&amp;mdash;&amp;raquo;</span>
+
+использование служебных символов:  
+&lt; &gt; * [ ] { } ( ) <span class="se">\ </span>_ # + - . !
+
+использование служебных символов  
+в сложных случаях: 
+&lt;a<span class="se">\&gt;</span> <span class="se">\[</span>a<span class="se">\]\(</span>a<span class="se">\)</span> <span class="se">\`</span>a<span class="se">\`</span> <span class="se">\_</span>a<span class="se">\_</span> #a
+
+<span class="se">\#</span>#a
+</pre></div>
+
+
+</div>
+
+<div>
+<p>Использование HTML-тегов:
+<span style="text-shadow: black
+1px 1px 2px, red 0 0 1em;
+text-transform: uppercase;">пример</span></p>
+<p>использование спецсимволов<br />
+(пример): &copy; &laquo;&mdash;&raquo;</p>
+<p>использование служебных символов:<br />
+&lt; &gt; * [ ] { } ( ) \ _ # + - . !</p>
+<p>использование служебных символов<br />
+в сложных случаях: 
+&lt;a> [a](a) `a` _a_ #a </p>
+<p>##a</p>
+</div>
+</div>
+
+<p>В общих случаях генератор веб-страниц достаточно умен, чтобы понять, используется угловая скобка для обозначения HTML-тега или сама по себе, в других целях. То же касается и прочих символов, которые могут быть служебными как для HTML, так и для самого Markdown. Также он догадывается, что если <code>#</code> не в начале строки &mdash; то это не заголовок, если скобки [] и () не вплотную друг к другу &mdash; то это не ссылка. В тех же случаях, когда использование таких символов очень уж похоже на служебное, следует подсказать генератору оставить символ в покое при помощи традиционного обратного слэша. Причем, для угловых скобок достаточно закрыть закрывающую (простите за тавтологию, но так уж есть).</p>
+<h3 id="_8">Блочная разметка: цитаты и блоки кода</h3>
+<p>Под блоками кода подразумеваются блоки предварительно отформатированного текста, которые будут отображаться так, как их напечатали, а не по правилам HTML или Markdown. При этом, в них можно включить подсветку синтаксиса, если это действительно программный код.</p>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre><span class="k">&gt; </span>Цитата умного человека <span class="ss">&amp;mdash;</span> 
+почти афоризм.
+
+или так (то же самое):
+
+<span class="k">&gt; </span>Цитата умного человека <span class="ss">&amp;mdash;</span> 
+<span class="k">&gt; </span>почти афоризм.
+
+    Отступ в 4 пробела или 1 таб:
+    будет окружено тегом &lt;pre&gt;,
+    а если включена подсветка -
+    то и подсвечено. Можно печатать
+    всё: [a](http://a) &lt;html&gt; <span class="k">`</span><span class="sb">ы</span><span class="k">`</span>
+    Сделано для блоков кода.
+
+<span class="k">```</span><span class="cp"></span>
+<span class="cp">:::c</span>
+<span class="cp">void sample_func(int j) {</span>
+<span class="cp">    printf(j);</span>
+<span class="cp">}</span>
+
+<span class="cp">for (int i = 0; i &lt; 9; i++) {</span>
+<span class="cp">    sample_func(i);</span>
+<span class="cp">}</span>
+<span class="cp">/* </span>
+<span class="cp"> * по сути, то же самое, плюс</span>
+<span class="cp"> * указание языка для подсветки.</span>
+<span class="cp"> * вместо ``` можно </span>
+<span class="cp"> * использовать ~~~</span>
+<span class="cp"> */</span>
+<span class="k">```</span>
+</pre></div>
+
+
+</div>
+<div style="max-width:350px">
+<blockquote>
+<p>Цитата умного 
+человека &mdash; 
+почти афоризм.</p>
+</blockquote>
+<p>или так (то же самое):</p>
+<blockquote>
+<p>Цитата умного 
+человека &mdash; 
+почти афоризм.</p>
+</blockquote>
+<div class="highlight"><pre>Отступ в 4 пробела или 1 таб:
+будет окружено тегом &lt;pre&gt;,
+а если включена подсветка -
+то и подсвечено. Можно печатать
+всё: [a](http://a) &lt;html&gt; `ы`
+Сделано для блоков кода.
+</pre></div>
+
+
+<div class="highlight"><pre><span class="kt">void</span> <span class="nf">sample_func</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sample_func</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/* </span>
+<span class="cm"> * по сути, то же самое, плюс</span>
+<span class="cm"> * указание языка для подсветки.</span>
+<span class="cm"> * вместо ``` можно </span>
+<span class="cm"> * использовать ~~~</span>
+<span class="cm"> */</span>
+</pre></div>
+
+
+</div>
+</div>
+
+<p>Цитаты могут быть вложенными, если угловые скобочки удвоить. Кроме того, в цитаты можно вклаывать другие форматированные штучки, типа внутристрочного кода или списков.</p>
+<h3 id="_9">Списки</h3>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>Маркированый:
+
+<span class="k">* </span>пункт
+<span class="k">* </span>еще пункт
+
+Нумерованый:
+
+<span class="k">1. </span>первый
+<span class="k">2. </span>второй
+
+Смешаный:
+
+<span class="k">1. </span>пунктик с подпунктиками
+<span class="k">    * </span>4 пробела дают
+<span class="k">    + </span>вложенность, а маркеры
+<span class="k">    - </span>могут быть разными
+<span class="k">3. </span>Цифры тоже неважны,
+<span class="k">98. </span>лишь бы цифры.
+
+    Можно сделать абзац
+    внутри списка
+
+<span class="k">    * </span>и даже внутри подпункта
+
+        тоже можно сделать абзац.
+
+<span class="k">    * </span>Еще одна вложенность.
+
+<span class="k">7. </span>Надо только не забывать 
+отступы и пустые строки.
+</pre></div>
+
+
+</div>
+<div>
+<p>Маркированый:</p>
+<ul>
+<li>пункт</li>
+<li>еще пункт</li>
+</ul>
+<p>Нумерованый:</p>
+<ol>
+<li>первый</li>
+<li>второй</li>
+</ol>
+<p>Смешаный:</p>
+<ol>
+<li>пунктик с подпунктиками<ul>
+<li>4 пробела дают</li>
+<li>вложенность, а маркеры</li>
+<li>могут быть разными</li>
+</ul>
+</li>
+<li>Цифры тоже неважны,</li>
+<li>
+<p>лишь бы цифры.</p>
+<p>Можно сделать абзац
+внутри списка</p>
+<ul>
+<li>
+<p>и даже внутри подпункта</p>
+<p>тоже можно сделать абзац.</p>
+</li>
+<li>
+<p>Еще одна вложенность.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Надо только не забывать 
+отступы и пустые строки.</p>
+</li>
+</ol>
+</div>
+</div>
+
+<h3 id="_10">Ссылки, картинки и их комбинация</h3>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>Простая автоматическая ссылка:  
+&lt;http://romeogolf.site&gt;  
+
+Чуть посложнее:
+[Мой сайт](http://romeogolf.site &quot;Ссылка&quot;)
+
+Ссылочная (сносочная? референсная?)  
+ссылка: [Снова мой сайт][my_site]
+или так: [Site][]
+
+А где-нибудь ниже по тексту надо  
+определить ссылку по указанному  
+идентификатору.
+
+Ссылка на [заголовок](#id_header2),  
+который мы пометили идентификатором выше
+
+Ссылка на собственную страницу,  
+еще в исходном тексте:
+[Рыба]({filename}/pages/test_page.md)
+или
+[Рыба]({filename}../../pages/test_page.md)
+
+Статьи с тегом [pelican]({tag}pelican)  
+или в категории [Блог]({category}Блог)
+
+Картинка напрямую:
+![флаги](../images/rg.png &quot;romeo golf&quot;)  
+или через исходное размещение:
+![флаги]
+({filename}/images/rg.png &quot;romeo golf&quot;)
+
+Картинка через сноску:
+![флаги romeo и golf][flags]
+
+Картинка и ссылка вместе:
+[![флаги][flags]][my_site]
+или так:
+[![флаги](../images/rg.png)](http://romeogolf.site/)
+
+[my_site]: http://romeogolf.site/
+[Site]: http://romeogolf.site/  &quot;Ссылка&quot;
+[flags]: ../images/rg.png (romeo golf)
+</pre></div>
+
+
+</div>
+<div>
+<p>Простая автоматическая ссылка:<br />
+<a href="http://romeogolf.site">http://romeogolf.site</a></p>
+<p>Чуть посложнее:
+<a href="http://romeogolf.site" title="Ссылка">Мой сайт</a></p>
+<p>Ссылочная (сносочная? референсная?)<br />
+ссылка: <a href="http://romeogolf.site/">Снова мой сайт</a>
+или так: <a href="http://romeogolf.site/" title="Ссылка">Site</a></p>
+<p>А где-нибудь ниже по тексту надо<br />
+определить ссылку по указанному<br />
+идентификатору.</p>
+<p>Ссылка на <a href="#id_header2">заголовок</a>,<br />
+который мы пометили идентификатором выше</p>
+<p>Ссылка на собственную страницу,<br />
+еще в исходном тексте:
+<a href="./pages/testovaia-stranitsa.html">Рыба</a>
+или
+<a href="./pages/testovaia-stranitsa.html">Рыба</a></p>
+<p>Статьи с тегом <a href="./tag/pelican.html">pelican</a><br />
+или в категории <a href="./category/blog.html">Блог</a></p>
+<p>Картинка напрямую:
+<img alt="флаги" src="../images/rg.png" title="romeo golf" /><br />
+или через исходное размещение:
+<img alt="флаги" src="./images/rg.png" title="romeo golf" /></p>
+<p>Картинка через сноску:
+<img alt="флаги romeo и golf" src="../images/rg.png" title="romeo golf" /></p>
+<p>Картинка и ссылка вместе:
+<a href="http://romeogolf.site/"><img alt="флаги" src="../images/rg.png" title="romeo golf" /></a>
+или так:
+<a href="http://romeogolf.site/"><img alt="флаги" src="../images/rg.png" /></a></p>
+</div>
+</div>
+
+<p>Как видно из примера, картинка отличается от ссылки восклицательным знаком перед первой скобкой. В первых квадратных скобках идет текст ссылки или альтернативный текст для картинки (который отображается, если картинку по какой-то причине не видно), в круглых скобках &mdash; путь к объекту, а также необязательный текст в кавычках, который будет атрибутом title (во всплывающей подсказке при наведении мыши на ссылку или картинку).</p>
+<p>Удобно пользоваться сносочноым типом ссылки, когда вместо адреса в круглых скобках пишется идентификатор в квадратных, а ниже дается расшифровка &mdash; тоже путь к объекту и необязательный title в кавычках (одинарных или двойных) или скобках. Ссылка через сноску хороша тем, что можно использовать одну и ту же ссылку или картинку в нескольких местах по тексту. Кроме того, удобно держать все ссылки рядом, на случай, если придется их перестраивать.</p>
+<p>При сносочном типе ссылки можно вторую пару квадратных скобок оставить пустой или вообще не ставить, тогда текст ссылки сам будет сноской, которую надо использовать ниже при указании адреса.</p>
+<p>На собственные файлы (страницы или картинки) можно ссылаться как напрямую, зная, где они окажутся в структуре сайта после генерации, так и на исходник. Второй вариант предпочтительнее, так как, во-первых, не нужно задумываться о структуре сайта при его наполнении контентом, а во-вторых, структура может поменяться, скажем, в результате автоматизированной архивации старых статей с перемещением их в соответствующие папки.</p>
+<p>Аналогично файлам в исходниках, можно ссылаться на категории или теги, с соответствующим префиксом в фигурных скобках.</p>
+<h3 id="_11">Некоторые особенности и тонкости</h3>
+<p>Необходимо быть достаточно внимательным с пустыми строками, отступами и пробелами в концах строк, так как они здесь играют роль тегов, а наличие и количество пробелов видно плохо.</p>
+<ul>
+<li>Если четыре пробела (или один таб) идут перед первой строкой абзаца &mdash; абзац считается блоком кода.</li>
+<li>Если четыре пробела идут перед первой строкой абзаца, следующего сразу после пункта списка &mdash; абзац считается дополнительным абзацем первого уровня текущего пункта списка. Если при этом над пустой строкой был второй уровень вложенности &mdash; абзац все равно будет сдвинут до первого уровня, а если надо, чтобы он принадлежал второму уровню, то надо ставить восемь пробелов.</li>
+<li>Если в списке вставить явным образом блок кода (через <code>~~~</code>), то последующие абзацы с четырьмя пробелами в начале будут считаться тоже блоками кода.</li>
+<li>Если явно указанный блок кода будет еще и с отступом, то он будет воспринят некорректно, будет пропущено указание языка для подсветки <code>:::язык</code>.</li>
+<li>Чтобы запихать блок кода в список, надо &raquo;утопить&laquo; его отступами дважды &mdash; восемь пробелов для первого уровня, при этом оформить абзацным методом, без <code>~~~</code>.</li>
+<li>Чтобы использовать HTML-код в Markdown по прямому назначению, он не должен быть &raquo;утоплен&laquo; на четыре пробела, иначе будет восприниматься, как блок кода, то есть, не для использования, а для отображения.</li>
+</ul>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Footnote по-русски &mdash; сноска&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
+                <li><a href="./tag/markdown.html" class="tag">Markdown</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "pelican-i-ispolzovanie-markdown.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+  </div> <!-- footer -->
+
+</body>
+</html>
