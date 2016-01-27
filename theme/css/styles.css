@@ -91,9 +91,9 @@ h1 a:hover {
     max-width: 1220px; /*  */
 
     /*-moz-background-size: 100%; /* Firefox 3.6+ */
-    /*-webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+    /*-webkit-background-size: 100%; /* Safari 3.1+ ? Chrome 4.0+ */
     /*-o-background-size: 100%; /* Opera 9.6+ */
-    /*background-size: 100%; /* Современные браузеры */
+    /*background-size: 100%; /* ??????????? ???????? */
 
     background-color: #aaa;
 }
@@ -101,8 +101,8 @@ h1 a:hover {
 #name {
     font-size: 350%;
     font-family: Arial;
-    text-decoration: none; /* Убираем подчёркивание */
-    color: #fff; /* Цвет ссылок */
+    text-decoration: none; /* ??????? ????????????? */
+    color: #fff; /* ???? ?????? */
     position: relative;
     top: -25px;
 }
@@ -115,43 +115,43 @@ h1 a:hover {
 }
 
 .main-nav li {
-    display: inline-block; /* Строчно-блочные элементы */
-    background-color: #009169; /* Цвет фона */
-    margin-right: 3px; /* Расстояние между пунктами меню */
-    margin-bottom: 0px; /* Расстояние между пунктами меню */
-    -webkit-transform: skewX(-30deg); /* Для Safari и Chrome */
-    -moz-transform: skewX(-30deg); /* Для Firefox */
-    -o-transform: skewX(-30deg); /* Для Opera */
-    -ms-transform: skewX(-30deg); /* Для IE */
+    display: inline-block; /* ???????-??????? ???????? */
+    background-color: #009169; /* ???? ???? */
+    margin-right: 3px; /* ?????????? ????? ???????? ???? */
+    margin-bottom: 0px; /* ?????????? ????? ???????? ???? */
+    -webkit-transform: skewX(-30deg); /* ??? Safari ? Chrome */
+    -moz-transform: skewX(-30deg); /* ??? Firefox */
+    -o-transform: skewX(-30deg); /* ??? Opera */
+    -ms-transform: skewX(-30deg); /* ??? IE */
     transform: skewX(-30deg); /* CSS3 */
-    /*opacity: 0.5; /* Значение прозрачности */
-    /*filter: alpha(Opacity=50); /* Прозрачность в IE */
+    /*opacity: 0.5; /* ???????? ???????????? */
+    /*filter: alpha(Opacity=50); /* ???????????? ? IE */
 }
 
 .main-nav a {
-    color: #fff; /* Цвет ссылок */
-    display: block; /* Блочный элемент */
-    padding: 5px 15px; /* Поля вокруг текста */
-    text-decoration: none; /* Убираем подчёркивание */
-    -webkit-transform: skewX(30deg); /* Для Safari и Chrome */
-    -moz-transform: skewX(30deg); /* Для Firefox */
-    -o-transform: skewX(30deg); /* Для Opera */
-    -ms-transform: skewX(30deg); /* Для IE */
+    color: #fff; /* ???? ?????? */
+    display: block; /* ??????? ??????? */
+    padding: 5px 15px; /* ???? ?????? ?????? */
+    text-decoration: none; /* ??????? ????????????? */
+    -webkit-transform: skewX(30deg); /* ??? Safari ? Chrome */
+    -moz-transform: skewX(30deg); /* ??? Firefox */
+    -o-transform: skewX(30deg); /* ??? Opera */
+    -ms-transform: skewX(30deg); /* ??? IE */
     transform: skewX(30deg); /* CSS3 */
 }
 
 .main-nav li:hover {
-    background-color: #005F44; /* Цвет фона при наведении курсора мыши */
+    background-color: #005F44; /* ???? ???? ??? ????????? ??????? ???? */
 }
 
 .main-nav li.active {
-    background-color: #005F44; /* Цвет фона при наведении курсора мыши */
+    background-color: #005F44; /* ???? ???? ??? ????????? ??????? ???? */
 }
 
 .tags li {
-    display: inline-block; /* Строчно-блочные элементы */
-    margin-right: 3px; /* Расстояние между пунктами меню */
-    margin-bottom: 0px; /* Расстояние между пунктами меню */
+    display: inline-block; /* ???????-??????? ???????? */
+    margin-right: 3px; /* ?????????? ????? ???????? ???? */
+    margin-bottom: 0px; /* ?????????? ????? ???????? ???? */
 }
 
 .taglist {
@@ -209,6 +209,18 @@ code {
     float: left;
     width: 144px;
     background: #005F44
+}
+
+.equi_height {
+    overflow: hidden;
+}
+
+.equi_height > div {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px 10px 1000px;
+    margin: 10px 50px -1000px 0px;
+    background: none repeat scroll 0% 0% #8CE065;
 }
 
 

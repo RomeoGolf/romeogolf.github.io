@@ -90,48 +90,63 @@
 <p>Кроме подпапки css, в static могут быть подпапки fonts с используемыми нестандартными шрифтами, images или img с картинками (фонами и иконками) и js с используемыми скриптами JavaScript.</p>
 <h3 id="_3">Где взять тему</h3>
 <p>У нашей заготовки темы нету никакой, а хочется хоть какую-нибудь. Но Pelican не так плох, чтобы не давать возможности поиграться с темой &laquo;из коробки&raquo;. В комплекте поставки идет две темы: simple и notmyidea. Папки с соответствующими названиями лежат где-то в недрах Pelican, который, в свою очередь, расположен где-то внутри Python. В моем случае это <code>C:\Python33\Lib\site-packages\pelican\themes</code>. Однако, лазить по внутренностям змеи и птицы &mdash; не наше дело. Для упрощения задачи нам любезно подкинули специальную утилиту pelican-themes. Команда (как обычно, в консоли, например, файлового менеджера FAR или в окне cmd.exe)</p>
-<p><code>:::bat
-С:\python33\Scripts\pelican-themes.exe -l</code></p>
+<div class="highlight"><pre>С:\python<span class="m">33</span>\Scripts\pelican-themes.exe -l
+</pre></div>
+
+
 <p>выведет список установленных тем. Собственно, вот эти две упомянутые и выведет. С помощью этой же утилиты темы можно устанавливать, удалять, создавать символические ссылки на имеющиеся темы (благодаря чему тема не будет скопирована внутрь пеликана, но пеликан будет о ней знать и сможет использовать). Например,</p>
-<p><code>:::bat
-С:\python33\Scripts\pelican-themes.exe -i D:\Download\subtle</code></p>
+<div class="highlight"><pre>С:\python<span class="m">33</span>\Scripts\pelican-themes.exe -i D:\Download\subtle 
+</pre></div>
+
+
 <p>установит тему subtle, если она скачана и лежит в <code>D:\Download</code>, а </p>
-<p><code>:::bat
-С:\python33\Scripts\pelican-themes.exe -r subtle</code></p>
+<div class="highlight"><pre>С:\python<span class="m">33</span>\Scripts\pelican-themes.exe -r subtle 
+</pre></div>
+
+
 <p>удалит ее. Впрочем, процедура установки и удаления тем не особенно важна. Установленную тему проще подключить в настройках файла конфигурации, чем неустановленную. Однако, можно использовать не просто имя темы, а полный путь к ней, и тогда теме не нужно быть установленной. Это касается раздобытых в интернете тем, либо написанных самостоятельно. Комплектные темы &mdash; упомянутые две &mdash; лучше все-таки не трогать.</p>
 <p>Что касается поиска готовых, но более-менее интересных тем &mdash; больше всего их, наверное, на GitHub, например, в <a href="https://github.com/getpelican/pelican-themes">этом сборнике</a>. Но пока разберемся с имеющейся.</p>
 <h2 id="_4">Откроем файл конфигурации</h2>
 <p>В корне проекта после его создания и первой сборки сайта появилась папка <strong>pycache</strong>. Оставим ее в покое, она нужна питону, пусть пользуется. Файлы Makefile, fabfile.py и develop_server.sh можно спокойно удалить. Если они вдруг когда-нибудь понадобятся, их будет несложно получить снова. Файл publishconf.py оставим в покое, он нас пока не интересует, но может позже и пригодится. Откроем 
 pelicanconf.py в текстовом редакторе. Не запустим его, а то Python попытается выполнить, а именно откроем для редактирования.</p>
-<p>```
-:::python</p>
-<h1 id="usrbinenv-python">!/usr/bin/env python</h1>
-<h1 id="-coding-utf-8-">-<em>- coding: utf-8 -</em>-</h1>
-<p>from <strong>future</strong> import unicode_literals</p>
-<p>AUTHOR = 'Me'
-SITENAME = 'Site'
-SITEURL = ''</p>
-<p>PATH = 'content'</p>
-<p>TIMEZONE = 'Europe/Paris'</p>
-<p>DEFAULT_LANG = 'ru'</p>
-<h1 id="feed-generation-is-usually-not-desired-when-developing">Feed generation is usually not desired when developing</h1>
-<p>FEED_ALL_ATOM = None
-CATEGORY_FEED_ATOM = None
-TRANSLATION_FEED_ATOM = None
-AUTHOR_FEED_ATOM = None
-AUTHOR_FEED_RSS = None</p>
-<h1 id="blogroll">Blogroll</h1>
-<p>LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)</p>
-<h1 id="social-widget">Social widget</h1>
-<p>SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)</p>
-<p>DEFAULT_PAGINATION = 10</p>
-<h1 id="uncomment-following-line-if-you-want-document-relative-urls-when-developing">Uncomment following line if you want document-relative URLs when developing</h1>
-<h1 id="relative_urls-true">RELATIVE_URLS = True</h1>
-<p>```</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*- #</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+
+<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s">&#39;Me&#39;</span>
+<span class="n">SITENAME</span> <span class="o">=</span> <span class="s">&#39;Site&#39;</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+<span class="n">PATH</span> <span class="o">=</span> <span class="s">&#39;content&#39;</span>
+
+<span class="n">TIMEZONE</span> <span class="o">=</span> <span class="s">&#39;Europe/Paris&#39;</span>
+
+<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="s">&#39;ru&#39;</span>
+
+<span class="c"># Feed generation is usually not desired when developing</span>
+<span class="n">FEED_ALL_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">CATEGORY_FEED_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">TRANSLATION_FEED_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">AUTHOR_FEED_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">AUTHOR_FEED_RSS</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="c"># Blogroll</span>
+<span class="n">LINKS</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;Pelican&#39;</span><span class="p">,</span> <span class="s">&#39;http://getpelican.com/&#39;</span><span class="p">),</span>
+         <span class="p">(</span><span class="s">&#39;Python.org&#39;</span><span class="p">,</span> <span class="s">&#39;http://python.org/&#39;</span><span class="p">),</span>
+         <span class="p">(</span><span class="s">&#39;Jinja2&#39;</span><span class="p">,</span> <span class="s">&#39;http://jinja.pocoo.org/&#39;</span><span class="p">),</span>
+         <span class="p">(</span><span class="s">&#39;You can modify those links in your config file&#39;</span><span class="p">,</span> <span class="s">&#39;#&#39;</span><span class="p">),)</span>
+
+<span class="c"># Social widget</span>
+<span class="n">SOCIAL</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;You can add links in your config file&#39;</span><span class="p">,</span> <span class="s">&#39;#&#39;</span><span class="p">),</span>
+          <span class="p">(</span><span class="s">&#39;Another social link&#39;</span><span class="p">,</span> <span class="s">&#39;#&#39;</span><span class="p">),)</span>
+
+<span class="n">DEFAULT_PAGINATION</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c"># Uncomment following line if you want document-relative URLs when developing</span>
+<span class="c">#RELATIVE_URLS = True</span>
+</pre></div>
+
+
 <p>Pelican собрал его на основе наших ответов при анкетировании после запуска утилиты pelican-quickstart. Разберем по полочкам. Начало (первые три строки) нужно питону, а не нам. Далее AUTHOR и SITENAME &mdash; можно поставить что-то более осмысленное, собственное имя (или партийный псевдоним) для AUTHOR и что-нибудь креативное для SITENAME.</p>
 <p>SITEURL = '' можно оставить и так, пока мы не лезем в интернеты, а балуемся на собственном домашнем компьютере.</p>
 <p>PATH указывает на папку, в которой лежат заготовки статей, страниц и прочего контента, если прочее будет.</p>
@@ -143,35 +158,40 @@ AUTHOR_FEED_RSS = None</p>
 <p>DEFAULT_PAGINATION &mdash; максимальное количество статей на страницу. Можно вместо числа поставить False, тогда будет неограничено.</p>
 <p>#RELATIVE_URLS = True следует &laquo;раскомментировать&raquo;, то есть, удалить символ # перед параметром. Параметр задает относительность при формировании URL. Для локального сайта, не использующего веб-сервер, это необходимо. После публикации имеет смысл закрыть обратно, но о необходимости и причинах этого лучше говорить не здесь. Может быть, позже&hellip;</p>
 <p>В этом файле, можно в конце, необходимо дописать такие строки:</p>
-<p>```
-:::python</p>
-<h1 id="_5">подключаем предустановленную тему</h1>
-<p>THEME = 'notmyidea'</p>
-<h1 id="_6">перед генерацией стираем старый вариант сайта</h1>
-<p>DELETE_OUTPUT_DIRECTORY = True
-```</p>
+<div class="highlight"><pre><span class="c"># подключаем предустановленную тему</span>
+<span class="n">THEME</span> <span class="o">=</span> <span class="s">&#39;notmyidea&#39;</span>
+
+<span class="c"># перед генерацией стираем старый вариант сайта</span>
+<span class="n">DELETE_OUTPUT_DIRECTORY</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+
+
 <p>Последняя строка нужна потому, что мы пока что экспериментируем. Будем добавлять и удалять элементы контента, а в выходной папке останутся следы уже ненужных страниц. Пусть Pelican сам подтирает их за нами.</p>
-<h2 id="_7">Вот такая тема</h2>
+<h2 id="_5">Вот такая тема</h2>
 <p>А давайте еще создадим в папке content подпапку pages рядом с articles. А туда положим файл about.md такого содержания:</p>
-<p>```
-:::md
-Title: О сайте</p>
-<p>На этой странице по логике вещей и в соответствии с названием должно бы 
-присутствовать внятное описание сайта, частью которого является данная страница.</p>
-<p>К сожалению, у автора сайта до сих пор нет достаточно внятного представления о 
+<div class="highlight"><pre>Title: О сайте
+
+На этой странице по логике вещей и в соответствии с названием должно бы 
+присутствовать внятное описание сайта, частью которого является данная страница.
+
+К сожалению, у автора сайта до сих пор нет достаточно внятного представления о 
 назначении сайта, поэтому нормальное описание не может быть составлено. Однако 
 данная страница совершенно необходима хотя бы для того, чтобы посмотреть на ее 
-поведение в рамках шаблона и настроек.</p>
-<p>В общем, как все уже вероятно догадались, эта страница, как и весь остальной 
+поведение в рамках шаблона и настроек.
+
+В общем, как все уже вероятно догадались, эта страница, как и весь остальной 
 сайт в целом, является испытательным полигоном, тестовой площадкой, инструментом 
 для получения и отработки новых навыков автора в малознакомой области веб-
 творчества и, не побоюсь этого слова, веб-дизайна.
-```</p>
+</pre></div>
+
+
 <p>Для страниц не важна метаинформация, используемая в статьях. Только заголовок, остальное (дата, автор и все такое) использоваться не будет. То есть, использование метаданных определяется шаблоном, а назначение страниц чаще всего отличается от статейного &mdash; их нет в ленте, у них неважен автор и теги.</p>
 <p>Запускаем сборку сайта:</p>
-<pre><code>:::bat
-c:\python33\Scripts\pelican.exe content
-</code></pre>
+<div class="highlight"><pre>c:\python<span class="m">33</span>\Scripts\pelican.exe content
+</pre></div>
+
+
 <p>Теперь из папки output можно запустить index.html и посмотреть результат.</p>
 <p>Теперь мы имеем серенький фончик, шапку в виде названия сайта крупными буквами и горизонтального меню с категориями (&laquo;Разное&raquo; и &laquo;Рыба&raquo;) и страницами (&laquo;О сайте&raquo;). Меню, контент и футер на белом фоне со скругленными уголками. На первой странице последняя статья полностью и список остальных статей (в котором пока одна &mdash; первая). В статье добавлен справа плавающий блок с метаданными &mdash; категория, автор, теги и дата публикации. Сайдбаров нет. В футере ссылки, встроенные в шаблон и не убираемые при помощи файла конфигурации. Заголовок в шапке является ссылкой на корень папки output, что логично &mdash; будь это корнем для сервера, тот подставил бы index.html, а нам придется делать это вручную. Верстка фиксированная. Ссылки &mdash; что приятно &mdash; теперь рабочие.</p>
 <p>В общем, бери, да радуйся. Можно пользоваться и так. Но, несмотря на то, что результат разительно отличается от &laquo;бестемного&raquo;, хочется улучшений. Да не просто хочется, а мы все-таки надеемся, что это творение будут смотреть люди. И читать эти люди будут, скорее всего, по-русски, а у нас метаданные отмечены на английском. Да и ссылки в футере&hellip; Нет, я тоже благодарен авторам Python, Pelican и этой темы, но не до такой степени, чтобы на каждой странице давать ссылки на них. А еще хочется добавить рюшечек-финтифлюшечек, типа карты сайта, облака тегов, отсортировать меню иначе&hellip;</p>

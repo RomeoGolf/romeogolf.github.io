@@ -80,48 +80,56 @@
       <h2 id="_1">Начнем с нуля</h2>
 <p>Тема notmyidea сама по себе выглядит неплохо и вполне допускает правку под свои нужды. Но поступим экстремальнее &mdash; сделаем всё с самого начала. В корне проекта сайта, в нашем случае &mdash; <code>D:\site\</code>, создаем папку themes, там делаем папку nanotheme, а в ней &mdash; папки static и templates. Почему nano? Во-первых, это модно, во-вторых, в этой теме будет предельный минимум, только для примера, чтобы хоть как-то работало.</p>
 <p>В папке templates создадим base.html, текстовый файл в UTF-8. Непременный, обязательный базовый шаблон, который будет определять общую разметку для всех страниц, подчиняющихся нашей теме. Ну, и набросаем общий внешний вид:</p>
-<p><code>:::html
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8" /&gt;
-    &lt;title&gt;будет заголовок&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;header class="main-header"&gt;
+<div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>будет заголовок<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">&quot;main-header&quot;</span><span class="nt">&gt;</span>
       будет хедер
-    &lt;/header&gt;
-    &lt;nav&gt;
+    <span class="nt">&lt;/header&gt;</span>
+    <span class="nt">&lt;nav&gt;</span>
       Будет главное меню
-    &lt;/nav&gt;
-    &lt;div class="content"&gt;
+    <span class="nt">&lt;/nav&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
       Будет контент
-    &lt;/div&gt; 
-    &lt;div class="footer"&gt;
+    <span class="nt">&lt;/div&gt;</span> 
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>
       будет футер
-    &lt;/div&gt; 
-  &lt;/body&gt;
-&lt;/html&gt;</code></p>
+    <span class="nt">&lt;/div&gt;</span> 
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
+
 <p>Если этот файл посмотреть в браузере, то можно увидеть тупо четыре строчки:<br />
 будет хедер<br />
 Будет главное меню<br />
 Будет контент<br />
 будет футер  </p>
 <p>А если запустить генерацию страниц сайта, то в результате мы вообще не увидим изменений. Оно и понятно &mdash; тема-то в настройках все еще подключена старая. Давайте переподключим. Найдем в pelicanconf.py строчку</p>
-<p><code>:::python
-THEME = 'notmyidea'</code>
-и заменим ее на </p>
-<p><code>:::python
-THEME = 'themes/nanotheme'</code></p>
+<div class="highlight"><pre><span class="n">THEME</span> <span class="o">=</span> <span class="s">&#39;notmyidea&#39;</span>
+</pre></div>
+
+
+<p>и заменим ее на </p>
+<div class="highlight"><pre><span class="n">THEME</span> <span class="o">=</span> <span class="s">&#39;themes/nanotheme&#39;</span>
+</pre></div>
+
+
 <p>Как вариант, можно не заменять, а поставить в начале исходной строки знак комментария #, а новую просто поставить чуть ниже (если хотите &mdash; чуть выше).</p>
 <p>И вот теперь после генерации сайта мы увидим изменения. А именно: мы увидим эти же четыре строчки, что и в base.html, на любой сгенерированной странице сайта. Это не то, что нам бы хотелось, но именно то, что мы заказывали. Значит, надо научиться заказывать то, что мы хотим. </p>
 <h2 id="_2">От простой разметки &mdash; к шаблону</h2>
 <p>Для того, чтобы сделать из примитивной веб-странички примитивный шаблон для Pelican, надо использовать <a href="http://jinja.pocoo.org/docs/">jinja2</a> &mdash; движок сайтовых шаблонов для Python. Вставляя конструкции дзиндзя в текст разметки, мы даем генератору сайта понять, в каком месте шаблона мы хотим видеть некоторую информацию, и где ее взять. Строго говоря, эти конструкции будут работать в любом языке разметки, но, раз уж делаем сайт, нас интересует конкретно HTML.</p>
 <p>Самыми употребимыми (глядя на код шаблонов нескольких скачанных тем) будут блоки и переменные. </p>
-<p><code>:::html+jinja
-&lt;title&gt;{% block title %}{% endblock %}&lt;/title&gt;
-&lt;h1&gt;{{ a_title }}&lt;/h1&gt;</code>
-Первая конструкция позволяет в дочернем шаблоне создать именованный блок (с именем title), и содержимое этого блока будет подставлено на место, определенное в родительском шаблоне. Вторая конструкция вместо переменной языка Python вставит ее значение. А значение, в свою очередь, может быть, например, задано в файле конфигурации pelicanconf.py или определяться при помощи метаданных статьи или страницы.</p>
+<div class="highlight"><pre><span class="nt">&lt;title&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">a_title</span> <span class="cp">}}</span><span class="nt">&lt;/h1&gt;</span>
+</pre></div>
+
+
+<p>Первая конструкция позволяет в дочернем шаблоне создать именованный блок (с именем title), и содержимое этого блока будет подставлено на место, определенное в родительском шаблоне. Вторая конструкция вместо переменной языка Python вставит ее значение. А значение, в свою очередь, может быть, например, задано в файле конфигурации pelicanconf.py или определяться при помощи метаданных статьи или страницы.</p>
 <p>Вообще-то, блоки являются подмножеством операторов, а переменные &mdash; подмножеством выражений:</p>
 <ul>
 <li>{% &hellip; %} &mdash; для операторов</li>
@@ -131,47 +139,47 @@ THEME = 'themes/nanotheme'</code></p>
 </ul>
 <p>но подробный разбор синтаксиса jinja2 займет слишком много места и времени, чтобы заниматься им прямо здесь и прямо сейчас.</p>
 <p>Давайте попробуем воткнуть парочку блоков и переменных. Что касается переменных &mdash; как минимум, мы имеем в настройках AUTHOR и SITENAME. Типовые названия некоторых блоков можно подсмотреть в других темах. Итак, правим базовый шаблон:</p>
-<p>```
-:::html+jinja
-&lt;!DOCTYPE html&gt;
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>{% block title %}{{SITENAME}}{% endblock %}</title>
-    {% block head %}{% endblock %}
-  </head>
-  <body>
-    <header class="main-header">
-      <div>
-        <a id="name" href={{ SITEURL }} id="home-link">{{ SITENAME }}</a>
-      </div>
-    </header>
-    <nav>
-      <ul class="main-nav">
-        {% for cat, null in categories %}
-          <li {% if cat == category %}class="active"{% endif %}>
-        <a href="{{ SITEURL }}/{{ cat.url }}">{{ cat }}</a>
-      </li>
-        {% endfor %}</p>
-<pre><code>    {% if DISPLAY_PAGES_ON_MENU %}
-      {% for current_page in PAGES %}
-        &lt;li {% if current_page == page %}class="active"{% endif %}&gt;
-      &lt;a href="{{ SITEURL }}/{{ current_page.url }}"&gt;{{ current_page.title }}&lt;/a&gt;
-    &lt;/li&gt;
-      {% endfor %}
-    {% endif %}
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;div class="content"&gt;
-  {% block main_section %}{% endblock %}
-&lt;/div&gt; 
-&lt;div class="footer"&gt;
-  &amp;copy; {{AUTHOR}}
-&lt;/div&gt;
-</code></pre>
-<p></body>
-</html>
-```</p>
+<div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{{</span><span class="nv">SITENAME</span><span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="nt">&lt;/title&gt;</span>
+    <span class="cp">{%</span> <span class="k">block</span> <span class="nv">head</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">&quot;main-header&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">id=</span><span class="s">&quot;name&quot;</span> <span class="na">href=</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span> <span class="s">id=&quot;home-link&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">SITENAME</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/header&gt;</span>
+    <span class="nt">&lt;nav&gt;</span>
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;main-nav&quot;</span><span class="nt">&gt;</span>
+        <span class="cp">{%</span> <span class="k">for</span> <span class="nv">cat</span><span class="o">,</span> <span class="nv">null</span> <span class="k">in</span> <span class="nv">categories</span> <span class="cp">%}</span>
+          <span class="nt">&lt;li</span> <span class="cp">{%</span> <span class="k">if</span> <span class="nv">cat</span> <span class="o">==</span> <span class="nv">category</span> <span class="cp">%}</span><span class="na">class=</span><span class="s">&quot;active&quot;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">cat.url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">cat</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+        <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+
+        <span class="cp">{%</span> <span class="k">if</span> <span class="nv">DISPLAY_PAGES_ON_MENU</span> <span class="cp">%}</span>
+          <span class="cp">{%</span> <span class="k">for</span> <span class="nv">current_page</span> <span class="k">in</span> <span class="nv">PAGES</span> <span class="cp">%}</span>
+            <span class="nt">&lt;li</span> <span class="cp">{%</span> <span class="k">if</span> <span class="nv">current_page</span> <span class="o">==</span> <span class="nv">page</span> <span class="cp">%}</span><span class="na">class=</span><span class="s">&quot;active&quot;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">current_page.url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">current_page.title</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+          <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+        <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+      <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/nav&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+      <span class="cp">{%</span> <span class="k">block</span> <span class="nv">main_section</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+    <span class="nt">&lt;/div&gt;</span> 
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>
+      <span class="ni">&amp;copy;</span> <span class="cp">{{</span><span class="nv">AUTHOR</span><span class="cp">}}</span>
+    <span class="nt">&lt;/div&gt;</span> 
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
+
 <p>В результате base.html будет выглядеть уже так:</p>
 <pre style="overflow:auto;">
 {% block head %}{% endblock %}
@@ -214,143 +222,161 @@ Site
 </ul>
 <h2 id="_3">Добавляем шаблоны</h2>
 <p>Но у нас нет шаблона для главной страницы сайта, которая index, а также для страницы со списком категорий, тегов и, собственно, самих статей, поэтому все страницы одинаковые &mdash; к ним применяется единственный шаблон. Сделаем index.html. В нем первым делом укажем, что он расширяет базовый. Потом в <code>main_section</code> перечислим имеющиеся статьи, запихав их в соответствующие html-теги, не забыв указать краткое содержание (article.summary). Должно получиться примерно так:</p>
-<p><code>:::html+jinja2
-{% extends 'base.html' %}
-{% block main_section %}
-  &lt;section class="main-section blog-section" id="blog-posts"&gt;
-  {% for article in articles_page.object_list %}
-    &lt;h3 class="date"&gt;{{article.locale_date}}&lt;/h3&gt;
-      &lt;article&gt;
-    &lt;h2&gt;
-      &lt;a href="{{SITEURL}}/{{article.url}}"&gt;{{article.title}}
-      &lt;/a&gt;
-    &lt;/h2&gt;
-    {{article.summary}}
-    &lt;/article&gt;
-  {% endfor %}
-  &lt;/section&gt;
-{% endblock %}</code></p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html&#39;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">main_section</span> <span class="cp">%}</span>
+  <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;main-section blog-section&quot;</span> <span class="na">id=</span><span class="s">&quot;blog-posts&quot;</span><span class="nt">&gt;</span>
+  <span class="cp">{%</span> <span class="k">for</span> <span class="nv">article</span> <span class="k">in</span> <span class="nv">articles_page.object_list</span> <span class="cp">%}</span>
+    <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;date&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">article.locale_date</span><span class="cp">}}</span><span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;article&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span><span class="nv">SITEURL</span><span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span><span class="nv">article.url</span><span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">article.title</span><span class="cp">}}</span>
+      <span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/h2&gt;</span>
+    <span class="cp">{{</span><span class="nv">article.summary</span><span class="cp">}}</span>
+    <span class="nt">&lt;/article&gt;</span>
+  <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+  <span class="nt">&lt;/section&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+
+
 <p>Шаблон для статей будет называться article.html, тоже расширяет базовый. В заголовке мы его попросим показать не имя сайта, а название статьи. В главной секции укажем дату статьи (сформированную в соответствии с локалью), заголовок статьи и сам текст (article.content). После текста статьи перечислим теги, если они есть, то есть, сперва проверим наличие, а потом нарисуем список, в котором каждый тег сделан ссылкой на список статей с таким тегом:</p>
-<p>```
-:::html+jinja2
-{% extends 'base.html' %}
-{% block title %}{{article.title}}{% endblock %}</p>
-<p>{% block main_section %}
-<section class="main-section blog-section" id="blog-posts">
-  <h3 class="date">{{article.locale_date}}</h3>
-  <article>
-    <h2>{{article.title}}</a></h2>
-    {{article.content}}
-    <br/> <br />
-      <footer>
-        {% if article.tags %}
-          <div>
-      <div>Теги:</div>
-          <div class="taglist">
-            <ul class="tags">
-              {% for tag in article.tags %}
-                <li><a href="{{ SITEURL }}/{{ tag.url }}" class="tag">{{tag}}</a></li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-        {% endif %}
-      </footer>
-  </article>
-</section>
-{% endblock %}
-```</p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html&#39;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{{</span><span class="nv">article.title</span><span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">main_section</span> <span class="cp">%}</span>
+<span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;main-section blog-section&quot;</span> <span class="na">id=</span><span class="s">&quot;blog-posts&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;date&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">article.locale_date</span><span class="cp">}}</span><span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;article&gt;</span>
+    <span class="nt">&lt;h2&gt;</span><span class="cp">{{</span><span class="nv">article.title</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/h2&gt;</span>
+    <span class="cp">{{</span><span class="nv">article.content</span><span class="cp">}}</span>
+    <span class="nt">&lt;br/&gt;</span>   
+      <span class="nt">&lt;footer&gt;</span>
+        <span class="cp">{%</span> <span class="k">if</span> <span class="nv">article.tags</span> <span class="cp">%}</span>
+          <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;div&gt;</span>Теги:<span class="nt">&lt;/div&gt;</span>
+          <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;taglist&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;tags&quot;</span><span class="nt">&gt;</span>
+              <span class="cp">{%</span> <span class="k">for</span> <span class="nv">tag</span> <span class="k">in</span> <span class="nv">article.tags</span> <span class="cp">%}</span>
+                <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">tag.url</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">class=</span><span class="s">&quot;tag&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">tag</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+              <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+            <span class="nt">&lt;/ul&gt;</span>
+          <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+      <span class="nt">&lt;/footer&gt;</span>
+  <span class="nt">&lt;/article&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+
+
 <p>Для страниц, точнее, для пока единственной нашей страницы, нужен шаблон page.html, похожий на шаблон статей, только проще, без тегов:</p>
-<p><code>:::html+jinja2
-{% extends "base.html" %}
-{% block title %}{{ page.title }}{% endblock %}
-{% block main_section %}
-  &lt;section class="main-section"&gt;
-    &lt;h1 class="entry-title"&gt;{{ page.title }}&lt;/h1&gt;
-    &lt;br /&gt;&lt;br /&gt;
-    {{ page.content }}
-  &lt;/section&gt;
-{% endblock %}</code></p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{{</span> <span class="nv">page.title</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">main_section</span> <span class="cp">%}</span>
+  <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;main-section&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;entry-title&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">page.title</span> <span class="cp">}}</span><span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="cp">{{</span> <span class="nv">page.content</span> <span class="cp">}}</span>
+  <span class="nt">&lt;/section&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+
+
 <p>Ну, и для выбора страниц по тегу нужен шаблон tag.html: </p>
-<p><code>:::html+jinja2
-{% extends 'base.html' %}
-{% block title %}Статьи с тегом '{{tag}}' | {{ SITENAME }} {% endblock %}
-{% block main_section %}
-  &lt;section class="main-section blog-section" id="blog-posts"&gt;
-    {% for article in articles %}
-      &lt;h3 class="date"&gt;{{article.locale_date}}&lt;/h3&gt;
-      &lt;article&gt;
-        &lt;h2&gt;&lt;a href="{{SITEURL}}/{{article.url}}"&gt;{{article.title}}&lt;/a&gt;&lt;/h2&gt;
-        {{article.summary}}
-      &lt;/article&gt;
-    {% endfor %}
-  &lt;/section&gt;
-{% endblock %}</code></p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html&#39;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>Статьи с тегом &#39;<span class="cp">{{</span><span class="nv">tag</span><span class="cp">}}</span>&#39; | <span class="cp">{{</span> <span class="nv">SITENAME</span> <span class="cp">}}</span> <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">main_section</span> <span class="cp">%}</span>
+  <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;main-section blog-section&quot;</span> <span class="na">id=</span><span class="s">&quot;blog-posts&quot;</span><span class="nt">&gt;</span>
+    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">article</span> <span class="k">in</span> <span class="nv">articles</span> <span class="cp">%}</span>
+      <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;date&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">article.locale_date</span><span class="cp">}}</span><span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;article&gt;</span>
+        <span class="nt">&lt;h2&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span><span class="nv">SITEURL</span><span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span><span class="nv">article.url</span><span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span><span class="nv">article.title</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/h2&gt;</span>
+        <span class="cp">{{</span><span class="nv">article.summary</span><span class="cp">}}</span>
+      <span class="nt">&lt;/article&gt;</span>
+    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+  <span class="nt">&lt;/section&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+
+
 <p>Итак, <code>D:\site\themes\nanotheme\templates\</code> содержит пять файлов шаблонов. Вернемся в корень проекта сайта и запустим сборку. Теперь гиперссылки работают вменяемо. Ну, название сайта по-прежнему открывает содержимое корневой папки, но это нормально. Зато заголовок статьи ведет на страницу статьи, теги открывают страницу со списком статей с таким тегом, категории &mdash; на страницу со списком статей в данной категории.</p>
 <p>Ой! А почему? Мы же не делали шаблон для categories.html, а он работает! Это как?
 А так. <a href="http://docs.getpelican.com/en/3.6.3/themes.html#inheritance">Документация</a> рассказывает нам (правда, по-английски), что если какого-то из настоятельно необходимых шаблонов не окажется в папке templates, то вместо него будет использоваться соответствующий шаблон темы simple. И вообще, дескать, если вас устраивает HTML-структура шаблона этой умолчательной темы, то не надо писать собственных велосипедов. Тем более, что можно унаследоваться от шаблонов этой темы и чутка расширить их. Ну что ж, в отношении шаблона categories так и поступим.</p>
 <h2 id="_4">Подключение стилей</h2>
 <p>У нас теперь есть разметка разного рода страниц сайта. Но нет оформления, какая же это тема? Да никакая. Чтобы она стала хоть какая-нибудь, надо ей добавить стили. Значит, идем в папку <code>D:\site\themes\nanotheme\static\</code> и делаем там папку <code>css</code>, а в ней файл styles.css:</p>
-<p>```
-:::css</p>
-<p>body {  /<em> установим серенький цвет фона и размер полей </em>/
-    background-color: #CCC;
-    margin: 25px;
-}</p>
-<p>.main-header, .content, .footer { 
-    padding: 10px; /<em> внутриблочные отступы до границы </em>/
-    margin: 20px; /<em> отступы между блоками страницы </em>/
-    outline: solid 1px #000; /<em> черненькая тоненькая рамочка </em>/
-    background-color: #FFF; /<em> и белый цвет фона </em>/
-    min-width: 600px; /<em> позволим тянуться, </em>/
-    max-width: 800px; /<em> но в определенных пределах </em>/
-}</p>
-<p>.main-header { 
-    height: 200px; /<em> ограничим высоту </em>/
-    background-color: #aaa; /<em> и подменим цвет </em>/
-}</p>
-<p>h1 a:hover {
-    /<em> чтобы ссылка-заголовок при наведении не меняла цвет </em>/
-    background-color: inherit
-}</p>
-<h1 id="name">name {</h1>
-<pre><code>/* для текста названия сайта - размер, шрифт и рюшечки */
-font-size: 350%; 
-font-family: Arial;
-text-decoration: none; /* Убираем подчёркивание */
-color: #fff; /* Цвет текста белый */
-</code></pre>
-<p>}</p>
-<p>.main-nav {
-    height: 30px;
-    margin-top: -50px;
-}</p>
-<p>.main-nav li {
-    display: inline-block; /<em> Строчно-блочные элементы </em>/
-    background-color: #551111; /<em> Цвет фона </em>/
-    margin-right: 3px; /<em> Расстояние между пунктами меню </em>/
-}</p>
-<p>.main-nav a {
-    color: #fff; /<em> Цвет ссылок </em>/
-    display: block; /<em> Блочный элемент </em>/
-    padding: 5px 15px; /<em> Поля вокруг текста </em>/
-    text-decoration: none; /<em> Убираем подчёркивание </em>/
-}</p>
-<p>.main-nav li:hover {
-    background-color: #881144; /<em> Цвет фона при наведении курсора мыши </em>/
-}</p>
-<p>.main-nav li.active {
-    background-color: #881144; /<em> Цвет фона при наведении курсора мыши </em>/
-}</p>
-<p>.tags li {
-    /<em> для списка тегов к статье, чтобы они были в одну строку </em>/
-    display: inline-block; /<em> Строчно-блочные элементы </em>/
-    margin-right: 3px; /<em> Расстояние между пунктами меню </em>/
-}
-```</p>
+<div class="highlight"><pre><span class="nt">body</span> <span class="p">{</span>  <span class="c">/* установим серенький цвет фона и размер полей */</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#CCC</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.main-header</span><span class="o">,</span> <span class="nc">.content</span><span class="o">,</span> <span class="nc">.footer</span> <span class="p">{</span> 
+    <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span> <span class="c">/* внутриблочные отступы до границы */</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span> <span class="c">/* отступы между блоками страницы */</span>
+    <span class="k">outline</span><span class="o">:</span> <span class="k">solid</span> <span class="m">1px</span> <span class="m">#000</span><span class="p">;</span> <span class="c">/* черненькая тоненькая рамочка */</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#FFF</span><span class="p">;</span> <span class="c">/* и белый цвет фона */</span>
+    <span class="k">min-width</span><span class="o">:</span> <span class="m">600px</span><span class="p">;</span> <span class="c">/* позволим тянуться, */</span>
+    <span class="k">max-width</span><span class="o">:</span> <span class="m">800px</span><span class="p">;</span> <span class="c">/* но в определенных пределах */</span>
+<span class="p">}</span>
+
+<span class="nc">.main-header</span> <span class="p">{</span> 
+    <span class="k">height</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span> <span class="c">/* ограничим высоту */</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#aaa</span><span class="p">;</span> <span class="c">/* и подменим цвет */</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="c">/* чтобы ссылка-заголовок при наведении не меняла цвет */</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="k">inherit</span>
+<span class="p">}</span>
+
+<span class="nf">#name</span> <span class="p">{</span>
+    <span class="c">/* для текста названия сайта - размер, шрифт и рюшечки */</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">350%</span><span class="p">;</span> 
+    <span class="k">font-family</span><span class="o">:</span> <span class="n">Arial</span><span class="p">;</span>
+    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="c">/* Убираем подчёркивание */</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span> <span class="c">/* Цвет текста белый */</span>
+<span class="p">}</span>
+
+<span class="nc">.main-nav</span> <span class="p">{</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-50px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.main-nav</span> <span class="nt">li</span> <span class="p">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span> <span class="c">/* Строчно-блочные элементы */</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#551111</span><span class="p">;</span> <span class="c">/* Цвет фона */</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span> <span class="c">/* Расстояние между пунктами меню */</span>
+<span class="p">}</span>
+
+<span class="nc">.main-nav</span> <span class="nt">a</span> <span class="p">{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span> <span class="c">/* Цвет ссылок */</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span> <span class="c">/* Блочный элемент */</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span> <span class="m">15px</span><span class="p">;</span> <span class="c">/* Поля вокруг текста */</span>
+    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="c">/* Убираем подчёркивание */</span>
+<span class="p">}</span>
+
+<span class="nc">.main-nav</span> <span class="nt">li</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#881144</span><span class="p">;</span> <span class="c">/* Цвет фона при наведении курсора мыши */</span>
+<span class="p">}</span>
+
+<span class="nc">.main-nav</span> <span class="nt">li</span><span class="nc">.active</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#881144</span><span class="p">;</span> <span class="c">/* Цвет фона при наведении курсора мыши */</span>
+<span class="p">}</span>
+
+<span class="nc">.tags</span> <span class="nt">li</span> <span class="p">{</span>
+    <span class="c">/* для списка тегов к статье, чтобы они были в одну строку */</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span> <span class="c">/* Строчно-блочные элементы */</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span> <span class="c">/* Расстояние между пунктами меню */</span>
+<span class="p">}</span>
+</pre></div>
+
+
 <p>Надо еще не забыть подключить эти стили в базовом шаблоне base.html, например, сразу после тега <code>&lt;title&gt;</code>:</p>
-<p><code>:::html
-    &lt;link rel="stylesheet" href="{{ SITEURL }}/theme/css/styles.css" type="text/css" /&gt;</code></p>
+<div class="highlight"><pre>    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;{{ SITEURL }}/theme/css/styles.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+
+
 <p>Ни в коем случае не претендую на то, что создал прекрасный образец стиля. Цветовая гамма сомнительная, решение задать размер шрифта в процентах спорное. Однако такого CSS достаточно для того, чтобы показать: тема заработала так, как мы ожидали.</p>
 <p>В нее еще многое можно напихать. Добавить шаблоны страниц для категорий и авторов, обозначить поведение, связанное с архивацией старых статей, включить ограничение количества статей на странице, дорисовать сайдбар (а может, и два, с обеих сторон), добавить плагины для облака тегов или карты сайта, нарисовать фон, логотип и иконку favicon, подобрать вменяемый набор цветов для оформления&hellip; В общем, хватает работы для дизайнера, верстальщика, контент-менеджера и всех остальных работников веб-студии, которых приходится представлять в единственном числе в собственном лице.</p>
 <h2 id="_5">Всё еще впереди</h2>
