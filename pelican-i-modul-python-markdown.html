@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Title: Pelican и модуль Python-Markdown; Date: 2016-01-28; Summary: <p>Блог на Pelican - 6. Реализация Markdown для Python. Особенности, отличия, дополнительные возможности. Настройка, включение расширений. Вольный перевод официальной документации с пропусками не очень важного и вставками отсебятины. Markdown по-русски по мере сил и возможности.</p>">  
+  <meta name="keywords" content="">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pelican и модуль Python-Markdown</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="./theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="./theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="./images/RG32.ico" />
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="./images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=. id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="./category/blog.html">Блог</a></li>
+          <li><a href="./category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="./pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="./pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-2">
+            <a href="./tag/markdown.html">
+              Markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-0">
+            <a href="./tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="./tag/stikhi.html">
+              стихи
+                <span class="badge">1</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h3 class="date">Чт 28 Январь 2016</h3>
+    <article>
+      <h1>Pelican и модуль Python-Markdown</h1>
+      
+      <p><strong>Содержание</strong></p>
+<div class="toc">
+<ul>
+<li><a href="#markdown">Собственный Markdown</a></li>
+<li><a href="#_1">Особенности</a></li>
+<li><a href="#_2">Отличия</a></li>
+<li><a href="#_3">Расширения</a><ul>
+<li><a href="#_4">Официально поддерживаемые расширения</a></li>
+<li><a href="#extra">Extra</a><ul>
+<li><a href="#markdown-html">Markdown внутри блоков HTML</a></li>
+<li><a href="#markdown-html_1">Вложенный Markdown внутри блоков HTML</a></li>
+<li><a href="#abbreviations">Abbreviations</a></li>
+<li><a href="#attribute-lists">Attribute Lists</a><ul>
+<li><a href="#_5">Блочные элементы</a></li>
+<li><a href="#_6">Строчные элементы</a></li>
+</ul>
+</li>
+<li><a href="#definition-lists">Definition Lists</a></li>
+<li><a href="#fenced-code-blocks">Fenced Code Blocks</a></li>
+<li><a href="#footnotes">Footnotes</a></li>
+<li><a href="#tables">Tables</a></li>
+<li><a href="#smart-strong">Smart Strong</a></li>
+<li><a href="#extra_1">Extra &mdash; заключение</a></li>
+</ul>
+</li>
+<li><a href="#admonition">Admonition</a></li>
+<li><a href="#codehilite">CodeHilite</a></li>
+<li><a href="#headerid">HeaderId</a></li>
+<li><a href="#meta-data">Meta-Data</a></li>
+<li><a href="#new-line-to-break-extension">New-Line-to-Break Extension</a></li>
+<li><a href="#sane-lists">Sane Lists</a></li>
+<li><a href="#smartypants">SmartyPants</a></li>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#wikilinks">WikiLinks</a></li>
+</ul>
+</li>
+<li><a href="#_7">Заключение</a></li>
+</ul>
+</div>
+<h2 id="markdown">Собственный Markdown</h2>
+<p>Как сказано в <a href="http://daringfireball.net/projects/markdown/">официальной документации</a>, </p>
+<blockquote>
+<p>Markdown &mdash; это две вещи: (1) синтаксис форматирования простого текста, и (2) программный инструмент, написанный на Perl, который преобразует форматирование простого текста в <abbr title="Hyper Text Markup Language">HTML</abbr>.</p>
+</blockquote>
+<p>Однако, существует уже масса реализаций, не только на Perl. Для пеликана нас интересует, разумеется, модуль для Python. Информацию о нем можно получить из <a href="https://pythonhosted.org/Markdown/index.html">официальной документации</a>, на сегодняшний день свежая версия &mdash; 2.6.5.</p>
+<h2 id="_1">Особенности</h2>
+<p>В дополнение к базовому синтаксису, Python-Markdown поддерживает следующие особенности:</p>
+<ul>
+<li>
+<p><strong>Интернациональный ввод</strong></p>
+<p>Python-Markdown позволяет вводить информацию на любых языках, поддерживаемый Unicode, включая двунаправленный текст. Тестовый комплекс включает документы, написанные на русском и арабском.</p>
+</li>
+<li>
+<p><strong>Расширения</strong></p>
+<p>Представлены различные расширения (включая extra) для изменения и/или расширения базового синтаксиса. Кроме того, доступен открытый Extension API для написания ваших собственных расширений.</p>
+</li>
+<li>
+<p><strong>Выходные форматы</strong></p>
+<p>Python-Markdown может выводить документы в HTML4, XHTML и HTML5.</p>
+</li>
+<li>
+<p><strong>Интерфейс командной строки</strong></p>
+<p>Кроме библиотеки Python, для вашего удобства доступен сценарий командной строки. </p>
+</li>
+</ul>
+<h2 id="_2">Отличия</h2>
+<p>Несмотря на то, что Python-Markdown пытается полностью реализовать markdown, как описано в правилах синтаксиса, правила можно интерпретировать неоднозначно, и разные реализации порой отличаются своим поведением. Известные и намеренные отличия Python-Markdown:</p>
+<ul>
+<li>
+<p><strong>Выделение в середине слова</strong></p>
+<p>Python-Markdown по умолчанию игнорирует выделение в середине слова. Другими словами, <code>some_long_filename.txt</code> не станет <code>some&lt;em&gt;long&lt;/em&gt;filename.txt</code>. Это может быть при желании отключено.</p>
+</li>
+<li>
+<p><strong>Отступы/размер табуляции</strong></p>
+<p>Синтаксические правила ясно утверждают, что &laquo;если пункт списка состоит из нескольких параграфов, каждый последующий параграф <strong>должен</strong> иметь отступ или 4 пробела, или один таб&raquo; (выделение добавлено). Однако, многие реализации не навязывают это правило и позволяют менее 4 пробелов отступа. Реализация Python-Markdown рассматривает несоблюдение этого правила, как ошибку.</p>
+<p>В случае, если некто предпочитает другое поведение, длину табуляции можно установить такого размера, какого пожелаете. Однако, учтите, что это повлияет на все аспекты синтаксиса (включая корневой уровень блоков кода).</p>
+</li>
+<li>
+<p><strong>Последовательные списки</strong></p>
+<p>Хотя синтаксические правила недостаточно ясны на этот счет, многие реализации (включая оригинальную) не заканчивают один список и начинают второй при изменении маркера списка (звездочки, плюсы, дефисы и цифры). Для совместимости Python-Markdown поддерживает такое поведение и не планирует менять его в обозримом будущем.</p>
+</li>
+</ul>
+<p>Про установку модуля, наверное, неинтересно читать. Писать уж точно не интересно, она ничем не отличается от любой другой и уже не раз описана. А вот про применение с учетом особенностей и отличий рассказать стоит.</p>
+<p>Про использование модуля в программах на языке Python переводить тоже не вполне уместно. Pelican достаточно умная птица, чтобы избавить пользователя от копания в тонкостях программирования, позволяя ограничиться настройкой поведения. Грубо говоря, модуль предоставляет пару-тройку функций, например, </p>
+<div class="highlight"><pre><span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span> <span class="p">(</span><span class="n">text</span> <span class="p">[,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Этой функции надо обязательно передать текст для обработки и можно добавить дополнительные параметры, типа используемых расширений вместе с их конфигурацией. Эту функцию Pelican сам где-то и вызывает, не наше дело. А вот настроить ее поведение &mdash; наше дело. Для этого надо иметь представление о расширениях.</p>
+<h2 id="_3">Расширения</h2>
+<p>Python-Markdown предлагает гибкий механизм расширений, который делает возможным изменение и/или расширение поведения парсера без необходимости редактирования его файлов исходного кода.</p>
+<h3 id="_4">Официально поддерживаемые расширения</h3>
+<p>Перечисленные ниже расширения включены (как минимум) в большинство последних релизов и официально поддерживаются Python-Markdown. Если у вас типичная установка Python-Markdown, эти расширения уже доступны для применения с использованием их имени из второй колонки</p>
+<table>
+<thead>
+<tr>
+<th>Расширение</th>
+<th>Имя</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Extra</td>
+<td>markdown.extensions.extra</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp; Abbreviations</td>
+<td>markdown.extensions.abbr</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp; Attribute Lists</td>
+<td>markdown.extensions.attr_list</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp; Definition Lists</td>
+<td>markdown.extensions.def_list</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp; Fenced Code Blocks</td>
+<td>markdown.extensions.fenced_code</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp; Footnotes</td>
+<td>markdown.extensions.footnotes</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp; Tables</td>
+<td>markdown.extensions.tables</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp; Smart Strong</td>
+<td>markdown.extensions.smart_strong</td>
+</tr>
+<tr>
+<td>Admonition</td>
+<td>markdown.extensions.admonition</td>
+</tr>
+<tr>
+<td>CodeHilite</td>
+<td>markdown.extensions.codehilite</td>
+</tr>
+<tr>
+<td>HeaderId</td>
+<td>markdown.extensions.headerid</td>
+</tr>
+<tr>
+<td>Meta-Data</td>
+<td>markdown.extensions.meta</td>
+</tr>
+<tr>
+<td>New Line to Break</td>
+<td>markdown.extensions.nl2br</td>
+</tr>
+<tr>
+<td>Sane Lists</td>
+<td>markdown.extensions.sane_lists</td>
+</tr>
+<tr>
+<td>SmartyPants</td>
+<td>markdown.extensions.smarty</td>
+</tr>
+<tr>
+<td>Table of Contents</td>
+<td>markdown.extensions.toc</td>
+</tr>
+<tr>
+<td>WikiLinks</td>
+<td>markdown.extensions.wikilinks</td>
+</tr>
+</tbody>
+</table>
+<p>Существуют также расширения, которые разрабатывают и публикуют различные организации и одиночные разработчики. Для вашего удобства их <a href="https://github.com/waylan/Python-Markdown/wiki/Third-Party-Extensions">список</a> поддерживается на wiki. Команда Python-Markdown  не предлагает официальной поддержки таких расширений, в случае чего следует обращаться к их разработчикам.</p>
+<h3 id="extra">Extra</h3>
+<p>Подборка различных расширений, которые (главным образом) имитируют одноименное расширение для PHP Markdown. Поддерживаемые расширения:</p>
+<ul>
+<li>Abbreviations</li>
+<li>Attribute Lists</li>
+<li>Definition Lists</li>
+<li>Fenced Code Blocks</li>
+<li>Footnotes</li>
+<li>Tables</li>
+<li>Smart Strong</li>
+</ul>
+<h4 id="markdown-html">Markdown внутри блоков <abbr title="Hyper Text Markup Language">HTML</abbr></h4>
+<p>В отличие от других особенностей Extra, эта особенность встроена в ядро markdown и включается, когда задействуют markdown.extensions.extra.</p>
+<p>Содержимое любых блочных элементов <abbr title="Hyper Text Markup Language">HTML</abbr>-кода может быть отформатировано при помощи Markdown простым добавлением атрибута markdown в открывающем теге. Этот атрибут будет удален из результирующего текста, но все остальные атрибуты будут сохранены.</p>
+<p>Если значение атрибута markdown установлено в &laquo;1&raquo; (что рекомендуется) или другое значение за исключением &laquo;span&raquo; или &laquo;block&raquo;, будет выполняться поведение по умолчанию: элементы <code>p, h[1-6], li, dd, dt, td, th, legend</code> и <code>address</code> пропускают анализ блока, в то время как остальные &mdash; нет. Если поведение по умолчанию перекрыто значением <code>span</code>, анализ блока будет пропущен независимо от тега. Если поведение по умолчанию перекрыто значением <code>block</code>, анализ блока будет выполняться независимо от тега. Простой пример:</p>
+<div class="highlight"><pre>This is <span class="k">*</span><span class="ge">true</span><span class="k">*</span> markdown text.
+
+<span class="cp">&lt;div markdown=&quot;1&quot;&gt;</span>
+<span class="cp">This is *true* markdown text.</span>
+<span class="cp">&lt;/div&gt;</span>
+</pre></div>
+
+
+<p>будет преобразован в такое:</p>
+<div class="highlight"><pre><span class="nt">&lt;p&gt;</span>This is <span class="nt">&lt;em&gt;</span>true<span class="nt">&lt;/em&gt;</span> markdown text.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;div&gt;</span>
+<span class="nt">&lt;p&gt;</span>This is <span class="nt">&lt;em&gt;</span>true<span class="nt">&lt;/em&gt;</span> markdown text.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<h4 id="markdown-html_1">Вложенный Markdown внутри блоков <abbr title="Hyper Text Markup Language">HTML</abbr></h4>
+<p>Вложенные элементы более чувствительны и должны использоваться с осторожностью. Чтобы избежать неожиданных результатов:</p>
+<ul>
+<li>Вкладывайте элементы только внутри блочных элементов.</li>
+<li>После закрывающих тегов внутренних элементов ставьте пустую строку.</li>
+<li>Не делайте более одного уровня вложенности.</li>
+</ul>
+<p>Сложный пример:</p>
+<div class="highlight"><pre><span class="cp">&lt;div markdown=&quot;1&quot; name=&quot;Example&quot;&gt;</span>
+
+<span class="cp">The text of the `Example` element.</span>
+
+<span class="cp">&lt;div markdown=&quot;1&quot; name=&quot;DefaultBlockMode&quot;&gt;</span>
+<span class="cp">This text gets wrapped in `p` tags.</span>
+<span class="cp">&lt;/div&gt;</span>
+
+The tail of the <span class="k">`</span><span class="sb">DefaultBlockMode</span><span class="k">`</span> subelement.
+
+<span class="cp">&lt;p markdown=&quot;1&quot; name=&quot;DefaultSpanMode&quot;&gt;</span>
+<span class="cp">This text *is not* wrapped in additional `p` tags.</span>
+<span class="cp">&lt;/p&gt;</span>
+
+The tail of the <span class="k">`</span><span class="sb">DefaultSpanMode</span><span class="k">`</span> subelement.
+
+<span class="cp">&lt;div markdown=&quot;span&quot; name=&quot;SpanModeOverride&quot;&gt;</span>
+<span class="cp">This `div` block is not wrapped in paragraph tags.</span>
+<span class="cp">Note: Subelements are not required to have tail text.</span>
+<span class="cp">&lt;/div&gt;</span>
+
+<span class="cp">&lt;p markdown=&quot;block&quot; name=&quot;BlockModeOverride&quot;&gt;</span>
+<span class="cp">This `p` block *is* foolishly wrapped in further paragraph tags.</span>
+<span class="cp">&lt;/p&gt;</span>
+
+The tail of the <span class="k">`</span><span class="sb">BlockModeOverride</span><span class="k">`</span> subelement.
+
+<span class="cp">&lt;div name=&quot;RawHtml&quot;&gt;</span>
+<span class="cp">Raw HTML blocks may also be nested.</span>
+<span class="cp">&lt;/div&gt;</span>
+
+&lt;/div&gt;
+
+This text is after the markdown in HTML.
+</pre></div>
+
+
+<p>превратится в </p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">name=</span><span class="s">&quot;Example&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p&gt;</span>The text of the <span class="nt">&lt;code&gt;</span>Example<span class="nt">&lt;/code&gt;</span> element.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">name=</span><span class="s">&quot;DefaultBlockMode&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p&gt;</span>This text gets wrapped in <span class="nt">&lt;code&gt;</span>p<span class="nt">&lt;/code&gt;</span> tags.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;p&gt;</span>The tail of the <span class="nt">&lt;code&gt;</span>DefaultBlockMode<span class="nt">&lt;/code&gt;</span> subelement.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">name=</span><span class="s">&quot;DefaultSpanMode&quot;</span><span class="nt">&gt;</span>
+This text <span class="nt">&lt;em&gt;</span>is not<span class="nt">&lt;/em&gt;</span> wrapped in additional <span class="nt">&lt;code&gt;</span>p<span class="nt">&lt;/code&gt;</span> tags.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>The tail of the <span class="nt">&lt;code&gt;</span>DefaultSpanMode<span class="nt">&lt;/code&gt;</span> subelement.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">name=</span><span class="s">&quot;SpanModeOverride&quot;</span><span class="nt">&gt;</span>
+This <span class="nt">&lt;code&gt;</span>div<span class="nt">&lt;/code&gt;</span> block is not wrapped in paragraph tags.
+Note: Subelements are not required to have tail text.<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">name=</span><span class="s">&quot;BlockModeOverride&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p&gt;</span>This <span class="nt">&lt;code&gt;</span>p<span class="nt">&lt;/code&gt;</span> block <span class="nt">&lt;em&gt;</span>is<span class="nt">&lt;/em&gt;</span> foolishly wrapped in further paragraph tags.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>The tail of the <span class="nt">&lt;code&gt;</span>BlockModeOverride<span class="nt">&lt;/code&gt;</span> subelement.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">name=</span><span class="s">&quot;RawHtml&quot;</span><span class="nt">&gt;</span>
+Raw HTML blocks may also be nested.
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;p&gt;</span>This text is after the markdown in HTML.<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<h4 id="abbreviations">Abbreviations</h4>
+<p>Добавляет возможность указания аббревиатур. А именно: любая добавленная аббревиатура будет заключена в тег <code>&lt;abbr&gt;</code>. Расширение включено в стандартную библиотеку Markdown.</p>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>The HTML specification 
+is maintained by the W3C.
+
+*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
+</pre></div>
+
+
+</div>
+<div>
+<p>The <abbr title="Hyper Text Markup Language">HTML</abbr> specification 
+is maintained by the <abbr title="World Wide Web Consortium">W3C</abbr>.</p>
+</div>
+</div>
+
+<p>Благодаря этому примеру во всем тексте статьи буквосочетание <abbr title="Hyper Text Markup Language">HTML</abbr> будет иметь вид аббревиатуры. Так что не удивляйтесь, чего это вдруг автор решил пояснить эти буквы &mdash; это не я, это пример из официальной документации шалит, но это жертва, на которую я намерен пойти.</p>
+<p>Расширение не требует каких-либо специальных опций настройки.</p>
+<h4 id="attribute-lists">Attribute Lists</h4>
+<p>Добавляет синтаксис для задания атрибутов различных <abbr title="Hyper Text Markup Language">HTML</abbr>-элементов на выходе обработки Markdown. Расширение включено в стандартную библиотеку Markdown.</p>
+<p>Примерный список атрибутов выглядит примерно так:</p>
+<div class="highlight"><pre>{: #someid .someclass somekey=&#39;some value&#39; }
+</pre></div>
+
+
+<p>Слово, начинающееся с решетки <code>#</code>, будет установлено в качестве id элемента. </p>
+<p>Слово, начинающееся с точки <code>.</code>, будет добавлено в список классов, определенных для элемента.</p>
+<p>Пара ключ/значение (<code>somekey='some value'</code>) будет установлена для элемента.</p>
+<p>Имейте в виду, что, хотя слово с точкой добавляет класс, использование пары ключ/значение будет всегда перекрывать ранее определенный атрибут. Рассмотрите следующее:</p>
+<div class="highlight"><pre>{: #id1 .class1 id=id2 class=&quot;class2 class3&quot; .class4 }
+</pre></div>
+
+
+<p>Этот пример приведет в результате к установке таких атрибутов:</p>
+<div class="highlight"><pre>id=&quot;id2&quot; class=&quot;class2 class3 class4&quot;
+</pre></div>
+
+
+<h5 id="_5">Блочные элементы</h5>
+<p>Чтобы определить атрибуты для блочного элемента, список атрибутов необходимо разместить на последней строке данного блока.</p>
+<div class="highlight"><pre>This is a paragraph.
+{: #an<span class="k">_</span><span class="ge">id .a</span><span class="k">_</span>class }
+</pre></div>
+
+
+<p>приведет к следующему результату:</p>
+<div class="highlight"><pre><span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">&quot;an_id&quot;</span> <span class="na">class=</span><span class="s">&quot;a_class&quot;</span><span class="nt">&gt;</span>This is a paragraph.<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<p>Единственное исключение &mdash; заголовки. Для них допускается располагать список в той же строке.</p>
+<div class="highlight"><pre><span class="gh">A setext style header {: #setext}</span>
+<span class="k">=================================</span>
+
+<span class="k">### </span><span class="gh">A hash style header ### {: #hash }</span>
+</pre></div>
+
+
+<p>приведет к следующему:</p>
+<div class="highlight"><pre><span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;setext&quot;</span><span class="nt">&gt;</span>A setext style header<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h3</span> <span class="na">id=</span><span class="s">&quot;hash&quot;</span><span class="nt">&gt;</span>A hash style header<span class="nt">&lt;/h3&gt;</span>
+</pre></div>
+
+
+<h5 id="_6">Строчные элементы</h5>
+<p>Чтобы определить атрибуты для строчных элементов, список атрибутов должен быть расположен непосредственно после такого элемента без пробельных символов</p>
+<div class="highlight"><pre>[link](http://example.com){: class=&quot;foo bar&quot; title=&quot;Some title!&quot; }
+</pre></div>
+
+
+<p>приведет к следующему:</p>
+<div class="highlight"><pre><span class="nt">&lt;p&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://example.com&quot;</span> <span class="na">class=</span><span class="s">&quot;foo bar&quot;</span> <span class="na">title=</span><span class="s">&quot;Some title!&quot;</span><span class="nt">&gt;</span>link<span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+</pre></div>
+
+
+<p>Расширение не требует особых опций настройки.</p>
+<h4 id="definition-lists">Definition Lists</h4>
+<p>Расширение добавляет возможность создавать список определений в документе Markdown. Включено в стандартную библиотеку Markdown.</p>
+<div class="highlight"><pre>Apple
+:   Pomaceous fruit of plants of the genus Malus in 
+    the family Rosaceae.
+
+Orange
+:   The fruit of an evergreen tree of the genus Citrus.
+</pre></div>
+
+
+<p>будет обработано так:</p>
+<div class="highlight"><pre><span class="nt">&lt;dl&gt;</span>
+<span class="nt">&lt;dt&gt;</span>Apple<span class="nt">&lt;/dt&gt;</span>
+<span class="nt">&lt;dd&gt;</span>Pomaceous fruit of plants of the genus Malus in 
+the family Rosaceae.<span class="nt">&lt;/dd&gt;</span>
+
+<span class="nt">&lt;dt&gt;</span>Orange<span class="nt">&lt;/dt&gt;</span>
+<span class="nt">&lt;dd&gt;</span>The fruit of an evergreen tree of the genus Citrus.<span class="nt">&lt;/dd&gt;</span>
+<span class="nt">&lt;/dl&gt;</span>
+</pre></div>
+
+
+<p>Расширение не требует особых опций настройки.</p>
+<h4 id="fenced-code-blocks">Fenced Code Blocks</h4>
+<p>Расширение добавляет дополнительный способ указания блоков кода, который преодолевает некоторые ограничения для блоков кода, заданных отступами.</p>
+<div class="highlight"><pre>This is a paragraph introducing:
+
+~~~~~~~~~~~~~~~~~~~~
+a one-line code block
+~~~~~~~~~~~~~~~~~~~~
+</pre></div>
+
+
+<p>Заборчатый блок кода может иметь пустую строку в качестве первой или последней строки кода, а также может следовать немедленно после пункта списка, не становясь частью списка.</p>
+<dl>
+<dt><strong>Внимание:</strong></dt>
+<dd>Заборчатые блоки кода поддерживаются только на уровне корня документа. Таким образом, их нельзя вложить в списки или цитаты</dd>
+</dl>
+<p>Можно определить язык в блоке кода для использования при подсветке синтаксиса (или еще зачем-нибудь). Язык будет добавлен атрибутом класса выходному элементу <code>&lt;code&gt;</code>. То есть, вам следует определить язык, какой вам надо, в CSS-классе <code>.language</code>. Для совместимости с синтаксисом markdown, язык можно <em>опционально</em> заключить в фигурные скобки:</p>
+<div class="highlight"><pre>~~~~{.python}
+<span class="k"># </span><span class="gh">python code</span>
+~~~~
+
+~~~~.html
+&lt;p&gt;HTML Document&lt;/p&gt;
+~~~~
+</pre></div>
+
+
+<p>и из этого получится</p>
+<div class="highlight"><pre>:html
+<span class="nt">&lt;pre&gt;&lt;code</span> <span class="na">class=</span><span class="s">&quot;python&quot;</span><span class="nt">&gt;</span># python code
+<span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="nt">&lt;pre&gt;&lt;code</span> <span class="na">class=</span><span class="s">&quot;html&quot;</span><span class="nt">&gt;</span><span class="ni">&amp;lt;</span>p<span class="ni">&amp;gt;</span>HTML Document<span class="ni">&amp;lt;</span>/p<span class="ni">&amp;gt;</span>
+<span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</pre></div>
+
+
+<p>Кроме того, поддерживается синтаксис в стиле GitHub с использованием обратных апострофов:</p>
+<div class="highlight"><pre><span class="k">```</span><span class="nn">python</span><span class="cp"></span>
+<span class="cp"># more python code</span>
+<span class="k">```</span>
+</pre></div>
+
+
+<p>Если вам бы хотелось подсветить заборчатые блоки кода с помощью расширения CodeHilite, просто подключите это расширение (помните, что его зависимостью является модуль Pygments), и синтаксис языка в блоке кода будет подсвечиваться соответствующим образом.</p>
+<p>Подобно синтаксису с двоеточиями расширения CodeHilite, заборчатые блоки кода могут выделять определенные строки. Строки можно указать в стиле PHP Extra</p>
+<div class="highlight"><pre>~~~~{.python hl_lines=&quot;1 3&quot;}
+<span class="k"># </span><span class="gh">This line is emphasized</span>
+<span class="k"># </span><span class="gh">This line isn&#39;t</span>
+<span class="k"># </span><span class="gh">This line is emphasized</span>
+~~~~
+</pre></div>
+
+
+<p>или в стиле GitHub</p>
+<div class="highlight"><pre>```python hl_lines=&quot;1 3&quot;
+# This line is emphasized
+# This line isn&#39;t
+# This line is emphasized
+```
+</pre></div>
+
+
+<p>Расширение не требует особых опций настройки.</p>
+<h4 id="footnotes">Footnotes</h4>
+<p>Добавляет синтаксис для указания сносок в документах Markdown. Расширение включено в стандартную библиотеку Markdown.</p>
+<p>Синтаксис сносок Python-Markdown в основном следует правилам, принятым в сообществе Markdown в целом и почти в точности соответствует реализации PHP Markdown Extra. Отличия касаются только некоторых тонкостей на выходе.</p>
+<p>Пример:</p>
+<div class="highlight"><pre>Footnotes[^1] have a label[^@#$%] and the footnote&#39;s content.
+
+[^1]: This is a footnote content.
+[^@#$%]: A footnote on the label: &quot;@#$%&quot;.
+</pre></div>
+
+
+<p>Метка сноски должна начинаться со знака вставки <code>^</code> и может содержать любой строчный текст (включая пробелы) между квадратными скобками. Только первый символ знака вставки имеет специальное значение.</p>
+<p>Контент сноски должен начинаться с метки, за которой идет двоеточие и минимум один пробел. Метка, используемая для определения контента, должна в точности соответствовать метке, используемой в теле (включая регистр символов и пробелы). Контент может содержать несколько строк, абзацев, блоков кода и большинство других элементов синтаксиса Markdown. Дополнительные строки должны иметь отступ на один уровень (четыре пробела или один таб).</p>
+<p>При работе с несколькими блоками может быть полезно начинать контент с отдельной строки для метки, указывающей на контент. Благодаря такому способу у всего блока получаются единообразные отступы, и любые ошибки автору будет существенно проще заметить.</p>
+<div class="highlight"><pre>[^1]: 
+    The first paragraph of the definition.
+
+    Paragraph two of the definition.
+
+<span class="k">    &gt; </span>A blockquote with
+<span class="k">    &gt; </span>multiple lines.
+
+        a code block
+
+    A final paragraph.
+</pre></div>
+
+
+<p>Для расширения доступны следующие опции настройки:</p>
+<ul>
+<li>
+<p><strong><code>PLACE_MARKER</code></strong>: текстовая строка, используемая для отметки позиции, где будет отображаться сноска. По умолчанию <code>///Footnotes Go Here///</code>.</p>
+<p>Если текст маркера места не найден в документе, сноска будет размещена в конце результирующего <abbr title="Hyper Text Markup Language">HTML</abbr>-документа.</p>
+</li>
+<li>
+<p><strong><code>UNIQUE_IDS</code></strong>: Следует ли избегать коллизий через многократный вызов <code>reset()</code> По умолчанию <code>False</code>.</p>
+</li>
+<li><strong><code>BACKLINK_TEXT</code></strong>: Текстовая строка, которая будет ссылкой от сноски обратно к позиции в документе. По умолчанию <code>&amp;#8617</code></li>
+</ul>
+<h4 id="tables">Tables</h4>
+<p>Добавляет возможность использования синтаксиса, установленного в PHP Markdown Extra.</p>
+<p>То есть, следующий текст (взятый из документации к упомянутой выше PHP Markdown Extra)</p>
+<div class="highlight"><pre>First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+</pre></div>
+
+
+<p>будет отображен в виде </p>
+<div class="highlight"><pre><span class="nt">&lt;table&gt;</span>
+  <span class="nt">&lt;thead&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+      <span class="nt">&lt;th&gt;</span>First Header<span class="nt">&lt;/th&gt;</span>
+      <span class="nt">&lt;th&gt;</span>Second Header<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;/thead&gt;</span>
+  <span class="nt">&lt;tbody&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+      <span class="nt">&lt;td&gt;</span>Content Cell<span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span>Content Cell<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+      <span class="nt">&lt;td&gt;</span>Content Cell<span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span>Content Cell<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;/tbody&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</pre></div>
+
+
+<p>Расширение не требует особых опций настройки.</p>
+<h4 id="smart-strong">Smart Strong</h4>
+<p>Расширение добавляет более &laquo;умную&raquo; обработку двойных знаков подчеркивания внутри слова. Делает для двойных подчеркиваний то же, что smart_emphasis для одинарных. Расширение включено в стандартную библиотеку Markdown.</p>
+<p>Пример использования в консоли Python:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">markdown</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s">&#39;Text with double__underscore__words.&#39;</span><span class="p">,</span> \
+                      <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;markdown.extensions.smart_strong&#39;</span><span class="p">])</span>
+<span class="s">&#39;&lt;p&gt;Text with double__underscore__words.&lt;/p&gt;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s">&#39;__Strong__ still works.&#39;</span><span class="p">,</span> \
+                      <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;markdown.extensions.smart_strong&#39;</span><span class="p">])</span>
+<span class="s">&#39;&lt;p&gt;&lt;strong&gt;Strong&lt;/strong&gt; still works.&lt;/p&gt;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s">&#39;__this__works__too__.&#39;</span><span class="p">,</span> \
+                      <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;markdown.extensions.smart_strong&#39;</span><span class="p">])</span>
+<span class="s">&#39;&lt;p&gt;&lt;strong&gt;this__works__too&lt;/strong&gt;.&lt;/p&gt;&#39;</span>
+</pre></div>
+
+
+<p>Расширение не требует особых опций настройки.</p>
+<h4 id="extra_1">Extra &mdash; заключение</h4>
+<p>Итак, расширение Extra &mdash; это, по сути, комплект из семи расширений. Их можно подключить оптом, указав <code>markdown.extensions.extra</code> в строке подключения, а можно и поштучно, указывая только имена действительно необходимых. Указать отдельные расширения в настройках может быть полезно еще и для того, чтобы передать им опции настройки, отличающиеся от опций по умолчанию.</p>
+<p>Однако, почему же в Pelican вся эта подборка работает сразу? Да еще и вместе с подсветкой синтаксиса, которая обеспечивается расширением CodeHilite, которое в Extra не входит? (Правда, для нормальной подсветки нужен еще и соответствующий CSS-файл, и если его нет, то код визуально подсвечен не будет, но ключевые слова в коде будут правильно обрамлены тегами <code>&lt;span&gt;</code> с разными классами для возможности применения разных стилей.)</p>
+<p>А все дело в файле конфигурации Pelican &mdash; pelicanconf.py, в котором предусмотрена опция-переменная MD_EXTENSIONS: список расширений Markdown, которые будет использовать генератор сайта.</p>
+<p>И хотя в файле конфигурации, который создается в результате pelican-quickstart.py, эта опция не указана вообще, у нее есть значение по умолчанию, которое и применяется в таких случаях:</p>
+<div class="highlight"><pre><span class="n">MD_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;codehilite(css_class=highlight)&#39;</span><span class="p">,</span><span class="s">&#39;extra&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Как видно, расширение Extra включено изначально, а CodeHilite включено еще и с настройками. При желании их можно отключить, указав явным образом MD_EXTENSIONS с пустыми квадратными скобками. А можно добавить еще какие-нибудь расширения, но тогда надо обязательно указать и те, что включены по умолчанию, потому что опция MD_EXTENSIONS их перекрывает и заменяет.</p>
+<p>Кроме того надо заметить, что при указании имени расширения в опции оставлена только последняя составляющая. Предполагаю, это сделано потому, что в коде Pelican уже указан <code>import markdown.extentions</code>. Впрочем, для блоггера причины этой удобной особенности неважны, можно просто писать имя самого расширения без префиксов.</p>
+<h3 id="admonition">Admonition</h3>
+<p>Расширение добавляет в Markdown-документ замечания в стиле rST. Включено в стандартную библиотеку Markdown.</p>
+<p>Замечание создается с использованием следующего синтаксиса:</p>
+<div class="highlight"><pre>!!! type &quot;optional explicit title within double quotes&quot;
+    Any number of other indented markdown elements.
+
+    This is the second paragraph.
+</pre></div>
+
+
+<p><code>type</code> будет использоваться в имени класса CSS и в качестве заголовка по умолчанию. Это должно быть одно слово. Так, например:</p>
+<div class="highlight"><pre>!!! note
+    You should note that the title will be automatically capitalized.
+</pre></div>
+
+
+<p>будет переделано так:</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;admonition note&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;admonition-title&quot;</span><span class="nt">&gt;</span>Note<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>You should note that the title will be automatically capitalized.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<p>Опционально вы можете добавить заголовок. Например:</p>
+<div class="highlight"><pre>!!! danger &quot;Don&#39;t try this at home&quot;
+    ...
+</pre></div>
+
+
+<p>сделает</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;admonition danger&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;admonition-title&quot;</span><span class="nt">&gt;</span>Don&#39;t try this at home<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<p>Если вы хотите совсем избавиться от заголовка, используйте пустую строку между кавычек: из</p>
+<div class="highlight"><pre>!!! important &quot;&quot;
+    This is a admonition box without a title.
+</pre></div>
+
+
+<p>получится</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;admonition important&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p&gt;</span>This is a admonition box without a title.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<p>rST предполагает использование следующих типов: attention, caution, danger, error, hint, important, note, tip, warning. Однако, вы вольны использовать всё, что хотите.</p>
+<p>В состав расширения не входит никаких CSS-файлов. Придется делать их самостоятельно, можете посмотреть тему <a href="http://sphinx.pocoo.org/">Sphinx</a>, если вам нужно вдохновение.</p>
+<h3 id="codehilite">CodeHilite</h3>
+<p>Расширение добавляет подсветку синтаксиса к стандартным блокам кода Python-Markdown с использованием Pygments. Расширение включено в стандартную библиотеку Markdown. </p>
+<p>Для его использования необходимо также скачать и установить модуль Pygments. Впрочем, при установке Pelican это произошло само собой: pip поставил модуль, так как он входит в список зависимостей. Но в документации на Markdown об этом, конечно, не сказано, ведь его можно использовать не только в Pelican.</p>
+<p>Вам надо определить подходящие классы CSS и создать подходящие правила для них &mdash; подобрать (сделать самостоятельно, раздобыть или поручить эту работу модулю Pygments) CSS-файл и подключить его в заголовке ваших <abbr title="Hyper Text Markup Language">HTML</abbr>-шаблонов. На эту тему есть замечательная <a href="http://pygments.org/docs">документация</a>, где описаны детали. Если вы не указали язык, Pygments попытается догадаться самостоятельно. Если у него это не получится, блок кода останется без подсветки.</p>
+<dl>
+<dt><strong>Имейте в виду:</strong></dt>
+<dd>CSS и/или JavaScript не включены в виде части данного расширения, но должны быть обеспечены пользователем. Проект Pygments предоставляет стили CSS по умолчанию, и они могут оказаться полезными поначалу.</dd>
+</dl>
+<p>Расширение CodeHilite следует тем же правилам синтаксиса, что и обычные блоки кода Markdown, с одним исключением. Подсвечивателю нужно знать, какой язык используется для блока кода. Есть три способа рассказать подсвечивателю, какой язык содержит блок, и каждый имеет отличающийся результат.</p>
+<dl>
+<dt><strong>Имейте в виду:</strong></dt>
+<dd>Формат идентификатора языка действует на нумерацию строк только в том случае, если <code>linenums</code> установлено в <code>None</code> (по умолчанию). Если его значение <code>True</code> или <code>False</code>, то формат идентификатора не влияет на показ номера строки &mdash; он служит только для определения языка в блоке кода</dd>
+</dl>
+<ul>
+<li>
+<p>Знак начала сценария <code>#!</code> (с путем)</p>
+<p>Если в первой строке блок кода содержит знак начала сценария, язык извлекается из этой строки и номера строк ставятся.</p>
+</li>
+</ul>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>    #!/usr/bin/python
+    # Code goes here ...
+</pre></div>
+
+
+</div>
+<div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/usr/bin/python</span>
+<span class="c"># Code goes here ...</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+</div>
+
+<ul>
+<li>
+<p>Знак начала сценария <code>#!</code> (без пути)</p>
+<p>Если в первая строка блока кода содержит знак начала сценария, однако не содержит путь (одиночный / или даже пробел), эта строка будет удалена из кода перед обработкой. Номера строк ставятся.</p>
+</li>
+</ul>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>    #!/usr/bin/python
+    # Code goes here ...
+</pre></div>
+
+
+</div>
+<div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># Code goes here ...</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+</div>
+
+<ul>
+<li>
+<p>Двоеточия</p>
+<p>Если первая строка начинается с трех или более двоеточий, текст, следующий за двоеточиями, идентифицирует язык. Первая строка удаляется из блока кода перед обработкой, номера строк не ставятся.</p>
+</li>
+</ul>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>    :::python
+    # Code goes here ...
+</pre></div>
+
+
+</div>
+<div>
+<div class="highlight"><pre><span class="c"># Code goes here ...</span>
+</pre></div>
+
+
+</div>
+</div>
+
+<p>При помощи синтаксиса с двоеточиями можно выделить определенные строки. При использовании CSS-стилей Pygments у выделяемых линий фон желтый. Это полезно для привлечения внимания читателя к отдельным линиям.</p>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>    :::python hl_lines=&quot;1 3&quot;
+    # This line is emphasized
+    # This line isn&#39;t
+    # This line is emphasized
+</pre></div>
+
+
+</div>
+<div>
+<div class="highlight"><pre><span class="hll"><span class="c"># This line is emphasized</span>
+</span><span class="c"># This line isn&#39;t</span>
+<span class="hll"><span class="c"># This line is emphasized</span>
+</span></pre></div>
+
+
+</div>
+</div>
+
+<dl>
+<dt><strong>Имейте в виду:</strong></dt>
+<dd><code>hl_lines</code> называется опция Pygments "highlighted lines"</dd>
+</dl>
+<p>CodeHilite имеет полную обратную совместимость в том плане, что если встретившийся блок кода внезапно окажется без определения языка, такой блок просто будет обернут тегами <code>&lt;pre&gt;</code> и выдан так.</p>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre>    # Code goes here ...
+</pre></div>
+
+
+</div>
+<div>
+<div class="highlight"><pre># Code goes here ...
+</pre></div>
+
+
+</div>
+</div>
+
+<p>а код страницы в этом месте будет выглядеть так:</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;codehilite&quot;</span><span class="nt">&gt;&lt;pre&gt;&lt;code&gt;</span># Code goes here ...
+<span class="nt">&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</span>
+</pre></div>
+
+
+<dl>
+<dt><strong>Имейте в виду:</strong></dt>
+<dd>Если язык не будет определен, движок подсветки Pygments попытается догадаться сам (если только <code>quess_lang</code> не установлен в <code>False</code>). А если у него не получится, тогда будет такое поведение, как описано выше.</dd>
+</dl>
+<p>Для расширения доступны следующие опции настройки:</p>
+<ul>
+<li>
+<p><strong><code>linenums</code></strong>: Использовать нумерацию строк. Возможные значения: <code>True</code> (да), <code>False</code> (нет) и <code>None (авто)</code>. Значение по умолчанию &mdash; <code>None</code>.</p>
+<p>Использование <code>True</code> включает нумерацию строк для всех блоков кода, даже если язык в них обозначен с использованием двоеточий (:::).</p>
+<p>Использование <code>False</code> отключает нумерацию строк, даже при использовании знака начала сценария (#!) для указания языка.</p>
+</li>
+<li>
+<p><strong><code>guess_lang</code></strong>: Автоматическое определение языка. По умолчанию <code>True</code>.</p>
+<p>Использование <code>False</code> предотвращает попытки Pygments угадать язык, таким образом, будут подсвечиваться только блоки с явным указанием языка.</p>
+</li>
+<li>
+<p><strong><code>css_class</code></strong>: Устанавливает имя класса CSS для оборачивающего тега <code>&lt;div&gt;</code>. По умолчанию <code>codehilite</code>.</p>
+</li>
+<li>
+<p><strong><code>pygments_style</code></strong>: Стиль форматирования Pygments <abbr title="Hyper Text Markup Language">HTML</abbr> (ColorSheme). По умолчанию <code>default</code>.</p>
+<dl>
+<dt><strong>Имейте в виду:</strong></dt>
+<dd>Эта опция полезна только в том случае, если <code>noclasses</code> установлена в <code>True</code>, иначе пользователь должен обеспечить наличие CSS-стилей.</dd>
+</dl>
+</li>
+<li>
+<p><strong><code>noclasses</code></strong>: Использовать встроенные стили вместо классов CSS. По умолчанию <code>False</code>.</p>
+</li>
+<li>
+<p><strong><code>use_pygments</code></strong>: По умолчанию <code>True</code>. Установите в <code>False</code>, чтобы отключить использование Pygments. Если для блока кода определен язык, он будет присвоен в качестве класса для тега <code>&lt;code&gt;</code>, как предлагается спецификацией HTML5 (альтернативный вывод не будет учитываться) и может быть использован в библиотеке JavaScript в браузере для подсветки блока кода.</p>
+</li>
+</ul>
+<h3 id="headerid">HeaderId</h3>
+<p>Расширение автоматически генерирует атрибут <code>id</code> для элементов заголовков (h1 &ndash; h6) в результирующем <abbr title="Hyper Text Markup Language">HTML</abbr>-документе.</p>
+<p>Расширение включено в стандартную библиотеку Markdown.</p>
+<dl>
+<dt><strong>Внимание!</strong></dt>
+<dd>Это расширение рассматривается, как не рекомендуемое. Вместо него следует использовать расширение Table of Contents, которое предлагает большинство возможностей этого расширения, а также дополнительные.</dd>
+</dl>
+<p>По умолчанию все заголовки автоматически получат атрибут <code>id</code>, сгенерированный на основе текста заголовка (ниже описано, как это отключить). Посмотрите пример, в котором все три заголовка должны бы иметь одинаковый <code>id</code>:</p>
+<div class="highlight"><pre>#Header
+#Header
+#Header
+</pre></div>
+
+
+<p>выдаст в результате</p>
+<div class="highlight"><pre><span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>Header<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header_1&quot;</span><span class="nt">&gt;</span>Header<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header_2&quot;</span><span class="nt">&gt;</span>Header<span class="nt">&lt;/h1&gt;</span>
+</pre></div>
+
+
+<p>Для расширения доступны следующие опции настройки:</p>
+<ul>
+<li>
+<p><strong><code>level</code></strong>: Базовый уровень для заголовков.</p>
+<p>По умолчанию <code>1</code>.</p>
+<p><code>level</code> позволяет вам автоматически подстроить уровни заголовков для их соответствия вашим <abbr title="Hyper Text Markup Language">HTML</abbr>-шаблонам. Например, допустим, markdown-текст на странице не должен содержать заголовков уровня выше третьего (<code>&lt;h3&gt;</code>). Ниже показано, как этого добиться:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span>  <span class="n">text</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">... #Some Header</span>
+<span class="s">... ## Next Level&#39;&#39;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markdown.extensions.headerid</span> <span class="kn">import</span> <span class="n">HeaderIdExtension</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">html</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="n">HeaderIdExtension</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">3</span><span class="p">)])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">html</span>
+<span class="o">&lt;</span><span class="n">h3</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;some_header&quot;</span><span class="o">&gt;</span><span class="n">Some</span> <span class="n">Header</span><span class="o">&lt;/</span><span class="n">h3</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">h4</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;next_level&quot;</span><span class="o">&gt;</span><span class="n">Next</span> <span class="n">Level</span><span class="o">&lt;/</span><span class="n">h4</span><span class="o">&gt;</span>
+</pre></div>
+
+
+</li>
+<li>
+<p><strong><code>forceid</code></strong>: Вынуждает все заголовки получить <code>id</code>.</p>
+<p>По умолчанию <code>True</code>.</p>
+<p><code>forceid</code> включает или выключает автоматическую генерацию <code>id</code> для заголовков, которые не имеют таковых, указанных явным образом (с использованием расширения Attribute Lists).</p>
+<div class="highlight"><pre>&gt;&gt;&gt; text = &#39;&#39;&#39;
+... # Some Header
+... # Header with ID # { #foo }&#39;&#39;&#39;
+&gt;&gt;&gt; html = markdown.markdown(text,
+                  extensions=[&#39;markdown.extensions.attr_list&#39;,
+                              HeaderIdExtension(forceid=False)])
+&gt;&gt;&gt; print html
+<span class="nt">&lt;h1&gt;</span>Some Header<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;foo&quot;</span><span class="nt">&gt;</span>Header with ID<span class="nt">&lt;/h1&gt;</span>
+</pre></div>
+
+
+</li>
+<li>
+<p><strong><code>separator</code></strong>: Разделитель слов. Символ, которым будут заменены пробелы в id.</p>
+<p>По умолчанию <code>-</code>.</p>
+</li>
+<li>
+<p><strong><code>slugify</code></strong>: Callable (вызываемый объект) для генерации якорей (anchors).</p>
+<p>По умолчанию <code>markdown.extensions.headerid.slugify</code></p>
+<p>Если вы желаете использовать иной алгоритм для определения id, можете сделать свой Callable, который принимает два аргумента:</p>
+<ul>
+<li><code>value</code>: строка для преобразования в slug</li>
+<li><code>separator</code>: разделитель слов</li>
+</ul>
+</li>
+</ul>
+<p>slug &mdash; труднопереводимое слово. Однозначного аналога на русском не нашел. Суть примерно в том, что из некоей строки иногда требуется сделать последовательность символов, в которой можно узнать исходную строку, но при этом нужно исключить любые символы, вызывающие трудности в обработке, начиная со служебных (типа пробелов и слэшей) и заканчивая символами сложных алфавитов, той же кириллицы. Например для строки &laquo;Привет, мир!&raquo; получится slag &laquo;privet_mir&raquo;, или &laquo;hello_world_&raquo;. Это может быть полезно при генерации имен, которые должны удовлетворять определенным требованиям к составу символов, например, имен файлов, и чаще всего используется при формировании частей человекопонятных интернет-адресов.</p>
+<p>Расширение HeaderId поддерживает расширение Meta-Data. Пожалуйста, посмотрите документацию для этого расширения. Поддерживаемые ключевые слова meta-data:</p>
+<ul>
+<li><code>header_level</code></li>
+<li><code>header_forceid</code></li>
+</ul>
+<p>При использовании meta-data перекроет настройки, установленные интерфейсом <code>extension_configs</code>.</p>
+<div class="highlight"><pre><span class="n">header_level</span><span class="o">:</span> <span class="mi">2</span>
+<span class="n">header_forceid</span><span class="o">:</span> <span class="n">Off</span>
+
+<span class="err">#</span> <span class="n">A</span> <span class="n">Header</span>
+</pre></div>
+
+
+<p>приведет в результате к такому выводу:</p>
+<div class="highlight"><pre><span class="nt">&lt;h2&gt;</span>A Header<span class="nt">&lt;/h2&gt;</span>
+</pre></div>
+
+
+<h3 id="meta-data">Meta-Data</h3>
+<p>Расширение добавляет синтаксис для определения метаданных документа. Написано под влиянием MultiMarkdown и следует правилам его синтаксиса. В настоящее время это расширение не использует метаданных каким-либо образом, а просто предоставляет свойство <code>Meta</code> экземпляра класса Markdown для использования другими расширениями или напрямую в коде на Python.</p>
+<p>Расширение включено в стандартную библиотеку Markdown.</p>
+<p>Метаданные состоят из набора ключевых слов и значений, указанных в начале документа Markdown примерно так:</p>
+<div class="highlight"><pre>Title:   My Document
+Summary: A brief description of my document.
+Authors: Waylan Limberg
+         John Doe
+Date:    October 2, 2007
+blank-value: 
+base_url: http://example.com
+
+This is the first paragraph of the document.
+</pre></div>
+
+
+<p>Ключевые слова регистрозависимы и могут состоять из букв, цифр, символов подчеркивания и точек и должны завершаться двоеточием. Значения состоят из чего угодно, следующего за двоеточием на этой же строке, и даже может быть пустым.</p>
+<p>Если строка имеет отступ на 4 или больше пробелов, она рассматривается как дополнительная строка значения предыдущего ключевого слова. У ключевого слова может быть столько строк, сколько хотите.</p>
+<p>Первая пустая строка заканчивает все метаданные документа. Таким образом, первая строка документа не должна быть пустой.</p>
+<p>С другой стороны, вы можете использовать разделители в YAML-стиле чтобы отметить начало и конец метаданных. В этом случае, первая строка документа должна быть <code>--</code>. Метаданные заканчиваются на первой пустой строке или первой строке, содержащей конечный разделитель (<code>---</code> или <code>...</code>), смотря что встретиться раньше. Хотя YAML-разделители и поддерживаются, метаданные не анализируются, как YAML.</p>
+<p>Все метаданные удаляются из документа перед дальнейшей обработкой программой Markdown.</p>
+<p>Метаданные доступны в виде Python-типа данных Dict в свойстве <code>Meta</code> экземпляра класса Markdown. Пример использования с документом, приведенным выше:</p>
+<div class="highlight"><pre>&gt;&gt;&gt; md = markdown.Markdown(extensions = [&#39;markdown.extensions.meta&#39;])
+&gt;&gt;&gt; html = md.convert(text)
+&gt;&gt;&gt; # Meta-data has been stripped from output
+&gt;&gt;&gt; print html
+<span class="nt">&lt;p&gt;</span>This is the first paragraph of the document.<span class="nt">&lt;/p&gt;</span>
+
+&gt;&gt;&gt; # View meta-data
+&gt;&gt;&gt; print md.Meta
+{
+&#39;title&#39; : [&#39;My Document&#39;],
+&#39;summary&#39; : [&#39;A brief description of my document.&#39;],
+&#39;authors&#39; : [&#39;Waylan Limberg&#39;, &#39;John Doe&#39;],
+&#39;date&#39; : [&#39;October 2, 2007&#39;],
+&#39;blank-value&#39; : [&#39;&#39;],
+&#39;base_url&#39; : [&#39;http://example.com&#39;]
+</pre></div>
+
+
+<p>Обратите внимание, что ключевые слова все в нижнем регистре, а значения состоят из списка строк, в котором каждая строка &mdash; отдельная строка значения этого ключа в исходном документе. Таким образом, можно сохранить разрывы строк, если хотите. Либо элементы списка можно объединить, где это уместно. Никаких предположений относительно данных не делается, они просто передаются свойству <code>Meta</code> в том виде, в каком обнаружены.</p>
+<p>Пожалуй, метаданные можно передать в систему шаблонов, либо использовать в различных расширениях Markdown. Эти возможности оставлены фантазии разработчика.</p>
+<p>Следующие расширения в настоящее время могут работать с расширением Meta-Data. Также перечислены поддерживаемые ключевые слова:</p>
+<ul>
+<li>HeaderId<ul>
+<li>header_level</li>
+<li>header_forceid</li>
+</ul>
+</li>
+<li>WikiLinks<ul>
+<li>wiki_base_url</li>
+<li>wikw_end_url</li>
+<li>wiki_html_class</li>
+</ul>
+</li>
+</ul>
+<h3 id="new-line-to-break-extension">New-Line-to-Break Extension</h3>
+<p>Расширение будет обрабатывать новые строки с использованием тега переноса строки, подобно тому, как это сделано в реализациях Markdown на StackOverflow и GitHub. Пример:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">markdown</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">laquo</span><span class="p">;</span>
+<span class="o">...</span> <span class="n">Line</span> <span class="mi">1</span>
+<span class="o">...</span> <span class="n">Line</span> <span class="mi">2</span>
+<span class="o">...</span> <span class="o">&amp;</span><span class="n">laquo</span><span class="p">;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">html</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;markdown.extensions.nl2br&#39;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">html</span>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Line</span> <span class="mi">1</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+<span class="n">Line</span> <span class="mi">2</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p>Расширение не требует особых опций настройки.</p>
+<h3 id="sane-lists">Sane Lists</h3>
+<p>Расширение изменяет поведение синтаксиса списков Markdown так, чтобы они вызывали меньше удивления, или, скажем так, были более предсказуемыми.</p>
+<p>Расширение включено в стандартную библиотеку Markdown.</p>
+<p>Sane Lists не разрешает использование смешанных типов списков. Иными словами, нумерованный список не будет продолжаться, если встретится пункт маркированного списка и наоборот. Например:</p>
+<div class="highlight"><pre>1. Ordered item 1
+2. Ordered item 2
+
+* Unordered item 1
+* Unordered item 2
+</pre></div>
+
+
+<p>приведет к такому результату:</p>
+<div class="highlight"><pre><span class="nt">&lt;ol&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Ordered item 1<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Ordered item 2<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ol&gt;</span>
+
+<span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Unordered item 1<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Unordered item 2<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+
+
+<p>в то время как поведение Markdown по умолчанию сгенерировало бы маркированный список.</p>
+<p>Странно. В документации написано <code>Whereas the default Markdown behavior would be to generate an unordered list.</code>, а получается вовсе даже нумерованный:</p>
+<div class="equi_height">
+<div markdown="1">
+
+<div class="highlight"><pre><span class="k">1. </span>Ordered item 1
+<span class="k">2. </span>Ordered item 2
+
+<span class="k">* </span>Unordered item 1
+<span class="k">* </span>Unordered item 2
+</pre></div>
+
+
+</div>
+<div>
+<ol>
+<li>Ordered item 1</li>
+<li>
+<p>Ordered item 2</p>
+</li>
+<li>
+<p>Unordered item 1</p>
+</li>
+<li>Unordered item 2</li>
+</ol>
+</div>
+</div>
+
+<p>Имейте в виду, что в отличие от поведения Markdown по умолчанию, если между пунктами строки нет пустой строки, другой тип списка игнорируется полностью. Это соответствует поведению абзацев. Например:</p>
+<div class="highlight"><pre>A Paragraph.
+* Not a list item.
+
+1. Ordered list item.
+* Not a separate list item.
+</pre></div>
+
+
+<p>При подключенном расширении получится такой результат:</p>
+<div class="highlight"><pre><span class="nt">&lt;p&gt;</span>A Paragraph.
+* Not a list item.<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;ol&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Ordered list item.
+  * Not a separate list item.<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ol&gt;</span>
+</pre></div>
+
+
+<p>Во всех остальных случаях Sane Lists должно вести себя так же, как нормальные списки Markdown.</p>
+<p>Расширение не требует особых опций настройки.</p>
+<h3 id="smartypants">SmartyPants</h3>
+<p>Расширение преобразует ASCII-символы тире, кавычек и многоточия в соответствующие <abbr title="Hyper Text Markup Language">HTML</abbr>-объекты</p>
+<table>
+<thead>
+<tr>
+<th>ASCII-символ</th>
+<th>Замена</th>
+<th><abbr title="Hyper Text Markup Language">HTML</abbr>-объект</th>
+<th>Заменяющие ключи</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>'</td>
+<td>&lsquo; &rsquo;</td>
+<td><code>&amp;lsquo; &amp;rsquo;</code></td>
+<td>'left-single-quote', 'right-single-quote'</td>
+</tr>
+<tr>
+<td>"</td>
+<td>&ldquo; &rdquo;</td>
+<td><code>&amp;ldquo; &amp;rdquo;</code></td>
+<td>'left-double-quote', 'right-double-quote'</td>
+</tr>
+<tr>
+<td>&lt;&lt; &gt;&gt;</td>
+<td>&laquo; &raquo;</td>
+<td><code>&amp;laquo; &amp;raquo;</code></td>
+<td>'left-angle-quote', 'right-angle-quote'</td>
+</tr>
+<tr>
+<td>...</td>
+<td>&hellip;</td>
+<td><code>&amp;hellip;</code></td>
+<td>'ellipsis'</td>
+</tr>
+<tr>
+<td>--</td>
+<td>&ndash;</td>
+<td><code>&amp;ndash;</code></td>
+<td>'ndash'</td>
+</tr>
+<tr>
+<td>---</td>
+<td>&mdash;</td>
+<td><code>&amp;mdash;</code></td>
+<td>'mdash'</td>
+</tr>
+</tbody>
+</table>
+<p>Используя опцию настройки <code>substitutions</code>, вы можете перекрыть замены по умолчанию. Просто передайте отображение (mapping) словарика ключей для заменяющих строк.</p>
+<p>Например, можно использовать следующую конфигурацию, чтобы получить правильные кавычки по-немецки:</p>
+<div class="highlight"><pre><span class="n">extension_configs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;markdown.extensions.smarty&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;substitutions&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;left-single-quote&#39;</span><span class="p">:</span> <span class="s">&#39;&amp;sbquo;&#39;</span><span class="p">,</span> <span class="c"># sb is not a typo!</span>
+            <span class="s">&#39;right-single-quote&#39;</span><span class="p">:</span> <span class="s">&#39;&amp;lsquo;&#39;</span><span class="p">,</span>
+            <span class="s">&#39;left-double-quote&#39;</span><span class="p">:</span> <span class="s">&#39;&amp;bdquo;&#39;</span><span class="p">,</span>
+            <span class="s">&#39;right-double-quote&#39;</span><span class="p">:</span> <span class="s">&#39;&amp;ldquo;&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<dl>
+<dt><strong>Имейте в виду:</strong></dt>
+<dd>Это расширение повторно реализует Python-библиотеку SmartyPants, включая ее в анализатор Markdown. Хотя оно не предоставляет никаких дополнительных особенностей, оно предлагает несколько преимуществ. В особенности, оно не будет пытаться работать в подсвечиваемых блоках кода (при использовании CodeHilite) подобно аналогичным библиотекам третьих сторон.</dd>
+</dl>
+<p>Для расширения доступны следующие опции настройки:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>smart_dashes</td>
+<td>True</td>
+<td>преобразовывать тире</td>
+</tr>
+<tr>
+<td>smart_quotes</td>
+<td>True</td>
+<td>преобразовывать прямые кавычки</td>
+</tr>
+<tr>
+<td>smart_angled_quotes</td>
+<td>False</td>
+<td>преобразовывать угловые кавычки</td>
+</tr>
+<tr>
+<td>smart_ellipses</td>
+<td>True</td>
+<td>преобразовывать многоточия</td>
+</tr>
+<tr>
+<td>substitutions</td>
+<td>{}</td>
+<td>перезаписывает замены по умолчанию</td>
+</tr>
+</tbody>
+</table>
+<p>Расширение SmartyPants основано не изначальной реализации SmartyPants Джона Грубера. Для получения информации о деталях почитайте <a href="http://daringfireball.net/projects/smartypants/">документацию</a></p>
+<h3 id="table-of-contents">Table of Contents</h3>
+<p>Расширение создает содержание документа Markdown и добавляет его в результирующий <abbr title="Hyper Text Markup Language">HTML</abbr>-документ.</p>
+<p>Расширение включено в стандартную библиотеку Markdown.</p>
+<p>По умолчанию все заголовки автоматически получают уникальный атрибут <code>id</code>, генерируемый на основе текста заголовка. Обратите внимание, в следующем примере все заголовки должны бы иметь одинаковый <code>id</code>:</p>
+<div class="highlight"><pre>#Header
+#Header
+#Header
+</pre></div>
+
+
+<p>Получится так:</p>
+<div class="highlight"><pre><span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>Header<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header_1&quot;</span><span class="nt">&gt;</span>Header<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header_2&quot;</span><span class="nt">&gt;</span>Header<span class="nt">&lt;/h1&gt;</span>
+</pre></div>
+
+
+<p>Поместите маркер  в документе в том месте, где вам бы хотелось видеть содержание. Тогда вложенный список всех заголовков документа заменит этот маркер. Маркер по умолчанию <code>[TOC]</code>, так что следующий документ</p>
+<div class="highlight"><pre><span class="k">[TOC]</span>
+
+<span class="c1"># Header 1</span>
+
+<span class="c1">## Header 2</span>
+</pre></div>
+
+
+<p>будет преобразован в такое:</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;toc&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#header-1&quot;</span><span class="nt">&gt;</span>Header 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#header-2&quot;</span><span class="nt">&gt;</span>Header 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header-1&quot;</span><span class="nt">&gt;</span>Header 1<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;header-2&quot;</span><span class="nt">&gt;</span>Header 2<span class="nt">&lt;/h1&gt;</span>
+</pre></div>
+
+
+<p>Независимо от того, где в документе обнаружен <code>маркер</code> (или отключен), содержание доступно в свойстве <code>toc</code> класса Markdown. Это позволяет вставлять содержание в любое место шаблона страницы. Например:</p>
+<div class="highlight"><pre>&gt;&gt;&gt; md = markdown.Markdown(extensions=[&#39;markdown.extensions.toc&#39;])
+&gt;&gt;&gt; html = md.convert(text)
+&gt;&gt;&gt; page = render_some_template(context={&#39;body&#39;: html, &#39;toc&#39;: md.toc})
+</pre></div>
+
+
+<p>Для расширения доступны следующие опции настройки:</p>
+<ul>
+<li>
+<p><strong><code>marker</code></strong>: Текст, который будет заменен на содержание. По умолчанию <code>[TOC]</code>.</p>
+<p>Установите в пустую строку, чтобы отключить поиск маркера, что может сэкономить немного времени, особенно в больших документах.</p>
+</li>
+<li>
+<p><strong><code>title</code></strong>: Атрибут <code>title</code>, который будет добавлен блоку <code>&lt;div&gt;</code> содержания. По умолчанию <code>None</code>.</p>
+</li>
+<li><strong><code>anchorlink</code></strong>: Установите в <code>True</code>, чтобы все заголовки получили ссылку сами на себя. По умолчанию <code>False</code>.</li>
+<li>
+<p><strong><code>permalink</code></strong>: Установите в <code>True</code> или строку, чтобы сгенерировать постоянную ссылку в конце каждого заголовка. Полезно для страниц в стиле Sphinx.</p>
+<p>Если установлено в <code>True</code>, в качестве текста ссылки будет использован символ абзаца (¶ or <code>&amp;para;</code>). Если установить строку, она будет использоваться в качестве текста ссылки.</p>
+</li>
+<li>
+<p><strong><code>baselevel</code></strong>: Базовый уровень для заголовков. По умолчанию <code>1</code>.</p>
+<p>Настройка <code>baselevel</code> позволяет автоматически подогнать уровни заголовков к иерархии шаблонов <abbr title="Hyper Text Markup Language">HTML</abbr>. Например, предположим, что страница текста Markdown не должна содержать заголовков уровня выше 3 (<code>&lt;h&gt;</code>). Следующий пример показывает, как это сделать:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span>  <span class="n">text</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">... #Some Header</span>
+<span class="s">... ## Next Level&#39;&#39;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markdown.extensions.toc</span> <span class="kn">import</span> <span class="n">TocExtension</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">html</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="n">TocExtension</span><span class="p">(</span><span class="n">baselevel</span><span class="o">=</span><span class="mi">3</span><span class="p">)])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">html</span>
+<span class="o">&lt;</span><span class="n">h3</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;some_header&quot;</span><span class="o">&gt;</span><span class="n">Some</span> <span class="n">Header</span><span class="o">&lt;/</span><span class="n">h3</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">h4</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;next_level&quot;</span><span class="o">&gt;</span><span class="n">Next</span> <span class="n">Level</span><span class="o">&lt;/</span><span class="n">h4</span><span class="o">&gt;</span><span class="s">&#39;</span>
+</pre></div>
+
+
+</li>
+<li>
+<p><strong><code>slugify</code></strong>: Вызываемый объект для генерации якорей (anchors)</p>
+<p>По умолчанию <code>markdown.extensions.headerid.slugify</code></p>
+<p>Если вы желаете использовать иной алгоритм для определения id, можете сделать свой Callable, который принимает два аргумента:</p>
+<ul>
+<li><code>value</code>: строка для преобразования в slug</li>
+<li><code>separator</code>: разделитель слов</li>
+</ul>
+</li>
+<li>
+<p><strong><code>separator</code></strong>: Разделитель слов. Символ, который заменяет пробелы в <code>id</code>. По умолчанию <code>-</code>.</p>
+</li>
+</ul>
+<h3 id="wikilinks">WikiLinks</h3>
+<p>Расширение добавляет поддержку WikiLinks.  А именно, любое слово [[в скобках]] будет преобразовано в ссылку.</p>
+<p>Расширение включено в стандартную библиотеку Markdown.</p>
+<p>Слово [[в скобках]] &mdash; это любая комбинация букв в верхнем и нижнем регистре, цифр, дефисов, подчеркиваний и пробелов, окруженных двойными квадратными скобками. То есть,</p>
+<div class="highlight"><pre>[[Bracketed]]
+</pre></div>
+
+
+<p>будет преобразовано в</p>
+<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/Bracketed/&quot;</span> <span class="na">class=</span><span class="s">&quot;wikilink&quot;</span><span class="nt">&gt;</span>Bracketed<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<p>Имейте в виду, что WikiLinks автоматически присваивает <code>class="wikilink"</code>, что упрощает применение стиля WikiLinks, отличающегося от других ссылок на странице, если  это желательно. Смотрите ниже, как изменить этот класс.</p>
+<p>Кроме того, если используются пробелы, они будут преобразованы в символ подчеркивания в ссылке, но оставлены как есть в тексте ссылки. Наверное, этот пример проиллюстрирует лучше:</p>
+<div class="highlight"><pre><span class="p">[[</span><span class="n">Wiki</span> <span class="n">Link</span><span class="p">]]</span>
+</pre></div>
+
+
+<p>станет</p>
+<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/Wiki_Link/&quot;</span> <span class="na">class=</span><span class="s">&quot;wikilink&quot;</span><span class="nt">&gt;</span>Wiki Link<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<p>Поведением по умолчанию является указание каждой ссылки на корневой каталог документа в текущем домене и закрывать слэшем. Дополнительно, каждой ссылке присваивается <abbr title="Hyper Text Markup Language">HTML</abbr>-класс <code>wikilink</code>.</p>
+<p>Для расширения доступны следующие опции настройки:</p>
+<ul>
+<li><strong><code>base_url</code></strong>: Строка для добавления в начале URL. По умолчанию <code>/</code>.</li>
+<li><strong><code>end_url</code></strong>: Строка для добавления в конце URL. По умолчанию <code>/</code>.</li>
+<li><strong><code>html_class</code></strong>: CSS-класс. Оставьте пустым, чтобы не использовать никакой. По умолчанию <code>wikilink</code>.</li>
+<li><strong><code>build_url</code></strong>: Вызываемый объект, который формирует URL из его частей.</li>
+</ul>
+<p>Например, давайте предположим, что ссылки должны всегда указывать на подкаталог <code>/wiki/</code> и заканчиваться на <code>.html</code></p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">markdown.extensions.wikilinks</span> <span class="kn">import</span> <span class="n">WikiLinkExtension</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">html</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="n">WikiLinkExtension</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s">&#39;/wiki/&#39;</span><span class="p">,</span> <span class="n">end_url</span><span class="o">=</span><span class="s">&#39;.html&#39;</span><span class="p">)]</span>
+<span class="o">...</span> <span class="p">)</span>
+</pre></div>
+
+
+<p>Вышеприведенное в результате сделает такие ссылки из [[WikiLink]]:</p>
+<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/wiki/WikiLink.html&quot;</span> <span class="na">class=</span><span class="s">&quot;wikilink&quot;</span><span class="nt">&gt;</span>WikiLink<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<p>Если вы хотите нечто большее, чем просто изменить начало и/или конец URL, вы можете также сделать вызываемый объект, который должен принимать три аргумента (<code>label</code>, <code>base</code> и <code>end</code>). Этот объект должен возвращать URL целиком.</p>
+<div class="highlight"><pre>&gt;&gt;&gt; def my_url_builder(label, base, end):
+...    # do stuff
+...    return url
+...
+&gt;&gt;&gt; html = markdown.markdown(text,
+...     extensions=[WikiLinkExtension(build_url=my_url_builder)],
+... )
+</pre></div>
+
+
+<p>Также предоставляется опция для изменения или удаления атрибута class.</p>
+<div class="highlight"><pre>&gt;&gt;&gt; html = markdown.markdown(text,
+...     extensions=[WikiLinkExtension(html_class=&#39;myclass&#39;)]
+... )
+</pre></div>
+
+
+<p>приведет к присвоению Wiki-ссылкам класса <code>myclass</code>:</p>
+<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/WikiLink/&quot;</span> <span class="na">class=</span><span class="s">&quot;myclass&quot;</span><span class="nt">&gt;</span>WikiLink<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+
+<p>Данное расширение также поддерживает расширение Meta-Data. Пожалуйста, посмотрите его документацию насчет особенностей применения. Поддерживаются такие ключевые слова метаданных:</p>
+<ul>
+<li>wiki_base_url</li>
+<li>wiki_end_url</li>
+<li>wiki_html_class</li>
+</ul>
+<p>Если используются метаданные, они будут перекрывать установки, предоставляемые интерфейсом <code>extension_configs</code>.</p>
+<p>Документ</p>
+<div class="highlight"><pre><span class="n">wiki_base_url</span><span class="o">:</span> <span class="n">http</span><span class="o">://</span><span class="n">example</span><span class="o">.</span><span class="na">com</span><span class="o">/</span>
+<span class="n">wiki_end_url</span><span class="o">:</span>  <span class="o">.</span><span class="na">html</span>
+<span class="n">wiki_html_class</span><span class="o">:</span>
+
+<span class="n">A</span> <span class="o">[[</span><span class="n">WikiLink</span><span class="o">]]</span> <span class="k">in</span> <span class="n">the</span> <span class="n">first</span> <span class="n">paragraph</span><span class="o">.</span>
+</pre></div>
+
+
+<p>будет переделан в такой результат (обратите внимание на пустой <code>wiki_html_class</code>):</p>
+<div class="highlight"><pre><span class="nt">&lt;p&gt;</span>A <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://example.com/WikiLink.html&quot;</span><span class="nt">&gt;</span>WikiLink<span class="nt">&lt;/a&gt;</span> in the first paragraph.<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+
+<h2 id="_7">Заключение</h2>
+<p>Итак, теперь примерно понятно, что за зверь &mdash; Markdown, как с ним дружить, как его использовать и настраивать, а также выйти за рамки стандартных возможностей при помощи расширений.</p>
+<p>Что касается расширений:</p>
+<ul>
+<li>Extra должно быть подключено обязательно. Не зря оно включено по умолчанию, оно обеспечивает в том числе базовую функциональность.</li>
+<li>CodeHilite однозначно необходимо, если есть желание поделиться на своих страницах примерами кода. Правда, подсветка синтаксиса &mdash; выбор темы, настройка отображения и все такое &mdash; тема отдельного разговора.</li>
+<li>Table of Contents чрезвычайно полезно, если страница получилась довольно длинной и содержит порядочное количество глав под заголовками. Причем, содержание можно вынести даже в сайдбар или футер, если воспользоваться свойством md.toc объекта Markdown и вставить его в шаблон в нужном месте, используя синтаксис jinja2, но это тоже тема отдельного разговора.</li>
+<li>SmartyPants очень удобно, если есть желание привести знаки препинания к виду, принятому в отечественной типографике &mdash; длинные тире, кавычки-&laquo;елочки&raquo;. Без этого расширения придется либо сразу вбивать в тексте <abbr title="Hyper Text Markup Language">HTML</abbr>-спецсимволы, либо делать соответствующие замены в своем редакторе после написания статьи.</li>
+<li>Остальные расширения из числа стандартных, на мой взгляд, весьма условно полезны. А Meta-Data вообще полезна скорее программисту, чем пользователю, и может пригодиться разве что при разработке своих расширений.</li>
+</ul>
+<p>Стало быть, в файле настройки Pelican <code>pelicanconf.py</code> следует добавить строку</p>
+<div class="highlight"><pre><span class="n">MD_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;codehilite(css_class=highlight)&#39;</span><span class="p">,</span><span class="s">&#39;extra&#39;</span><span class="p">,</span> <span class="s">&#39;toc&#39;</span><span class="p">,</span> <span class="s">&#39;smarty&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>(может быть, еще туда же admonition, sane_lists и nl2br при желании), и, применяя полученные из документации знания, наслаждаться результатом.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="./tag/pelican.html" class="tag">pelican</a></li>
+                <li><a href="./tag/markdown.html" class="tag">Markdown</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "pelican-i-modul-python-markdown.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+  </div> <!-- footer -->
+
+</body>
+</html>
