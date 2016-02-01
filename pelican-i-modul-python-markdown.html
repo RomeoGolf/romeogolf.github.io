@@ -1101,13 +1101,13 @@ This is the first paragraph of the document.
 <td>'left-double-quote', 'right-double-quote'</td>
 </tr>
 <tr>
-<td>&laquo; &raquo;</td>
+<td>&lt;&zwnj;&lt; >&gt;</td>
 <td>&laquo; &raquo;</td>
 <td><code>&amp;laquo; &amp;raquo;</code></td>
 <td>'left-angle-quote', 'right-angle-quote'</td>
 </tr>
 <tr>
-<td>&hellip;</td>
+<td>...</td>
 <td>&hellip;</td>
 <td><code>&amp;hellip;</code></td>
 <td>'ellipsis'</td>
@@ -1127,6 +1127,10 @@ This is the first paragraph of the document.
 </tbody>
 </table>
 <p>Используя опцию настройки <code>substitutions</code>, вы можете перекрыть замены по умолчанию. Просто передайте отображение (mapping) словарика ключей для заменяющих строк.</p>
+<dl>
+<dt>Примечание</dt>
+<dd>прямые кавычки &mdash; одиночная и парная &mdash; закрываются от этого расширения обратным слэшем. Закрывающие угловые скобки &mdash; тоже, причем, хоть обе, хоть только первая. Точки многоточия можно экранировать хоть каждую. А вот открывающие угловые скобки от преобразования в текст обратным слэшем не закрываются. Похоже, чтобы не заключать их в блок кода, их можно разделить символом нулевой длины <code>&amp;zwnj;</code>.</dd>
+</dl>
 <p>Например, можно использовать следующую конфигурацию, чтобы получить правильные кавычки по-немецки:</p>
 <div class="highlight"><pre><span class="n">extension_configs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;markdown.extensions.smarty&#39;</span><span class="p">:</span> <span class="p">{</span>

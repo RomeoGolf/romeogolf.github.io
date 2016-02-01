@@ -1017,13 +1017,13 @@ This is the first paragraph of the document.
 &lt;td&gt;'left-double-quote', 'right-double-quote'&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;laquo; &amp;raquo;&lt;/td&gt;
+&lt;td&gt;&amp;lt;&amp;zwnj;&amp;lt; &gt;&amp;gt;&lt;/td&gt;
 &lt;td&gt;&amp;laquo; &amp;raquo;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;&amp;amp;laquo; &amp;amp;raquo;&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;'left-angle-quote', 'right-angle-quote'&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;hellip;&lt;/td&gt;
+&lt;td&gt;...&lt;/td&gt;
 &lt;td&gt;&amp;hellip;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;&amp;amp;hellip;&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;'ellipsis'&lt;/td&gt;
@@ -1043,6 +1043,10 @@ This is the first paragraph of the document.
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Используя опцию настройки &lt;code&gt;substitutions&lt;/code&gt;, вы можете перекрыть замены по умолчанию. Просто передайте отображение (mapping) словарика ключей для заменяющих строк.&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;Примечание&lt;/dt&gt;
+&lt;dd&gt;прямые кавычки &amp;mdash; одиночная и парная &amp;mdash; закрываются от этого расширения обратным слэшем. Закрывающие угловые скобки &amp;mdash; тоже, причем, хоть обе, хоть только первая. Точки многоточия можно экранировать хоть каждую. А вот открывающие угловые скобки от преобразования в текст обратным слэшем не закрываются. Похоже, чтобы не заключать их в блок кода, их можно разделить символом нулевой длины &lt;code&gt;&amp;amp;zwnj;&lt;/code&gt;.&lt;/dd&gt;
+&lt;/dl&gt;
 &lt;p&gt;Например, можно использовать следующую конфигурацию, чтобы получить правильные кавычки по-немецки:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;extension_configs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="s"&gt;&amp;#39;markdown.extensions.smarty&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
