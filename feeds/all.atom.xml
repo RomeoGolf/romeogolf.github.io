@@ -44,6 +44,7 @@
 &lt;p&gt;Markdown &amp;mdash; это две вещи: (1) синтаксис форматирования простого текста, и (2) программный инструмент, написанный на Perl, который преобразует форматирование простого текста в &lt;abbr title="Hyper Text Markup Language"&gt;HTML&lt;/abbr&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Однако, существует уже масса реализаций, не только на Perl. Для пеликана нас интересует, разумеется, модуль для Python. Информацию о нем можно получить из &lt;a href="https://pythonhosted.org/Markdown/index.html"&gt;официальной документации&lt;/a&gt;, на сегодняшний день свежая версия &amp;mdash; 2.6.5.&lt;/p&gt;
+&lt;p&gt;Дальнейший текст существенной частью является вольным частичным переводом упомянутой документации, примеры взяты непосредственно из нее же. Кое-что при переводе было пропущено, так как имеет весьма слабое касательство к Пеликану, зато добавлены некоторые примечания от себя, а также некоторые примеры даны не только в виде результирующего &lt;abbr title="Hyper Text Markup Language"&gt;HTML&lt;/abbr&gt;-кода, но и в виде того, что, собственно, будет видно в итоге.&lt;/p&gt;
 &lt;h2 id="_1"&gt;Особенности&lt;/h2&gt;
 &lt;p&gt;В дополнение к базовому синтаксису, Python-Markdown поддерживает следующие особенности:&lt;/p&gt;
 &lt;ul&gt;
@@ -82,7 +83,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Про установку модуля, наверное, неинтересно читать. Писать уж точно не интересно, она ничем не отличается от любой другой и уже не раз описана. А вот про применение с учетом особенностей и отличий рассказать стоит.&lt;/p&gt;
-&lt;p&gt;Про использование модуля в программах на языке Python переводить тоже не вполне уместно. Pelican достаточно умная птица, чтобы избавить пользователя от копания в тонкостях программирования, позволяя ограничиться настройкой поведения. Грубо говоря, модуль предоставляет пару-тройку функций, например, &lt;/p&gt;
+&lt;p&gt;Про использование модуля в программах на языке Python переводить документацию тоже не вполне уместно. Pelican достаточно умная птица, чтобы избавить пользователя от копания в тонкостях программирования, позволяя ограничиться настройкой поведения. Грубо говоря, модуль предоставляет пару-тройку функций, например, &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;markdown&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;markdown&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -92,6 +93,7 @@
 &lt;p&gt;Python-Markdown предлагает гибкий механизм расширений, который делает возможным изменение и/или расширение поведения парсера без необходимости редактирования его файлов исходного кода.&lt;/p&gt;
 &lt;h3 id="_4"&gt;Официально поддерживаемые расширения&lt;/h3&gt;
 &lt;p&gt;Перечисленные ниже расширения включены (как минимум) в большинство последних релизов и официально поддерживаются Python-Markdown. Если у вас типичная установка Python-Markdown, эти расширения уже доступны для применения с использованием их имени из второй колонки&lt;/p&gt;
+&lt;div class="colortable"&gt;&lt;/div&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -105,31 +107,31 @@
 &lt;td&gt;markdown.extensions.extra&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; Abbreviations&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;gt; Abbreviations&lt;/td&gt;
 &lt;td&gt;markdown.extensions.abbr&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; Attribute Lists&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;gt; Attribute Lists&lt;/td&gt;
 &lt;td&gt;markdown.extensions.attr_list&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; Definition Lists&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;gt; Definition Lists&lt;/td&gt;
 &lt;td&gt;markdown.extensions.def_list&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; Fenced Code Blocks&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;gt; Fenced Code Blocks&lt;/td&gt;
 &lt;td&gt;markdown.extensions.fenced_code&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; Footnotes&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;gt; Footnotes&lt;/td&gt;
 &lt;td&gt;markdown.extensions.footnotes&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; Tables&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;gt; Tables&lt;/td&gt;
 &lt;td&gt;markdown.extensions.tables&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; Smart Strong&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;gt; Smart Strong&lt;/td&gt;
 &lt;td&gt;markdown.extensions.smart_strong&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -511,6 +513,10 @@ Content Cell  | Content Cell
 
 
 &lt;p&gt;Расширение не требует особых опций настройки.&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;Примечание&lt;/dt&gt;
+&lt;dd&gt;Для таблиц, созданных таким образом, хотелось бы иметь возможность задать стили оформления, желательно еще и разные в разных случаях. Это особенно важно потому, что блоки кода с включенной нумерацией страниц тоже используют таблицы: одна колонка для номеров, вторая &amp;mdash; для блока кода. Фильдиперстово стилизованные таблицы без указания класса могут попортить пример кода с нумерованными строками. Таким образом, хотелось бы разделить стили таблиц при помощи классов. Однако, использование расширения Attribute Lists с таблицами работает не так, как хотелось бы. Несмотря на то, что таблица, по сути, блочный элемент, ее подэлементы &amp;mdash; строки и столбцы &amp;mdash; тоже блочные. Поэтому &lt;code&gt;{: .styled_table }&lt;/code&gt;, написанное сразу после таблицы, будет применено не к &lt;code&gt;&amp;lt;table&amp;gt;&lt;/code&gt;, а к &lt;code&gt;&amp;lt;td&amp;gt;&lt;/code&gt; &amp;mdash; пустому и специально для этой цели созданному. Мое решение (первое, что пришлов голову): втыкаю сразу перед таблицей строку &lt;code&gt;&amp;lt;div markdown="span" class="styled_table"&amp;gt;&amp;lt;/div&amp;gt;&lt;/code&gt;, а в CSS-файле использую конструкции типа &lt;code&gt;.styled_table + table {..}&lt;/code&gt;, &lt;code&gt;.styled_table + table td {..}&lt;/code&gt;. Можно, конечно, воспользоваться и псевдоклассом &lt;code&gt;:not&lt;/code&gt;, но мой способ позволяет сделать разное оформление таблиц при необходимости.&lt;/dd&gt;
+&lt;/dl&gt;
 &lt;h4 id="smart-strong"&gt;Smart Strong&lt;/h4&gt;
 &lt;p&gt;Расширение добавляет более &amp;laquo;умную&amp;raquo; обработку двойных знаков подчеркивания внутри слова. Делает для двойных подчеркиваний то же, что smart_emphasis для одинарных. Расширение включено в стандартную библиотеку Markdown.&lt;/p&gt;
 &lt;p&gt;Пример использования в консоли Python:&lt;/p&gt;
@@ -994,6 +1000,7 @@ This is the first paragraph of the document.
 &lt;p&gt;Расширение не требует особых опций настройки.&lt;/p&gt;
 &lt;h3 id="smartypants"&gt;SmartyPants&lt;/h3&gt;
 &lt;p&gt;Расширение преобразует ASCII-символы тире, кавычек и многоточия в соответствующие &lt;abbr title="Hyper Text Markup Language"&gt;HTML&lt;/abbr&gt;-объекты&lt;/p&gt;
+&lt;div class="colortable"&gt;&lt;/div&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -1066,6 +1073,7 @@ This is the first paragraph of the document.
 &lt;dd&gt;Это расширение повторно реализует Python-библиотеку SmartyPants, включая ее в анализатор Markdown. Хотя оно не предоставляет никаких дополнительных особенностей, оно предлагает несколько преимуществ. В особенности, оно не будет пытаться работать в подсвечиваемых блоках кода (при использовании CodeHilite) подобно аналогичным библиотекам третьих сторон.&lt;/dd&gt;
 &lt;/dl&gt;
 &lt;p&gt;Для расширения доступны следующие опции настройки:&lt;/p&gt;
+&lt;div class="colortable"&gt;&lt;/div&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -1192,6 +1200,10 @@ This is the first paragraph of the document.
 &lt;p&gt;&lt;strong&gt;&lt;code&gt;separator&lt;/code&gt;&lt;/strong&gt;: Разделитель слов. Символ, который заменяет пробелы в &lt;code&gt;id&lt;/code&gt;. По умолчанию &lt;code&gt;-&lt;/code&gt;.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;dl&gt;
+&lt;dt&gt;Примечание&lt;/dt&gt;
+&lt;dd&gt;Если перед маркером &lt;code&gt;[TOC]&lt;/code&gt; вставить заголовок содержания, оформив его в виде заголовка, например, &lt;code&gt;## Содержание&lt;/code&gt;, то этот заголовок будет тоже вставлен в содержание, придавая ему вполне дурацкий вид. Поэтому обозначить TOC надо как-то иначе, либо тупо выделением &lt;code&gt;**Оглавление**&lt;/code&gt;, либо обозначив абзацу с псевдозаголовком собственный класс (при помощи Attribute Lists), для которого можно нарисовать красивое (или такое же, как у остальных заголовков) оформление в CSS-файле.&lt;/dd&gt;
+&lt;/dl&gt;
 &lt;h3 id="wikilinks"&gt;WikiLinks&lt;/h3&gt;
 &lt;p&gt;Расширение добавляет поддержку WikiLinks.  А именно, любое слово [[в скобках]] будет преобразовано в ссылку.&lt;/p&gt;
 &lt;p&gt;Расширение включено в стандартную библиотеку Markdown.&lt;/p&gt;
@@ -1297,7 +1309,7 @@ This is the first paragraph of the document.
 
 
 &lt;p&gt;(может быть, еще туда же admonition, sane_lists и nl2br при желании), и, применяя полученные из документации знания, наслаждаться результатом.&lt;/p&gt;
-&lt;p&gt;И еще один момент, связанный с отличиями CMS от статического сайта, собранного генератором: если для CMS можно писать контент где угодно, потом откуда угодно забросить его в базу сайта, внешний вид страниц не будет зависеть от местоположения автора. Если же написать статью, а потом запустить сборку сайта дома, на компьютере, а потом продолжить заниматься этим, скажем, в отпуске, пользуясь ноутбуком и гостиничным вайфаем, надо сначала убедиться, что конфигурация Pelican на домашнем компьютере и ноутбуке совпадают. То есть, версии Python одинаковые, модули установлены одинаковые и одинаковых версий, темы сайта одинаковые, файлы настройки pelicanconf.py и publishconf.py совпадают. И, конечно же, все остальные материалы сайта присутствуют на обеих вычислительных машинах в полном объеме. Это не проблема, сегодня нетрудно синхронизировать информацию на разных устройствах по сети, а наполнять сайт без сети все равно не получится. Однако, об этом тоже надо не забывать.&lt;/p&gt;</summary><category term="pelican"></category><category term="Markdown"></category></entry><entry><title>Pelican и использование Markdown</title><link href="http://romeogolf.site/pelican-i-ispolzovanie-markdown.html" rel="alternate"></link><updated>2016-01-27T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.site,2016-01-27:pelican-i-ispolzovanie-markdown.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Содержание&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;И еще один момент, связанный с отличиями CMS от статического сайта, собранного генератором: если для CMS можно писать контент где угодно, потом откуда угодно забросить его в базу сайта, внешний вид страниц не будет зависеть от местоположения автора. Если же написать статью и запустить сборку сайта дома, на компьютере, а потом продолжить заниматься этим, скажем, в отпуске, пользуясь ноутбуком и гостиничным вайфаем, надо сначала убедиться, что конфигурация Pelican на домашнем компьютере и ноутбуке совпадают. То есть, версии Python одинаковые, модули установлены одинаковые и одинаковых версий, темы сайта одинаковые, файлы настройки pelicanconf.py и publishconf.py совпадают. И, конечно же, все остальные материалы сайта присутствуют на обеих вычислительных машинах в полном объеме. Это не проблема, сегодня нетрудно синхронизировать информацию на разных устройствах по сети, а наполнять сайт без сети все равно не получится. Однако, об этом тоже надо не забывать.&lt;/p&gt;</summary><category term="pelican"></category><category term="Markdown"></category></entry><entry><title>Pelican и использование Markdown</title><link href="http://romeogolf.site/pelican-i-ispolzovanie-markdown.html" rel="alternate"></link><updated>2016-01-27T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.site,2016-01-27:pelican-i-ispolzovanie-markdown.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Содержание&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#1"&gt;Зачем Markdown&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#2"&gt;Простые примеры&lt;/a&gt;&lt;ul&gt;
