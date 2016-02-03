@@ -1356,7 +1356,7 @@ This is the first paragraph of the document.
 &lt;/div&gt;
 &lt;div&gt;
 &lt;h1 id="1_1"&gt;Заголовок 1&lt;/h1&gt;
-&lt;h2 id="id_header2"&gt;Заголовок 2 с id для ссылки&lt;/h2&gt;
+&lt;h2 id="id_header2"&gt;Заголовок 2 с id&lt;/h2&gt;
 &lt;h6 id="6"&gt;Заголовок 6&lt;/h6&gt;
 &lt;h6 id="7"&gt;# Заголовок 7&lt;/h6&gt;
 &lt;h1 id="_1"&gt;заголовок&lt;/h1&gt;
