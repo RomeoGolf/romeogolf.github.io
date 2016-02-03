@@ -1341,7 +1341,7 @@ This is the first paragraph of the document.
 &lt;div markdown="1"&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;# &lt;/span&gt;&lt;span class="gh"&gt;Заголовок 1&lt;/span&gt;
-&lt;span class="k"&gt;## &lt;/span&gt;&lt;span class="gh"&gt;Заголовок 2 с id для ссылки {#id_header2}&lt;/span&gt;
+&lt;span class="k"&gt;## &lt;/span&gt;&lt;span class="gh"&gt;Заголовок 2 с id {#id_header2}&lt;/span&gt;
 &lt;span class="k"&gt;###### &lt;/span&gt;&lt;span class="gh"&gt;Заголовок 6&lt;/span&gt;
 ####### Заголовок 7
 
