@@ -298,13 +298,13 @@ hr {
 }
 
 .soft_summary  {
-    background: #CBE969
+    background: #CBE969;
 }
 
 .soft_img {
     float: left;
     width: 144px;
-    background: #005F44
+    background: #005F44;
 }
 
 .equi_height {
@@ -323,51 +323,55 @@ hr {
 /***** for code highlight *****/
 /******************************/
 
-.highlighttable{
+code, pre { /* for inline code */
+    font-family: "Lucida Console", Monaco, 'DejaVu Sans Mono', monospace!important;
+    font-size: .95em;
+    background-color: #eee;
+    padding: 2px 5px 2px 5px;
+}
+
+td.linenos { /* for line numbers */
+    text-align: right;
+}
+
+.linenodiv{ /* to separate line numbers from code block*/
+    border-right: 1px solid #009169;
+}
+
+.highlighttable { /* if a code block with line numbers */
+    display: block; /* for autoscroll */
+    overflow: auto;
+    border-collapse: collapse;
+    border-spacing: 0px;
+
+    width: 100%;
+    background-color: #111; /* same .highlight */
+    padding: 0px;
+    border: 1px solid #111;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.highlight pre, .linenodiv pre {
+    background: #111;
+    color: #ccc;
+    font-family: "Lucida Console", Monaco, 'DejaVu Sans Mono', monospace!important;
+    font-size: 10pt;
+    font-weight : normal;
+    line-height: 1.1;
+
+    border: 1px solid #111;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+
+    padding: 1em 1em;
+    margin: 1em 0;
+
     overflow: auto;
 }
 
-.linenodiv{
-    background: #111;
-    color: #eee;
-    padding:.2em .9em;
-    margin-bottom:1em;
-    font:normal normal normal 115%/normal Monaco,'Courier New','DejaVu Sans Mono','Bitstream Vera Sans Mono',monospace!important;
-    line-height:1.1em;
-    border:1px solid #CCC;
-    -moz-border-radius:7px;
-    -webkit-border-radius:7px;
-    border-radius:7px
-    font-size:1em;
-}
-
-.highlight {
-    background: #111;
-    padding:.2em .9em;
-    margin-bottom:1em;
-    font:normal normal normal 115%/normal Monaco,'Courier New','DejaVu Sans Mono','Bitstream Vera Sans Mono',monospace!important;
-    /*font:normal normal normal 115%/normal Monaco,'Courier New','DejaVu Sans Mono','Bitstream Vera Sans Mono',monospace!important;*/
-    line-height:1.1em;
-    border:1px solid #CCC;
-
-    overflow: auto;
-    color: #eee;
-    -moz-border-radius:7px;
-    -webkit-border-radius:7px;
-    border-radius:7px
-    font-size:1em;
-}
-
-code {
-    /*background-color: #eee;
-    outline: 1px;*/
-}
-
-code,pre {
-    font-family:Consolas,"Courier New",Courier,FreeMono,monospace;
-    font-size:.95em;
-    margin:1em 0 1.5em
-}
 
 /*************************/
 /***** for tag cloud *****/
