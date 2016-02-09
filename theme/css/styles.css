@@ -282,6 +282,22 @@ hr {
 /***** for own classes *****/
 /***************************/
 
+.hide{
+    display: none;
+}
+
+.visible{
+    visibility: visible;
+}
+
+.protect {
+    display: inline;
+}
+
+#protect {
+    display: inline;
+}
+
 .badge {
     height: 115px;
 }

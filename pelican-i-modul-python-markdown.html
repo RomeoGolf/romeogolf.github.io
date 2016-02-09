@@ -2,14 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta name="description" content="Title: Pelican и модуль Python-Markdown; Date: 2016-01-30; Summary: <p>Блог на Pelican - 6. Реализация Markdown для Python. Особенности, отличия, дополнительные возможности. Настройка, включение расширений. Вольный перевод официальной документации с пропусками не очень важного и вставками отсебятины. Markdown по-русски по мере сил и возможности.</p>">  
-  <meta name="keywords" content="">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pelican и модуль Python-Markdown</title>
   <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <link rel="stylesheet" href="http://romeogolf.site/theme/css/styles.css" type="text/css" />
   <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/pygments.css"/>
   <link rel="shortcut icon" type="image/png" href="http://romeogolf.site/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
 </head>
 <body>
   <header class="main-header">
@@ -599,7 +598,9 @@ Content Cell  | Content Cell
 <p>Расширение не требует особых опций настройки.</p>
 <dl>
 <dt>Примечание</dt>
-<dd>Для таблиц, созданных таким образом, хотелось бы иметь возможность задать стили оформления, желательно еще и разные в разных случаях. Это особенно важно потому, что блоки кода с включенной нумерацией страниц тоже используют таблицы: одна колонка для номеров, вторая &mdash; для блока кода. Фильдиперстово стилизованные таблицы без указания класса могут попортить пример кода с нумерованными строками. Таким образом, хотелось бы разделить стили таблиц при помощи классов. Однако, использование расширения Attribute Lists с таблицами работает не так, как хотелось бы. Несмотря на то, что таблица, по сути, блочный элемент, ее подэлементы &mdash; строки и столбцы &mdash; тоже блочные. Поэтому <code>{: .styled_table }</code>, написанное сразу после таблицы, будет применено не к <code>&lt;table&gt;</code>, а к <code>&lt;td&gt;</code> &mdash; пустому и специально для этой цели созданному. Мое решение (первое, что пришлов голову): втыкаю сразу перед таблицей строку <code>&lt;div markdown="span" class="styled_table"&gt;&lt;/div&gt;</code>, а в CSS-файле использую конструкции типа <code>.styled_table + table {..}</code>, <code>.styled_table + table td {..}</code>. Можно, конечно, воспользоваться и псевдоклассом <code>:not</code>, но мой способ позволяет сделать разное оформление таблиц при необходимости.</dd>
+<dd>Для таблиц, созданных таким образом, хотелось бы иметь возможность задать стили оформления, желательно еще и разные в разных случаях. Это особенно важно потому, что блоки кода с включенной нумерацией страниц тоже используют таблицы: одна колонка для номеров, вторая &mdash; для блока кода. Фильдиперстово стилизованные таблицы без указания класса могут попортить пример кода с нумерованными строками. Таким образом, хотелось бы разделить стили таблиц при помощи классов. Однако, использование расширения Attribute Lists с таблицами работает не так, как хотелось бы.  </dd>
+<dt>&nbsp;</dt>
+<dd>Хотя таблица выглядит, как блочный элемент, она ведет себя не как блок, да еще и у нее есть подэлементы &mdash; строки и столбцы. Поэтому <code>{: .styled_table }</code>, написанное сразу после таблицы, будет применено не к <code>&lt;table&gt;</code>, а к <code>&lt;td&gt;</code> &mdash; пустому и специально для этой цели созданному. Мое решение (первое, что пришлов голову): втыкаю сразу перед таблицей строку <code>&lt;div markdown="span" class="styled_table"&gt;&lt;/div&gt;</code>, а в CSS-файле использую конструкции типа <code>.styled_table + table {..}</code>, <code>.styled_table + table td {..}</code>. Можно, конечно, воспользоваться и псевдоклассом <code>:not</code>, но мой способ позволяет сделать разное оформление таблиц при необходимости.</dd>
 </dl>
 <h4 id="smart-strong">Smart Strong</h4>
 <p>Расширение добавляет более &laquo;умную&raquo; обработку двойных знаков подчеркивания внутри слова. Делает для двойных подчеркиваний то же, что smart_emphasis для одинарных. Расширение включено в стандартную библиотеку Markdown.</p>
@@ -1416,6 +1417,9 @@ This is the first paragraph of the document.
                   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
                   })();
           </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
         </div>
       </footer>
     </article>

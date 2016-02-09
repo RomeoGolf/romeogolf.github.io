@@ -2,15 +2,15 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta name="description" content="">  
-  <meta name="keywords" content="">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Тестовая страница</title>
   <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <link rel="stylesheet" href="http://romeogolf.site/theme/css/styles.css" type="text/css" />
   <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/pygments.css"/>
   <link rel="shortcut icon" type="image/png" href="http://romeogolf.site/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
   <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/"/>
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
 </head>
 <body>
   <header class="main-header">
@@ -35,7 +35,7 @@
   <div class="layout">
 
     <div class="sidebar">
-врезка выше
+врезка выше<br>
       <div class="tagcloud">
         Теги:
         <ul class="tagcloud">
@@ -78,7 +78,6 @@
         </ul>
       </div> <!-- tagcloud -->
 
-врезка ниже
     </div> <!-- sidebar -->
 
     <div class="content">
@@ -169,40 +168,40 @@
 16
 17
 18
-19</pre></div></td><td class="code"><div class="highlight"><pre>    <span class="k">if</span> <span class="o">(</span><span class="n">dataFragment</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// add the fragment</span>
-        <span class="n">dataFragment</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RetainedFragment</span><span class="o">();</span>
-        <span class="n">fm</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">dataFragment</span><span class="o">,</span> <span class="n">dataFragmentTag</span><span class="o">).</span><span class="na">commit</span><span class="o">();</span>
-        <span class="c1">//</span>
-        <span class="n">quiz</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Quiz</span><span class="o">();</span>
-        <span class="n">dataFragment</span><span class="o">.</span><span class="na">setQuiz</span><span class="o">(</span><span class="n">quiz</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-        <span class="n">quiz</span> <span class="o">=</span> <span class="n">dataFragment</span><span class="o">.</span><span class="na">getQuiz</span><span class="o">();</span>
-    <span class="o">}</span>
+19</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">if</span> <span class="o">(</span><span class="n">dataFragment</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// add the fragment</span>
+    <span class="n">dataFragment</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RetainedFragment</span><span class="o">();</span>
+    <span class="n">fm</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">dataFragment</span><span class="o">,</span> <span class="n">dataFragmentTag</span><span class="o">).</span><span class="na">commit</span><span class="o">();</span>
+    <span class="c1">//</span>
+    <span class="n">quiz</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Quiz</span><span class="o">();</span>
+    <span class="n">dataFragment</span><span class="o">.</span><span class="na">setQuiz</span><span class="o">(</span><span class="n">quiz</span><span class="o">);</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">quiz</span> <span class="o">=</span> <span class="n">dataFragment</span><span class="o">.</span><span class="na">getQuiz</span><span class="o">();</span>
+<span class="o">}</span>
 
-    <span class="c1">// и еще</span>
-    <span class="c1">// несколько строк</span>
-    <span class="c1">// с комментариями</span>
-    <span class="c1">// просто для увеличения</span>
-    <span class="c1">// количества строк</span>
-    <span class="c1">// простым их добавлением,</span>
-    <span class="c1">// но, однако же,</span>
-    <span class="c1">// и наполнением текстом.</span>
+<span class="c1">// и еще</span>
+<span class="c1">// несколько строк</span>
+<span class="c1">// с комментариями</span>
+<span class="c1">// просто для увеличения</span>
+<span class="c1">// количества строк</span>
+<span class="c1">// простым их добавлением,</span>
+<span class="c1">// но, однако же,</span>
+<span class="c1">// и наполнением текстом.</span>
 </pre></div>
 </td></tr></table>
 
 <p>Kод, оформленный заборчиком, с подсветкой строк:</p>
-<div class="highlight"><pre>    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onCreateOptionsMenu</span><span class="o">(</span><span class="n">Menu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
-<span class="hll">        <span class="n">getMenuInflater</span><span class="o">().</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">menu</span><span class="o">.</span><span class="na">main</span><span class="o">,</span> <span class="n">menu</span><span class="o">);</span>
+<div class="highlight"><pre><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onCreateOptionsMenu</span><span class="o">(</span><span class="n">Menu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
+<span class="hll">    <span class="n">getMenuInflater</span><span class="o">().</span><span class="na">inflate</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">menu</span><span class="o">.</span><span class="na">main</span><span class="o">,</span> <span class="n">menu</span><span class="o">);</span>
 </span>
-<span class="hll">        <span class="n">MenuItem</span> <span class="n">mi</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="na">findItem</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">action_settings</span><span class="o">);</span>
-</span>        <span class="n">mi</span><span class="o">.</span><span class="na">setIntent</span><span class="o">(</span><span class="n">prefIntent</span><span class="o">);</span>
-        <span class="n">mi</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="na">findItem</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">action_about</span><span class="o">);</span>
-        <span class="n">mi</span><span class="o">.</span><span class="na">setIntent</span><span class="o">(</span><span class="n">aboutIntent</span><span class="o">);</span>
+<span class="hll">    <span class="n">MenuItem</span> <span class="n">mi</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="na">findItem</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">action_settings</span><span class="o">);</span>
+</span>    <span class="n">mi</span><span class="o">.</span><span class="na">setIntent</span><span class="o">(</span><span class="n">prefIntent</span><span class="o">);</span>
+    <span class="n">mi</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="na">findItem</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">action_about</span><span class="o">);</span>
+    <span class="n">mi</span><span class="o">.</span><span class="na">setIntent</span><span class="o">(</span><span class="n">aboutIntent</span><span class="o">);</span>
 
-<span class="hll">        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-</span>    <span class="o">}</span>
+<span class="hll">    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class="o">}</span>
 </pre></div>
 
 
@@ -297,6 +296,33 @@
 <li>Наверное, четырех строчек будет достаточно.</li>
 </ul>
 <p>Надо написать еще чего-нибудь для того, чтобы текст занимал хотя бы не одну страницу. Конечно, на страницы текст разобьется только при верстке, но все же&hellip; И еще на количество страниц однозначно будет влиять выбранный размер шрифта, но все же, каким бы огромным ни был шрифт, одну строчку разбивать на страницы нехорошо. Да и не спортивно это как-то. Все же следует стремиться к тому, чтобы текст, пусть даже и такой бессмысленный, хотя бы внешне выглядел, как настоящий.</p>
+<dl>
+<dt>Лирическое отступление</dt>
+<dd>проверка e-mail </dd>
+</dl>
+<hr />
+<p>пока оптимально:</p>
+<script type="text/javascript">t='.ru';document.write("<a href='mailto:adr" + "ess@m"+"ail"+t+"'>ad<!-- -->" + "ress@ma"+"il"+t+"</a>");</script>
+
+<noscript><div style="display:inline;">
+tri<span class="hide">!#N#!</span><span class="visible">angulum</span><!-- pop -->soft&#64;<!-- 2 -->gma<!-- -->il&#46;<!--[if IE]>c<![endif]--><!--[if !IE]>-->c<!--<![endif]-->om
+</div></noscript>
+
+<div style="display:inline;">
+tri<span class="hide">!#N#!</span><span class="visible">angulum</span><!-- pop -->soft&#64;<!-- 2 -->gma<!-- -->il&#46;<!--[if IE]>c<![endif]--><!--[if !IE]>-->c<!--<![endif]-->om
+</div>
+
+<hr />
+<p>вариант с вставкой <span id="protect">
+tri<span class="hide">!#N#!</span><span class="visible">angulum</span><!-- pop -->soft&#64;<!-- 2 -->gma<!-- -->il&#46;<!--[if IE]>c<![endif]--><!--[if !IE]>-->c<!--<![endif]-->om
+</span></p>
+<p>вставкa 2 <span class="protect">
+tri<span class="hide">!#N#!</span><span class="visible">angulum</span><!-- pop -->soft&#64;<!-- 2 -->gma<!-- -->il&#46;<!--[if IE]>c<![endif]--><!--[if !IE]>-->c<!--<![endif]-->om
+</span></p>
+<p>вставкa 3 <span class="protect">
+tri<span class="hide">!#N#!</span><span class="visible">angulum</span><!-- pop -->soft&#64;<!-- 2 -->gma<!-- -->il&#46;<!--[if IE]>c<![endif]--><!--[if !IE]>-->c<!--<![endif]-->om
+</span></p>
+<hr />
 <p>Для этого следует накропать все-же побольше, прикидываясь графоманом. Поскрести по сусекам своего словарного запаса, я даже не побоюсь этого слова, лексикона. Слепить некоторый образчик свободного творчества. А что? Это тоже творчество. Вы что же думаете &mdash; абсолютную белиберду сочинять проще, чем осмысленный текст? Да как бы не так! При создании нормального текста существуют определенные ограничения, но они же, хотя и несколько ограничивают полет мысли, тем не менее придают определенное направление. Ведь ограничивается лишь уход в сторону, движение вперед при этом остается свободным и достаточно простым, пока знаешь, о чем пишешь. А тут необходимо сперва определиться с направлением, а его и нет! Как ночью по тайге&hellip; А что делать? Надо&hellip;</p>
 <h2 id="_6">Поэзия</h2>
 <p>Еще надо навтыкасть строк с жестким переносом без абзацного отступа, например, как стихи:</p>
@@ -327,6 +353,11 @@
 
   <div class="footer">
     &copy; 2016 RomeoGolf
+
+Почта:<div class="protect"><div style="display:inline;">
+tri<span class="hide">!#N#!</span><span class="visible">angulum</span><!-- pop -->soft&#64;<!-- 2 -->gma<!-- -->il&#46;<!--[if IE]>c<![endif]--><!--[if !IE]>-->c<!--<![endif]-->om
+</div>
+</div>
 
 
 <script>
