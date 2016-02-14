@@ -1038,13 +1038,13 @@ This is the first paragraph of the document.
 &lt;td&gt;'ellipsis'&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;ndash;&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
 &lt;td&gt;&amp;ndash;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;&amp;amp;ndash;&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;'ndash'&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&amp;mdash;&lt;/td&gt;
+&lt;td&gt;---&lt;/td&gt;
 &lt;td&gt;&amp;mdash;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;&amp;amp;mdash;&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;'mdash'&lt;/td&gt;
