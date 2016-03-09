@@ -37,15 +37,15 @@
         Теги:
         <ul class="tagcloud">
           <li class="tag-2">
-            <a href="http://romeogolf.site/tag/markdown.html">
-              Markdown
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-4">
-            <a href="http://romeogolf.site/tag/linux.html">
-              linux
-                <span class="badge">1</span>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
             </a>
           </li>
           <li class="tag-0">
@@ -72,10 +72,10 @@
                 <span class="badge">1</span>
             </a>
           </li>
-          <li class="tag-4">
+          <li class="tag-2">
             <a href="http://romeogolf.site/tag/stikhi.html">
               стихи
-                <span class="badge">1</span>
+                <span class="badge">2</span>
             </a>
           </li>
         </ul>
@@ -132,21 +132,21 @@ Summary: Сильно сокращенное описание, из которо
 
 Собственно, статья. Некоторый пост, не несущий на самом деле никакой смысловой
 нагрузки, предназначенный исключительно для заполнения отведенного ему
-пространства в области отображения контента. На жаргончике <span class="ss">&amp;mdash;</span> <span class="ss">&amp;laquo;</span>рыба<span class="ss">&amp;raquo;</span>.
+пространства в области отображения контента. На жаргончике <span class="ni">&amp;mdash;</span> <span class="ni">&amp;laquo;</span>рыба<span class="ni">&amp;raquo;</span>.
 
-Может делиться на абзацы[^1]. Может <span class="k">**</span><span class="gs">усиливать</span><span class="k">**</span> и <span class="k">*</span><span class="ge">выделять</span><span class="k">*</span>. Может
-использовать &lt;abbr title=&quot;HyperText Markup Languige&quot;&gt;HTML&lt;/abbr&gt;-теги напрямую.
+Может делиться на абзацы[^1]. Может **усиливать** и *выделять*. Может
+использовать <span class="nt">&lt;abbr</span> <span class="na">title=</span><span class="s">&quot;HyperText Markup Languige&quot;</span><span class="nt">&gt;</span>HTML<span class="nt">&lt;/abbr&gt;</span>-теги напрямую.
 
-[^1]: И это далеко не все возможности<span class="ss">&amp;hellip;</span>
+[^1]: И это далеко не все возможности<span class="ni">&amp;hellip;</span>
 
-<span class="k">## </span><span class="gh">Может включать заголовки и подзаголовки</span>
+## Может включать заголовки и подзаголовки
 
-<span class="k">* </span>может содержать списки
-<span class="k">* </span>из нескольких пунктов,
-<span class="k">* </span>например, ненумерованных.
+* может содержать списки
+* из нескольких пунктов,
+* например, ненумерованных.
 
 Может [ссылаться](http://example.link.com) на какую-нибудь несуществующую фигню, 
-или даже проще: &lt;http://example.link.com&gt;
+или даже проще: <span class="nt">&lt;http:</span><span class="err">//example.link.com</span><span class="nt">&gt;</span>
 </pre></div>
 
 
@@ -188,7 +188,7 @@ Summary: Сильно сокращенное описание, из которо
 </li>
 </ul>
 <p>Как видно, не все метаданные являются настоятельно необходимыми, можно использовать лишь часть. Верно и обратное &mdash; если вдруг понадобится какая-то хитрая переменная, не предусмотренная разработчиками Pelican, можно ее добавить в заголовок, а потом в шаблоне использовать, типа того:</p>
-<div class="highlight"><pre>Danger: red
+<div class="highlight"><pre><span class="n">Danger</span><span class="o">:</span> <span class="n">red</span>
 </pre></div>
 
 
@@ -202,26 +202,26 @@ Summary: Сильно сокращенное описание, из которо
 <p>И тогда в месте, определенном шаблоном, для статей с этой метаинформацией появится &laquo;Класс опасности: red&raquo;. А для прочих статей не появится ничего.</p>
 <h2 id="_4">Переплавка заготовок</h2>
 <p>Стоит для массовости сделать еще одну заготовку-рыбу, с учетом необязательности тегов, файл <code>second.md</code>:</p>
-<div class="highlight"><pre>Title: Заголовок второй статьи
-Date: 2016-01-20 15:00
-Category: Разное
-Tags: блог, разное, тест
-Summary: Еще одна рыба, просто для массовости.
+<div class="highlight"><pre><span class="n">Title</span><span class="o">:</span> <span class="err">Заголовок</span> <span class="err">второй</span> <span class="err">статьи</span>
+<span class="n">Date</span><span class="o">:</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">20</span> <span class="mi">15</span><span class="o">:</span><span class="mi">00</span>
+<span class="n">Category</span><span class="o">:</span> <span class="err">Разное</span>
+<span class="n">Tags</span><span class="o">:</span> <span class="err">блог</span><span class="o">,</span> <span class="err">разное</span><span class="o">,</span> <span class="err">тест</span>
+<span class="n">Summary</span><span class="o">:</span> <span class="err">Еще</span> <span class="err">одна</span> <span class="err">рыба</span><span class="o">,</span> <span class="err">просто</span> <span class="err">для</span> <span class="err">массовости</span><span class="o">.</span>
 
-Снова рыба, снова заготовка текста, просто так, для заполнения места. Ну, в 
-самом деле, не цитировать же снова Цицерона <span class="ss">&amp;laquo;</span>О пределах добра и 
-зла<span class="ss">&amp;raquo;</span>, да еще и в этом ужасном, хотя и общепринятом, подрезанном и 
-искаженном виде.
+<span class="err">Снова</span> <span class="err">рыба</span><span class="o">,</span> <span class="err">снова</span> <span class="err">заготовка</span> <span class="err">текста</span><span class="o">,</span> <span class="err">просто</span> <span class="err">так</span><span class="o">,</span> <span class="err">для</span> <span class="err">заполнения</span> <span class="err">места</span><span class="o">.</span> <span class="err">Ну</span><span class="o">,</span> <span class="err">в</span> 
+<span class="err">самом</span> <span class="err">деле</span><span class="o">,</span> <span class="err">не</span> <span class="err">цитировать</span> <span class="err">же</span> <span class="err">снова</span> <span class="err">Цицерона</span> <span class="o">&amp;</span><span class="n">laquo</span><span class="o">;</span><span class="err">О</span> <span class="err">пределах</span> <span class="err">добра</span> <span class="err">и</span> 
+<span class="err">зла</span><span class="o">&amp;</span><span class="n">raquo</span><span class="o">;,</span> <span class="err">да</span> <span class="err">еще</span> <span class="err">и</span> <span class="err">в</span> <span class="err">этом</span> <span class="err">ужасном</span><span class="o">,</span> <span class="err">хотя</span> <span class="err">и</span> <span class="err">общепринятом</span><span class="o">,</span> <span class="err">подрезанном</span> <span class="err">и</span> 
+<span class="err">искаженном</span> <span class="err">виде</span><span class="o">.</span>
 </pre></div>
 
 
 <p>Теперь надо сделать вручную папку &laquo;articles&raquo; в папке &laquo;content&raquo; и перенести туда оба файла. Даем команду в консоли</p>
-<div class="highlight"><pre>c:\python<span class="m">33</span>\Scripts\pelican.exe content
+<div class="highlight"><pre>c<span class="p">:</span><span class="nl">\python33\Scripts\pelican.exe</span><span class="c1"> content</span>
 </pre></div>
 
 
 <p>Получаем в ответ</p>
-<div class="highlight"><pre>Done: Processed <span class="m">2</span> articles<span class="p">,</span> <span class="m">0</span> drafts<span class="p">,</span> <span class="m">0</span> pages and <span class="m">0</span> hidden pages in <span class="m">4</span>.<span class="m">30</span> seconds.
+<div class="highlight"><pre>Done: Processed 2 articles, 0 drafts, 0 pages and 0 hidden pages in 4.30 seconds.
 </pre></div>
 
 

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linux &mdash; одна победа, одна ничья и одно поражение.</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.site/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.site/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.site/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.site id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.site/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.site/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.site/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.site/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-0">
+            <a href="http://romeogolf.site/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/stikhi.html">
+              стихи
+                <span class="badge">2</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Ср 09 Март 2016</h4>
+    <article>
+      <h1>Linux &mdash; одна победа, одна ничья и одно поражение.</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Загадка монтирования дисков</a></li>
+<li><a href="#_2">Выключение кнопкой питания</a></li>
+<li><a href="#eclipse">Обновление Eclipse</a></li>
+</ul>
+</div>
+<p>Продолжая движение к смене статуса Debian на домашней машине в качестве основной системы, я наткнулся на очередные задачи, часть из которых получается решить, часть решается лишь частично, а часть остается непобедимой.</p>
+<h2 id="_1">Загадка монтирования дисков</h2>
+<p>В частности, при загрузке системы я заметил загадочную хрень в виде серии странных сообщений, типа</p>
+<div class="highlight"><pre>systemd-fstab-generator<span class="o">[</span>175<span class="o">]</span>: Failed to create mount unit file
+/run/systemd/generator/media-ntfs<span class="se">\x</span>2dsdb2.mount, as it already exists. 
+Duplicate entry in /etc/fstab?
+</pre></div>
+
+
+<p>Причем, таких строчек от загрузки к загрузке становилось больше.</p>
+<p>Это при том, что у меня диски, заполненные разной информацией еще в винде, подключаются с использованием fstab, где я прописал их вручную. Открываю fstab и вижу, что там действительно появилась куча строк, которые я не писал, причем, почти все встречаются по два-три раза в произвольном порядке. </p>
+<div class="highlight"><pre># /etc/fstab: static file system information.
+#
+# Use &#39;blkid&#39; to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+# / was on /dev/sdb3 during installation
+UUID=6279-419e-b679 /               ext4    errors=remount-ro 0       1
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+/dev/sda5   /mnt/WORK   ntfs    auto,exec,rw,nouser,async,iocharset=utf8,notail,relatime 0 0
+/dev/sda6   /mnt/STORAGE    ntfs    auto,exec,rw,nouser,async,iocharset=utf8,notail,relatime 0 0
+/dev/sda7   /mnt/FILES  ntfs    auto,exec,rw,nouser,async,iocharset=utf8,notail,relatime 0 0
+/dev/sda8   /mnt/MISC   ntfs    auto,exec,rw,nouser,async,iocharset=utf8,notail,relatime 0 0
+/dev/sdb2   /mnt/FILES2 ntfs    auto,exec,rw,nouser,async,iocharset=utf8,notail,relatime 0 0
+/dev/sda7 /media/ntfs-sda7 ntfs-3g rw,noauto,dmask=000,fmask=000,user,locale=ru_RU.utf8,allow_other 0 0
+/dev/sdb1 /media/ntfs-sdb1 ntfs-3g rw,noauto,dmask=000,fmask=000,user,locale=ru_RU.utf8,allow_other 0 0
+/dev/sda5 /media/ntfs-sda5 ntfs-3g rw,noauto,dmask=000,fmask=000,user,locale=ru_RU.utf8,allow_other 0 0
+/dev/sdb2 /media/ntfs-sdb2 ntfs-3g rw,noauto,dmask=000,fmask=000,user,locale=ru_RU.utf8,allow_other 0 0
+</pre></div>
+
+
+<p>И вот те строки внизу, которые монтируются в /media/, размножаются просто неприлично.</p>
+<p>Жуть! Стер. Через пару загрузок (комп включен отнюдь не 24/7) вижу ту же картину и в консоли при загрузке, и в файле fstab. Что за дела?</p>
+<p>Полез в интернеты, ибо являюсь вполне себе чайником и не представляю вообще, откуда может такое быть. Формулировал вопрос и на русском, и на английском, и в гугле, и на stackoverflow &mdash; ничего полезного. </p>
+<dl>
+<dt>Лирическое отступление</dt>
+<dd>Сам я, правда, вопрос на форумах не задавал, так как давно понял: если на мой вопрос есть ответ, то во всякого рода интернетах его уже обязательно кто-то задал, и кто-то, соответственно, ответил. А если это не так, то и на вопрос, заданный лично мною, тоже никто не ответит. Это правило подтверждалось несколько раз. Ни на один мой вопрос на форумах не было получено ни одного внятного ответа. А чаще &mdash; даже и невнятного. С учетом того, что перед вопрошанием я сперва искал ответ самостоятельно.</dd>
+</dl>
+<p>На форумах, однако, наметил несколько направлений возможного поиска в виде английских буквосочетаний:</p>
+<ul>
+<li>systend-fstab-generator</li>
+<li>hotplug</li>
+<li>automount</li>
+<li>hal</li>
+<li>halevt</li>
+<li>kudzu</li>
+<li>dracut (systemd-drakut)</li>
+<li>udev (systemd-udevd)</li>
+<li>fstab-sync</li>
+<li>submount</li>
+</ul>
+<p>Почитал про упомянутые штуки. Показалось, что udev &mdash; наиболее вероятная кандидатура пакостника. Однако поиск по системным логам через <code>grep 'fstab'</code> не дал ничего, и я не понял, кто и когда туда пишет.</p>
+<p>Тогда, предполагая, что этот &laquo;кто-то&raquo; пишет, основываясь на своих настройках, которые, в свою очередь, лежат где-то в <code>/etc/</code>, запустил поиск файла, содержащего <code>'fstab'</code></p>
+<div class="highlight"><pre>$ grep -r <span class="s2">&quot;fstab&quot;</span> /etc/
+</pre></div>
+
+
+<p>и самым интересным в результатах поиска был <code>/etc/udev/rules.d/10-automount.rules</code>:</p>
+<div class="highlight"><pre><span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mkdir -p /mnt/%k&quot;</span>
+<span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mount -o uid=1000 /dev/%k /mnt/%k&quot;</span>
+<span class="c1">#ACTION==&quot;remove&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/rmdir /mnt/%k&quot;</span>
+
+<span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mkdir -p /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
+<span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mount -o uid=1000 /dev/%k /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
+<span class="c1">#ACTION==&quot;remove&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/rmdir /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
+
+<span class="c1"># монтирование съемных накопителей</span>
+<span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sd[a-z]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;do-disk-rules&quot;</span>
+KERNEL!<span class="o">=</span><span class="s2">&quot;sd[a-z][0-9]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
+<span class="nv">LABEL</span><span class="o">=</span><span class="s2">&quot;do-disk-rules&quot;</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_USB_DRIVER<span class="o">}=</span><span class="s2">&quot;usb-storage&quot;</span>, <span class="nv">GROUP</span><span class="o">=</span><span class="s2">&quot;storage&quot;</span>
+IMPORT<span class="o">{</span>program<span class="o">}=</span><span class="s2">&quot;/sbin/blkid -o udev -p %N&quot;</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;remove&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i &#39;/\/dev\/%k /d&#39; /etc/fstab&quot;</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;remove&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/rmdir /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k&quot;</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/mkdir -p /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k&quot;</span>
+<span class="c1"># монтирование раздела fat32</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}==</span><span class="s2">&quot;vfat&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i </span>
+<span class="s2">&#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k vfat rw,noauto,noatime,dmask=000,user,fmask=000,iocharset=utf8 0 0&#39; /etc/fstab&quot;</span>
+<span class="c1"># монтирование раздела ntfs</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}==</span><span class="s2">&quot;ntfs&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i </span>
+<span class="s2">&#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k ntfs-3g rw,noauto,dmask=000,fmask=000,user,locale=ru_RU.utf8,allow_other 0 0&#39; /etc/fstab&quot;</span>
+<span class="c1"># монтирование прочих ФС</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;ntfs|vfat&quot;</span>, 
+RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i &#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k </span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}  defaults,user 0 0&#39; /etc/fstab&quot;</span>
+<span class="nv">LABEL</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
+</pre></div>
+
+
+<p>Строчка в правилах монтирования однозначно соответствовала тому, что появляется в fstab. Возможно, авторы пакета, создавая настройки по умолчанию, предполагали, что основным диском будет hda, а sda &mdash; уже всякие флешки и все такое. А у меня два SATA-винчестера, и флешка становится sdc. Ну что же, пакостник найден, надо его слегка укротить. Сперва я сделал первое, что пришло в голову: вписал  после <code># монтирование съемных накопителей</code> пару строк:</p>
+<div class="highlight"><pre><span class="c1"># монтирование съемных накопителей</span>
+<span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sda[0..9]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
+<span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sdb[0..9]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
+<span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sd[a-z]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;do-disk-rules&quot;</span>
+<span class="c1"># ... и далее по тексту ...</span>
+</pre></div>
+
+
+<p>чтобы при обнаружении первых двух SATA-дисков правила монтирования пропускались. Но буквально парой минут позже понял, что это дурь, и сделал проще &mdash; убрал эти строки, а во всех <code>sd[a-z]</code> заменил <code>a</code> на <code>c</code>: </p>
+<div class="highlight"><pre><span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sd[c-z]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;do-disk-rules&quot;</span>
+</pre></div>
+
+
+<p>И в остальных строках так же. Теперь <code>/ets/fstab</code> после перезагрузок остается неизменным (даже после автомонтирования флешек), и при загрузке упомянутая ересь тоже не встречается. Одну проблемку решил. Засчитываю победу.</p>
+<h2 id="_2">Выключение кнопкой питания</h2>
+<p>Фишка, давно ставшая привычной в Windows, довольно удобная. Все-таки, одно движение пальца, хоть и надо тянуться к системнику. Дай, думаю, попробую&hellip; А компьютер вырубился, как будто провод выдернули.</p>
+<p>Полез опять в интернеты. Нашел, что за отслеживание событий, связанных с питанием, отвечает acpi. Убедился, что такой пакет у меня установлен. Настройки в <code>/etc/acpi/powerbtn-acpi-support.sh</code> посмотрел &mdash; нормально все.</p>
+<p>Там указано, что для совместимости со старыми версиями при наличии в определенных местах старых скриптов все игнорируется и <code>exit 0</code>, так у меня в тех местах нету нифига лишнего&hellip;</p>
+<p>Тут где-то в интернете (не помню точно, в чьем-то блоге) одному товарищу нужна была обратная задача: добиться отсутствия реакции на кнопку, и он в упомянутом sh-файле закрыл предпоследнюю строку:</p>
+<div class="highlight"><pre>/sbin/shutdown -h -P now <span class="s2">&quot;Power button pressed&quot;</span>
+</pre></div>
+
+
+<p>Сделал так же. Перезапустил демон:</p>
+<div class="highlight"><pre>$ sudo acpid restart
+</pre></div>
+
+
+<p>Ничего не изменилось. Вернул строчку обратно (раскомментировал) &mdash; заработало! Почти&hellip; </p>
+<p>В общем, после этих телодвижений, имевших в сумме чистый ноль, по нажатию кнопки питания компьютер стал засыпать. Ну, и просыпаться, конечно. Почитал повнимательнее скрипт &mdash; а там упоминаются настройки среды, мол, они тоже учитываются. Слазил в настройки Гнома (Приложения &ndash; Системные &ndash; Дополнительные параметры &ndash; Электропитание), а в них для параметров питания указано &laquo;Hibernate&raquo; по кнопке питания. Изменил на &laquo;Shutdown&raquo;. Теперь компьютер засыпает по кнопке сна на клавиатуре и выключается по кнопке питания на системнике.</p>
+<p>Очень странно. Единственное мое активное действие (помимо закрытия и открытия строчки в скрипте) &mdash; перезапуск демона acpid, но я посмотрел логи <code>grep 'acpi'</code> и не нашел отличий &laquo;до&raquo; и &laquo;после&raquo;. Он и раньше запускался.</p>
+<p>Загадочно. Вроде, все работает. Вроде, раньше не работало. Вроде, ничего не делал. Засчитываю ничью.</p>
+<h2 id="eclipse">Обновление Eclipse</h2>
+<p>А вот тут, что называется, косорезик вышел. Поставил Eclipse из репозитория через Synaptic. Встала версия 3.8, и где-то в Help нашел, что это Indigo. И это в наше время, когда космические корабли уже долетели до Марса, и даже до Марса 2, и под виндой у меня стоит 4.5.1. Причем, обновился до нее с Луны довольно просто, указав в нужных местах сервера обновлений и запустив не то установку нового ПО, не то обновление, не то оба по очереди. </p>
+<p>А тут фигушки! Основная часть, которая собственно Eclipse, ставиться наотрез отказалась. Дескать, стоит уже и незачем ставить снова, и неважно, что версия уже новая&hellip; Ну, а все остальные &laquo;запчасти&raquo; зависят от движка и тоже не хотят обновляться. Часа полтора долбился в эту стенку. Потом плюнул, снес Eclipse начисто и скачал с официального сайта tar-архив. Распаковал в домашней папке &mdash; вот и вся установка, все работает. Благо, зависимостей у него особых нет, кроме Java, а с ней я разобрался чуть раньше, снес openjdk и поставил продукт от Oracle. А то под open у меня напрочь отказывались запускаться поделки, которые я наваял еще в винде, те же &laquo;Быки и коровы&raquo;.</p>
+<p>То есть, задача решена, но ни разу не так, как хотелось, а главное &mdash; непонятно, почему не получилось обновить, когда в винде это было несложно. Как-то немного обидно.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.site/tag/linux.html" class="tag">linux</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "linux-odna-pobeda-odna-nichia-i-odno-porazhenie.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>

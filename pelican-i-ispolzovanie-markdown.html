@@ -37,15 +37,15 @@
         Теги:
         <ul class="tagcloud">
           <li class="tag-2">
-            <a href="http://romeogolf.site/tag/markdown.html">
-              Markdown
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-4">
-            <a href="http://romeogolf.site/tag/linux.html">
-              linux
-                <span class="badge">1</span>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
             </a>
           </li>
           <li class="tag-0">
@@ -72,10 +72,10 @@
                 <span class="badge">1</span>
             </a>
           </li>
-          <li class="tag-4">
+          <li class="tag-2">
             <a href="http://romeogolf.site/tag/stikhi.html">
               стихи
-                <span class="badge">1</span>
+                <span class="badge">2</span>
             </a>
           </li>
         </ul>
@@ -119,16 +119,16 @@
 <div class="equi_height">
 <div markdown="1">
 
-<div class="highlight"><pre><span class="k"># </span><span class="gh">Заголовок 1</span>
-<span class="k">## </span><span class="gh">Заголовок 2 с id {#id_header2}</span>
-<span class="k">###### </span><span class="gh">Заголовок 6</span>
+<div class="highlight"><pre># Заголовок 1
+## Заголовок 2 с id {#id_header2}
+###### Заголовок 6
 ####### Заголовок 7
 
-<span class="gh">заголовок</span>
-<span class="k">=========</span>
+заголовок
+=========
 
-<span class="gh">заголовок</span>
-<span class="k">---------</span>
+заголовок
+---------
 </pre></div>
 
 
@@ -148,17 +148,17 @@
 <p>Линии отчеркивания можно нарисовать звездочками, минусами или символом подчеркивания, слитно или через пробелы. Только надо следить, чтобы у них тоже сверху и снизу были пустые строки, а то при обработке их могут принять за часть заголовка или маркированного списка. А вот линия из знаков равенства ничего особенного не делает и рисуется, как есть:
 <div markdown="1" class="equi_height">
 <div markdown="1"></p>
-<div class="highlight"><pre><span class="k">**</span><span class="gs">*</span><span class="k">**</span>*
+<div class="highlight"><pre>******
 
-<span class="k">* * * *</span>
+* * * *
 
-<span class="k">-------</span>
+-------
 
-<span class="k">- - - -</span>
+- - - -
 
-<span class="k">_______</span>
+_______
 
-<span class="k">_ _ _ _</span>
+_ _ _ _
 
 
 =====================
@@ -182,11 +182,11 @@
 <p>Таблицы можно разметить псевдографикой. Границы по умолчанию не прорисовываются, заголовки по умолчанию центрируются (поведение корректируется при помощи CSS), а выравнивание строк в столбце можно отрегулировать двоеточием в разделительной линии ниже заголовка, как в примере:
 <div markdown="1" class="equi_height">
 <div markdown="1"></p>
-<div class="highlight"><pre>| 1 | 2 (правый) | 3 (центр) |
-|---|-----------:|:---------:|
-| ячейка 1.1 | ячейка 2.1 | ячейка 3.1 
-| 1.2 | 2.2 | 3.2 так
-| 1.3 | 2.3 с буквами | 3.3 и сяк
+<div class="highlight"><pre><span class="p">|</span> <span class="mi">1</span> <span class="p">|</span> <span class="mi">2</span> <span class="p">(</span><span class="s s-Atom">правый</span><span class="p">)</span> <span class="p">|</span> <span class="mi">3</span> <span class="p">(</span><span class="s s-Atom">центр</span><span class="p">)</span> <span class="p">|</span>
+<span class="p">|</span><span class="s s-Atom">---</span><span class="p">|</span><span class="s s-Atom">-----------:</span><span class="p">|:-</span><span class="s s-Atom">--------:</span><span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">ячейка</span> <span class="mf">1.1</span> <span class="p">|</span> <span class="s s-Atom">ячейка</span> <span class="mf">2.1</span> <span class="p">|</span> <span class="s s-Atom">ячейка</span> <span class="mf">3.1</span> 
+<span class="p">|</span> <span class="mf">1.2</span> <span class="p">|</span> <span class="mf">2.2</span> <span class="p">|</span> <span class="mf">3.2</span> <span class="s s-Atom">так</span>
+<span class="p">|</span> <span class="mf">1.3</span> <span class="p">|</span> <span class="mf">2.3</span> <span class="s s-Atom">с</span> <span class="s s-Atom">буквами</span> <span class="p">|</span> <span class="mf">3.3</span> <span class="s s-Atom">и</span> <span class="s s-Atom">сяк</span>
 </pre></div>
 
 
@@ -226,22 +226,22 @@
 <div class="equi_height">
 <div markdown="1">
 
-<div class="highlight"><pre><span class="k">&lt;!--</span><span class="c-MultiLine"> Можно использовать комментарии</span>
-<span class="c-MultiLine">в стиле HTML, чтобы не показывать </span>
-<span class="c-MultiLine">часть текста в обработанной странице </span><span class="k">--&gt;</span>
+<div class="highlight"><pre><span class="c">&lt;!-- Можно использовать комментарии</span>
+<span class="c">в стиле HTML, чтобы не показывать </span>
+<span class="c">часть текста в обработанной странице --&gt;</span>
 
 Пример Footnote[^1] в тексте. Будет
 вынесена вниз страницы.
-<span class="k">&lt;!--</span><span class="c-MultiLine"> Такие штуки надо размещать сразу же: </span><span class="k">--&gt;</span>
-[^1]: Footnote по-русски <span class="ss">&amp;mdash;</span> сноска
+<span class="c">&lt;!-- Такие штуки надо размещать сразу же: --&gt;</span>
+[^1]: Footnote по-русски <span class="ni">&amp;mdash;</span> сноска
 
 Словарь
 : книга, содержащая перечень слов
 с пояснениями и толкованиями
 
 пример аббревиатуры: ИМХО
-<span class="k">&lt;!--</span><span class="c-MultiLine"> Такие штуки тоже надо размещать сразу же: </span><span class="k">--&gt;</span>
-*[ИМХО]: Имею Мнение <span class="ss">&amp;mdash;</span> Хрен Оспоришь
+<span class="c">&lt;!-- Такие штуки тоже надо размещать сразу же: --&gt;</span>
+*[ИМХО]: Имею Мнение <span class="ni">&amp;mdash;</span> Хрен Оспоришь
 
 Абзац создается разделением
 пустыми строками, 
@@ -251,10 +251,10 @@
 Однако, по два пробела  
 на концах строк делают  
 перенос строки без абзаца:  
-<span class="k">**</span><span class="gs">выделение</span><span class="k">**</span> тегом <span class="k">__</span><span class="gs">strong</span><span class="k">__</span>  
-<span class="k">*</span><span class="ge">выделение</span><span class="k">*</span> тегом <span class="k">_</span><span class="ge">emphasize</span><span class="k">_</span>  
-<span class="k">**</span><span class="gs">*можно</span><span class="k">**</span>* оба <span class="k">__</span><span class="gs">*сразу*</span><span class="k">__</span>  
-внутристрочный <span class="k">`</span><span class="sb">&lt;h1&gt;блок кода&lt;/h1&gt;</span><span class="k">`</span>  
+**выделение** тегом __strong__  
+*выделение* тегом _emphasize_  
+***можно*** оба __*сразу*__  
+внутристрочный `<span class="nt">&lt;h1&gt;</span>блок кода<span class="nt">&lt;/h1&gt;</span>`  
 </pre></div>
 
 
@@ -292,21 +292,21 @@
 <div markdown="1" class="equi_height">
 <div markdown="1"></p>
 <div class="highlight"><pre>Использование HTML-тегов:
-<span class="c1">&lt;span style=&quot;text-shadow: black</span>
-<span class="c1">1px 1px 2px, red 0 0 1em;</span>
-<span class="c1">text-transform: uppercase;&quot;&gt;пример&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">style=</span><span class="s">&quot;text-shadow: black</span>
+<span class="s">1px 1px 2px, red 0 0 1em;</span>
+<span class="s">text-transform: uppercase;&quot;</span><span class="nt">&gt;</span>пример<span class="nt">&lt;/span&gt;</span>
 
 использование спецсимволов  
-(пример): <span class="ss">&amp;copy;</span> <span class="ss">&amp;raquo;&amp;mdash;&amp;laquo;</span>
+(пример): <span class="ni">&amp;copy;</span> <span class="ni">&amp;raquo;&amp;mdash;&amp;laquo;</span>
 
 использование служебных символов:  
-&lt; &gt; * [ ] { } ( ) <span class="se">\ </span>_ # + - . !
+<span class="err">&lt;</span> &gt; * [ ] { } ( ) \ _ # + - . !
 
 использование служебных символов  
 в сложных случаях: 
-&lt;a<span class="se">\&gt;</span> <span class="se">\[</span>a<span class="se">\]\(</span>a<span class="se">\)</span> <span class="se">\`</span>a<span class="se">\`</span> <span class="se">\_</span>a<span class="se">\_</span> #a
+<span class="nt">&lt;a</span><span class="err">\</span><span class="nt">&gt;</span> \[a\]\(a\) \`a\` \_a\_ #a
 
-<span class="se">\#</span>#a
+\##a
 </pre></div>
 
 
@@ -334,37 +334,37 @@ text-transform: uppercase;">пример</span></p>
 <div class="equi_height">
 <div markdown="1">
 
-<div class="highlight"><pre><span class="k">&gt; </span>Цитата умного человека <span class="ss">&amp;mdash;</span> 
+<div class="highlight"><pre>&gt; Цитата умного человека &amp;mdash; 
 почти афоризм.
 
 или так (то же самое):
 
-<span class="k">&gt; </span>Цитата умного человека <span class="ss">&amp;mdash;</span> 
-<span class="k">&gt; </span>почти афоризм.
+&gt; Цитата умного человека &amp;mdash; 
+&gt; почти афоризм.
 
     Отступ в 4 пробела или 1 таб:
     будет окружено тегом &lt;pre&gt;,
     а если включена подсветка -
     то и подсвечено. Можно печатать
-    всё: [a](http://a) &lt;html&gt; <span class="k">`</span><span class="sb">ы</span><span class="k">`</span>
+    всё: [a](http://a) &lt;html&gt; `ы`
     Сделано для блоков кода.
 
-<span class="k">```</span><span class="cp"></span>
-<span class="cp">:::c</span>
-<span class="cp">void sample_func(int j) {</span>
-<span class="cp">    printf(j);</span>
-<span class="cp">}</span>
+```
+:::c
+void sample_func(int j) {
+    printf(j);
+}
 
-<span class="cp">for (int i = 0; i &lt; 9; i++) {</span>
-<span class="cp">    sample_func(i);</span>
-<span class="cp">}</span>
-<span class="cp">/* </span>
-<span class="cp"> * по сути, то же самое, плюс</span>
-<span class="cp"> * указание языка для подсветки.</span>
-<span class="cp"> * вместо ``` можно </span>
-<span class="cp"> * использовать ~~~</span>
-<span class="cp"> */</span>
-<span class="k">```</span>
+for (int i = 0; i &lt; 9; i++) {
+    sample_func(i);
+}
+/* 
+ * по сути, то же самое, плюс
+ * указание языка для подсветки.
+ * вместо ``` можно 
+ * использовать ~~~
+ */
+```
 </pre></div>
 
 
@@ -416,33 +416,33 @@ text-transform: uppercase;">пример</span></p>
 
 <div class="highlight"><pre>Маркированный:
 
-<span class="k">* </span>пункт
-<span class="k">* </span>еще пункт
+* пункт
+* еще пункт
 
 Нумерованный:
 
-<span class="k">1. </span>первый
-<span class="k">2. </span>второй
+1. первый
+2. второй
 
 Смешанный:
 
-<span class="k">1. </span>пунктик с подпунктиками
-<span class="k">    * </span>4 пробела дают
-<span class="k">    + </span>вложенность, а маркеры
-<span class="k">    - </span>могут быть разными
-<span class="k">3. </span>Цифры тоже неважны,
-<span class="k">98. </span>лишь бы цифры.
+1. пунктик с подпунктиками
+    * 4 пробела дают
+    + вложенность, а маркеры
+    - могут быть разными
+3. Цифры тоже неважны,
+98. лишь бы цифры.
 
     Можно сделать абзац
     внутри списка
 
-<span class="k">    * </span>и даже внутри подпункта
+    * и даже внутри подпункта
 
         тоже можно сделать абзац.
 
-<span class="k">    * </span>Еще одна вложенность.
+    * Еще одна вложенность.
 
-<span class="k">7. </span>Надо только не забывать 
+7. Надо только не забывать 
 отступы и пустые строки.
 </pre></div>
 
@@ -596,12 +596,12 @@ text-transform: uppercase;">пример</span></p>
 <div class="equi_height">
 <div markdown="1">
 
-<div class="highlight"><pre>&lt;div style=&quot;float:right&quot;&gt; 
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;float:right&quot;</span><span class="nt">&gt;</span> 
   ![флаги romeo и golf]({filename}/images/rg.png)
-&lt;/div&gt;
-<span class="cp">&lt;div style=&quot;display:inline-block; margin:10px&quot;&gt;</span>
-<span class="cp">Попытка вставить картинку  </span>
-<span class="cp">в плавающий блок &lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;display:inline-block; margin:10px&quot;</span><span class="nt">&gt;</span>
+Попытка вставить картинку  
+в плавающий блок <span class="nt">&lt;/div&gt;</span>
 </pre></div>
 
 
@@ -636,7 +636,7 @@ text-transform: uppercase;">пример</span></p>
             <div class="taglist">
               <ul class="tags">
                 <li><a href="http://romeogolf.site/tag/pelican.html" class="tag">pelican</a></li>
-                <li><a href="http://romeogolf.site/tag/markdown.html" class="tag">Markdown</a></li>
+                <li><a href="http://romeogolf.site/tag/markdown.html" class="tag">markdown</a></li>
               </ul>
             </div>
           </div>

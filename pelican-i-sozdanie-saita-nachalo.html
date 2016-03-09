@@ -37,15 +37,15 @@
         Теги:
         <ul class="tagcloud">
           <li class="tag-2">
-            <a href="http://romeogolf.site/tag/markdown.html">
-              Markdown
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-4">
-            <a href="http://romeogolf.site/tag/linux.html">
-              linux
-                <span class="badge">1</span>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
             </a>
           </li>
           <li class="tag-0">
@@ -72,10 +72,10 @@
                 <span class="badge">1</span>
             </a>
           </li>
-          <li class="tag-4">
+          <li class="tag-2">
             <a href="http://romeogolf.site/tag/stikhi.html">
               стихи
-                <span class="badge">1</span>
+                <span class="badge">2</span>
             </a>
           </li>
         </ul>
@@ -123,7 +123,7 @@
 <li>Если месье знает толк в извращениях и по-прежнему насилует Windows XP (или XP &mdash; его), то Python 3.3 &mdash; потолок. Версия 3.4 уже не пойдет.</li>
 <li>
 <p>Если по какой-то причине (например, по предыдущей) стоит именно 3.3, то в ней &laquo;из коробки&raquo; нет модуля pip, а без него будет заметно хуже, чем с ним. С версии 3.4 он должен уже идти в комплекте поставки, а на 3.0&ndash;3.2 работа пеликана не гарантируется. Этот модуль нужен для установки остальных модулей, он умеет определять зависимости (если требуемому модулю для работы нужны еще какие-то), самостоятельно находить их и устанавливать. Pip можно взять, например, <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip">здесь</a> или <a href="http://pypi.python.org/pypi/pip/">здесь</a>. При этом его тоже еще надо установить. Со скриптом  <a href="https://pip.pypa.io/en/latest/installing.html#install-pip">get-pip.py</a> у меня как-то сразу не заладилось, не стал разбираться в причинах. Запустил в консоли команду</p>
-<div class="highlight"><pre>C:\Python<span class="m">33</span>\python.exe pip<span class="m">-7</span>.<span class="m">1</span>.<span class="m">2</span>-py<span class="m">2</span>.py<span class="m">3</span>-none-any.whl<span class="n">/pip</span> install pip<span class="m">-7</span>.<span class="m">1</span>.<span class="m">2</span>-py<span class="m">2</span>.py<span class="m">3</span>-none-any.whl
+<div class="highlight"><pre>C<span class="p">:</span><span class="nl">\Python33\python.exe</span><span class="c1"> pip-7.1.2-py2.py3-none-any.whl/pip install pip-7.1.2-py2.py3-none-any.whl</span>
 </pre></div>
 
 
@@ -141,7 +141,7 @@
 
 
 <p>Здесь неочевидная тонкость для тех, кто с питонами на &laquo;вы&raquo;, особенно, если дело творится под Windows: это не команда интерпретатора Python, и вводить ее надо не в консоли Python, а просто в консоли &mdash; FAR или cmd.exe. Можно создать текстовый файл с расширением .cmd или .bat с этой строчкой внутри и запустить его на выполнение с тем же эффектом. Эффект будет положительным, если известен путь к pip (например, прописан в переменной PATH или pip прямо тут, в текущей папке), ибо, по сути, это программа. В Windows, чтобы наверняка, можно написать</p>
-<div class="highlight"><pre>C:\Python<span class="m">33</span>\Scripts\pip.exe install pelican
+<div class="highlight"><pre>C<span class="p">:</span><span class="nl">\Python33\Scripts\pip.exe</span><span class="c1"> install pelican</span>
 </pre></div>
 
 
@@ -169,7 +169,7 @@
 </ul>
 <h4 id="_3">Можно попробовать, заработает ли</h4>
 <p>Создадим папку (директорию, каталог, как хотите) для проекта сайта. Практически где угодно. Например, <code>D:\site</code>. Зайдя в эту папку, запустим команду</p>
-<div class="highlight"><pre>C:\python<span class="m">33</span>\Scripts\pelican-quickstart.exe
+<div class="highlight"><pre>C<span class="p">:</span><span class="nl">\python33\Scripts\pelican-quickstart.exe</span>
 </pre></div>
 
 
@@ -181,12 +181,12 @@
 <p>но, напоминаю, это не просто команда, это программа, которая команду выполняет, и лежит она в папке Scripts там, где установлен Python
 Программка запустится, и мы будем отвечать на вопросы по-английски, появляющиеся в окне консоли. Если в конце вопроса есть в квадратных скобках вариант ответа по умолчанию или (Y/n), можно тупо давить ввод. Если нет &mdash; надо хоть что-то писать. В конце этой викторины (если использовать ответы по умолчанию) в выбранной папке появятся еще две папки &mdash; content и output, а также набор файлов &mdash; develop_server.sh, fabfile.py, Makefile, pelicanconf.py, publishconf.py.</p>
 <p>Уже сейчас, не написав ни строчки, можно собрать полупустой сайт, если эту заготовку позволительно так назвать. Для этого, опять же в корне <code>D:\site</code>, надо дать команду</p>
-<div class="highlight"><pre>c:\python<span class="m">33</span>\Scripts\pelican.exe content
+<div class="highlight"><pre>c<span class="p">:</span><span class="nl">\python33\Scripts\pelican.exe</span><span class="c1"> content</span>
 </pre></div>
 
 
 <p>И хотя папка content (предназначенная для заготовок статей) пуста, и на выходе будет все по нулям:</p>
-<div class="highlight"><pre>Done: Processed <span class="m">0</span> articles<span class="p">,</span> <span class="m">0</span> drafts<span class="p">,</span> <span class="m">0</span> pages and <span class="m">0</span> hidden pages in <span class="m">0</span>.<span class="m">08</span> seconds.
+<div class="highlight"><pre>Done: Processed 0 articles, 0 drafts, 0 pages and 0 hidden pages in 0.08 seconds.
 </pre></div>
 
 
