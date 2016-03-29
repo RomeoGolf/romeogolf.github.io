@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Засекаем время в bat/cmd</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.site/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.site/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.site/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.site id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.site/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.site/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.site/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.site/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-0">
+            <a href="http://romeogolf.site/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/triangulum.html">
+              triangulum
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/remont.html">
+              ремонт
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/stikhi.html">
+              стихи
+                <span class="badge">2</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Вт 29 Март 2016</h4>
+    <article>
+      <h1>Засекаем время в bat/cmd</h1>
+      
+      <p>При всех моих стараниях уйти от Windows везде и навсегда не получается. Есть компьютер на работе, компьютеры друзей, собственный нетбук, с которым неохота возиться настолько кардинально. При этом, ряд задач в принципе выполняется из командной строки проще и удобнее, чем &laquo;оконно-мышевым&raquo; способом. Особенно если это задачи из тех, что имеют прямое отношение к Linux, например, работа с утилитами из комплекта <a href="http://gnuwin32.sourceforge.net/">gnuwin32</a>.</p>
+<p>Запуская <a href="http://romeogolf.site/tar-and-encoding.html">однажды уже упомянутую</a> упаковку/распаковку при помощи windows-реализации tar, я захотел однажды засечь время. Ну, не секундомером же это делать&hellip; Сделал командный файл, в котором вывожу время, запускаю архиватор, снова вывожу время.</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">time</span> \t
+<span class="p">@</span>tar -cf foo.tar foo
+<span class="p">@</span><span class="k">time</span> \t
+</pre></div>
+
+
+<p>Получается ерунда. Команда <code>time \t</code> выдает время с точностью до минуты. Ладно, можно использовать переменную среды <code>%time%</code>:</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">echo</span> <span class="nv">%time%</span>
+<span class="p">@</span>tar -cf foo.tar foo
+<span class="p">@</span><span class="k">echo</span> <span class="nv">%time%</span>
+</pre></div>
+
+
+<p>Чуть получше, но все равно очень плохо. Во-первых, если архиватору добавить ключ -v, и он начнет выдавать в консоль имена архивируемых объектов, то время начала стремительно унесется за пределы экрана. Во-вторых, чтобы понять, сколько процесс занял времени, все равно придется считать, а компьютер на что?</p>
+<p>Однако, переменная <code>%time%</code> хитроформатированная, скорее текст, чем число, и ее в лоб не получится использовать для вычитания времени начала из времени окончания. Тем более, командный интерпретатор cmd.exe работает с целочисленными значениями, а время идет с точностью до сотых секунды (ну, или до десятков миллисекунд, как хотите).</p>
+<p>Ладно, разберем время на составляющие. При помощи конструкции <code>set t1_m=%t1:~3,2%</code> которая присваивает переменной t1_m два знака из t1, пропустив первые три, получим часы, минуты, секунды и сотые доли секунды: </p>
+<div class="highlight"><pre><span class="k">set</span> <span class="nv">t1_h</span><span class="p">=</span><span class="nv">%t1:~0,2%</span>
+<span class="k">set</span> <span class="nv">t1_m</span><span class="p">=</span><span class="nv">%t1:~3,2%</span>
+<span class="k">set</span> <span class="nv">t1_s</span><span class="p">=</span><span class="nv">%t1:~6,2%</span>
+<span class="k">set</span> <span class="nv">t1_ms</span><span class="p">=</span><span class="nv">%t1:~9%</span>
+<span class="k">set</span> <span class="k">/a</span> <span class="nv">s1</span><span class="o">=</span> <span class="nv">t1_h</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_m</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_s</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_ms</span>
+</pre></div>
+
+
+<p>Напоминаю, что ключик <code>/a</code> позволяет оператору <code>set</code> не только присваивать значение переменной, но и выполнять некоторые операции (подробнее &mdash; <code>set /?</code>).</p>
+<p>В результате получили в s1 время в сотнях миллисекунд, допустим, из времени начала операции. Можно сделать аналогичным образом s2 из времени окончания. Эти две переменные целочисленные и прекрасно складываются, вычитаются и все такое. Нам надо разность, и, чтобы избежать неожиданностей со знаками, можно сразу определить, что из них больше, и потом вычитать:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="k">/I</span> <span class="nv">%s1%</span> <span class="ow">geq</span> <span class="nv">%s2%</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s1</span> <span class="o">-</span> <span class="nv">s2</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s2</span> <span class="o">-</span> <span class="nv">s1</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Ключик <code>/i</code> расширяет возможности оператора сравнения, позволяя ему не только выполнять сравнение строк на тождественность (чем он занимался изначально), но и сравнивать числа на больше/меньше/равно (<code>if /?</code>)</p>
+<p>Получили s3 &mdash; разность времени в десятках миллисекунд. Надо разобрать на составляющие, а потом склеить обратно в удобочитаемом виде. Все несложно, используем остаток от деления, чтобы избавиться, например, от часов при извлечении минут, и деление (целочисленное, другого тут нет), чтобы избавиться от секунд, примерно так:</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_h</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_m</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_s</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_ms</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="mi">100</span>
+</pre></div>
+
+
+<p>Тут надо не забыть забавную тонкость: в командном интерпретаторе символ процента &mdash; подводный камень. Иногда он ставится по обе стороны от переменной, и тогда при выполнении интерпретатор отбрасывает эту пару, а имя переменной заменяет значением. Иногда он стоит перед переменной цикла. Иногда он используется в виде оператора получения остатка от целочисленного деления. Так вот, там, где процент непарный, его надо не забывать удваивать, а то его отбросят и будут безуспешно искать пару.</p>
+<p>Получили часы, минуты, секунды и десятки миллисекунд в отдельных переменных. Можно их использовать, как числа, а можно &mdash; как строки, поэтому их легко склеить в одно значение времени и выдать его в стандартный поток ввода-вывода, &laquo;на консоль&raquo;:</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t3</span><span class="p">=</span><span class="nv">%t3_h%</span>:<span class="nv">%t3_m%</span>:<span class="nv">%t3_s%</span>,<span class="nv">%t3_ms%</span>
+<span class="p">@</span><span class="k">echo</span> <span class="nv">%t3%</span>
+</pre></div>
+
+
+<p>Все это можно засунуть в отдельный файл, чтобы использовать в разных местах. Тогда время надо будет передавать файлу в виде параметров. Тут есть  два варианта: либо </p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="p">=</span><span class="nv">%~1</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="p">=</span><span class="nv">%~2</span>
+</pre></div>
+
+
+<p>и передавать параметры в двойных кавычках (а тильда раскроет кавычки), либо</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="p">=</span><span class="nv">%1%2</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="p">=</span><span class="nv">%3%4</span>
+</pre></div>
+
+
+<p>и передавать без кавычек, потому что в символьном представлении времени , по крайней мере, с русской локалью (в другой не проверял), десятки миллисекунд отделяются от секунд запятой, а запятая вместе с пробелом разделяет и параметры командной строки, так что сотые доли секунды будут уже другим параметром.</p>
+<p>Итого, получился такой командный файл, скажем, timecalc.bat:</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="p">=</span><span class="nv">%~1</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="p">=</span><span class="nv">%~2</span>
+<span class="p">@</span><span class="c1">rem параметры должны быть в кавычках</span>
+
+<span class="p">@</span><span class="c1">rem echo t1 = %t1%</span>
+<span class="p">@</span><span class="c1">rem set t1=03:02:20,45</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_h</span><span class="p">=</span><span class="nv">%t1:~0,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_m</span><span class="p">=</span><span class="nv">%t1:~3,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_s</span><span class="p">=</span><span class="nv">%t1:~6,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_ms</span><span class="p">=</span><span class="nv">%t1:~9%</span>
+<span class="p">@</span><span class="c1">rem echo %t1% = %t1_h% - %t1_m% - %t1_s% - %t1_ms%</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s1</span><span class="o">=</span> <span class="nv">t1_h</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_m</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_s</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_ms</span>
+<span class="p">@</span><span class="c1">rem echo s1 = %s1%</span>
+
+<span class="p">@</span><span class="c1">rem set t2=01:01:10,05</span>
+<span class="p">@</span><span class="c1">rem echo t2 = %t2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_h</span><span class="p">=</span><span class="nv">%t2:~0,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_m</span><span class="p">=</span><span class="nv">%t2:~3,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_s</span><span class="p">=</span><span class="nv">%t2:~6,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_ms</span><span class="p">=</span><span class="nv">%t2:~9%</span>
+<span class="p">@</span><span class="c1">rem echo %t2% = %t2_h% - %t2_m% - %t2_s% - %t2_ms%</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s2</span><span class="o">=</span> <span class="nv">t2_h</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t2_m</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t2_s</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t2_ms</span>
+<span class="p">@</span><span class="c1">rem echo s2 = %s2%</span>
+
+<span class="p">@</span><span class="k">if</span> <span class="k">/I</span> <span class="nv">%s1%</span> <span class="ow">geq</span> <span class="nv">%s2%</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s1</span> <span class="o">-</span> <span class="nv">s2</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s2</span> <span class="o">-</span> <span class="nv">s1</span><span class="p">)</span>
+<span class="p">@</span><span class="c1">rem set /a s3= s2 - s1</span>
+<span class="p">@</span><span class="c1">rem echo s3 = %s3%</span>
+
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_h</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_m</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_s</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_ms</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="mi">100</span>
+<span class="p">@</span><span class="c1">rem echo = %t3_h% - %t3_m% - %t3_s% - %t3_ms%</span>
+
+<span class="p">@</span><span class="k">set</span> <span class="nv">t3</span><span class="p">=</span><span class="nv">%t3_h%</span>:<span class="nv">%t3_m%</span>:<span class="nv">%t3_s%</span>,<span class="nv">%t3_ms%</span>
+<span class="p">@</span><span class="k">echo</span> <span class="nv">%t3%</span>
+</pre></div>
+
+
+<p>Теперь об использовании. Допустим, есть такой батничек, запускающий архивацию с засечкой времени:</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">a</span><span class="p">=</span><span class="nv">%time%</span>
+<span class="p">@</span><span class="k">echo</span> start <span class="nv">%a%</span>
+<span class="p">@</span>tar -cf <span class="nv">%1</span>.tar <span class="nv">%1</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">b</span><span class="p">=</span><span class="nv">%time%</span>
+<span class="p">@</span><span class="k">echo</span> stop <span class="nv">%b%</span>
+</pre></div>
+
+
+<p>В переменных a и b имеем время начала и окончания операции соответственно. Можно передать их нашему скрипту, непременно валяющемуся тут же рядом, в этой же папке:</p>
+<div class="highlight"><pre><span class="k">call</span> .\timecalc.cmd <span class="s2">&quot;</span><span class="nv">%b%</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">%a%</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>И он выведет в консоль затраченное время третьей строчкой, после &laquo;start &lt;время начала>&raquo; и &laquo;stop &lt;время окончания>&raquo;. Но хотелось бы добавить, допустим, &laquo;упаковано за &raquo; или &laquo;распаковано за &raquo;, так что ввести соответствующие строки в файл &laquo;подпрограммы&raquo; не получится. Передавать этот строковый &laquo;довесок&raquo; в виде еще одного параметра и не особо красиво, и при желании дописать текст после времени (а не перед) опять потребует лезть в вызываемый файл. А как перехватить вывод вызываемого файла для использования в вызывающем? </p>
+<p>Я просто обалдел, когда узнал. Внезапно, при помощи оператора цикла!!! О, сколько нам открытий чудных готовит <code>for /?</code>&hellip;</p>
+<p>Расширение синтаксиса <code>/F</code> позволяет выковыривать переменную цикла из разного рода наборов: файлов, символьных строк, команд. Чтобы понять, что используется для цикла, применяются (или не применяются) кавычки. Без кавычек в скобках пишем файл или набор файлов. А применение кавычек зависит от того, установлена или нет опция usebackq: при установленной  в двойных кавычках пишем строку, в простых &mdash; команду. При снятой опции  строку пишем в простых кавычках, а команду &mdash; в обратных (которые обычно на клавише с буквой Ё). При этом, команда вполне может быть одна, и проход цикла тоже один, и в теле цикла получаем нужный нам вывод команды, который засунем в переменную для дальнейшего использования (хотя можно и использовать сразу):</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;usebackq&quot;</span> <span class="se">%%</span>s <span class="k">in</span> <span class="p">(</span><span class="sb">`call .\timecalc.cmd &quot;</span><span class="nv">%b%</span><span class="sb">&quot; &quot;</span><span class="nv">%a%</span><span class="sb">&quot;`</span><span class="p">)</span> <span class="k">do</span> <span class="p">@</span><span class="k">set</span> <span class="nv">delta</span><span class="p">=</span><span class="se">%%</span>s
+</pre></div>
+
+
+<p>И, кстати, не забываем, что переменная цикла должна быть односимвольной. Нигде этого не прочитал, вывел экспериментально путем ошибок и проб. Может, читал невнимательно, а может, не знал где&hellip;</p>
+<p>Итого получаем такой командный файл, скажем, tar_time.cmd, который принимает в качестве параметра пакуемую папку, засекает время и пишет его в консоль и в лог-файл:</p>
+<div class="highlight"><pre><span class="p">@</span><span class="k">echo</span> <span class="nv">%1</span> <span class="p">&gt;&gt;</span> tar_log.txt
+
+<span class="p">@</span><span class="k">set</span> <span class="nv">a</span><span class="p">=</span><span class="nv">%time%</span>
+<span class="p">@</span><span class="k">echo</span> start <span class="nv">%a%</span>
+<span class="p">@</span><span class="k">echo</span>    start <span class="nv">%a%</span> <span class="p">&gt;&gt;</span> tar_log.txt
+<span class="p">@</span>tar -cf <span class="nv">%1</span>.tar <span class="nv">%1</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">b</span><span class="p">=</span><span class="nv">%time%</span>
+<span class="p">@</span><span class="k">echo</span>    stop <span class="nv">%b%</span> <span class="p">&gt;&gt;</span> tar_log.txt
+<span class="p">@</span><span class="k">echo</span> stop <span class="nv">%b%</span>
+
+<span class="p">@</span><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;usebackq&quot;</span> <span class="se">%%</span>s <span class="k">in</span> <span class="p">(</span><span class="sb">`call .\timecalc.cmd &quot;</span><span class="nv">%b%</span><span class="sb">&quot; &quot;</span><span class="nv">%a%</span><span class="sb">&quot;`</span><span class="p">)</span> <span class="k">do</span> <span class="p">@</span><span class="k">set</span> <span class="nv">delta</span><span class="p">=</span><span class="se">%%</span>s
+
+<span class="p">@</span><span class="k">echo</span>    <span class="nv">%delta%</span> <span class="p">&gt;&gt;</span> tar_log.txt
+<span class="p">@</span><span class="k">echo</span> packed for <span class="nv">%delta%</span>
+</pre></div>
+
+
+<p>Аналогичным образом написал почти то же для распаковки, поправив пару строчек.</p>
+<p>Конечно, можно кое-что оптимизировать, например, все вычисления с константами сделать на калькуляторе (или в уме), преобразование времени в сотые доли секунды вынести в &laquo;функцию&raquo; и вызывать ее через <code>call</code>, но так удобочитаемее, а на скорость выполнения влияет мало. Еще можно вместо своры собак (<code>@</code>) поставить один раз в начале файла <code>@echo off</code>, дело вкуса. И, конечно, можно повнимательнее относиться к регистру символов и писать либо везде прописными, либо везде строчными. Но, как уж получилось&hellip;</p>
+<p>Возможности команд Windows (тяжелое наследие DOS), конечно, довольно ограничены, но даже с их помощью можно делать интересные и полезные штучки. Вот только иногда фиг догадаешься, описание какой команды для твоей цели нужно смотреть и где именно искать&hellip;</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.site/tag/batcmd.html" class="tag">bat/cmd</a></li>
+                <li><a href="http://romeogolf.site/tag/windows.html" class="tag">windows</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "time_in_bat.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
