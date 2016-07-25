@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon: Создание отладочной платы на микроконтроллере</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.site/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.site/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.site/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.site id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.site/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.site/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.site/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.site/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-0">
+            <a href="http://romeogolf.site/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Пн 25 Июль 2016</h4>
+    <article>
+      <h1>USB-polygon: Создание отладочной платы на микроконтроллере</h1>
+      
+      <p>Недавно в очередной раз пришла в голову идея сделать свою отладочную плату на микроконтроллере и поиграться с нею. Однажды (в один из предыдущих разов) я даже делал что-то такое, но получилось плохо и было заброшено. И вот, полный решимости довести дело до более-менее приличного результата, я заново взялся за дело. С точки зрения программирования МК можно было бы раздобыть сразу отладочную плату и возиться с ней, однако, во-первых, хотелось попробовать не только программирование, но и радиоинженерство (пусть и на любительском уровне), во-вторых, так реально дешевле, ибо из деталей мне нужен буквально только контроллер, из обвеса разве что мелочь копеечная типа кнопок. </p>
+<p>Стало быть, займусь радиософтолюбительством в учебных целях с выполнением такой последовательности:</p>
+<ul>
+<li>проектирование простейшей цифровой схемы;</li>
+<li>создание проекта печатной платы;</li>
+<li>изготовление печатной платы;</li>
+<li>монтаж;</li>
+<li>программирование &laquo;встроенной системы&raquo;;</li>
+<li>управление некими устройствами (экраны, etc.) с помощью МК, возможно, под управлением с ПК;</li>
+<li>получение информации с неких устройств (энкодеры, etc.) с помощью МК;</li>
+<li>отладка взаимодействия ПК и некоего внешнего устройства на базе МК.</li>
+</ul>
+<p>В целом, основные задачи были следующие:</p>
+<ul>
+<li>освоить новый для меня ассемблер, вспомнить работу с С на МК;</li>
+<li>отладить работу с экранами мобильников, которых завалялось от старых мобил парочка штук, и хотелось бы применить их в самоделках;</li>
+<li>освоить работу с энкодером &mdash; еще не пробовал это дело;</li>
+<li>сделать макет устройства, которым можно управлять с ПК и с которого можно передавать данные на ПК;</li>
+<li>подготовиться к созданию собственных устройств на МК, например, LC-метра.</li>
+</ul>
+<p>В долгосрочной перспективе хотелось бы отладить работу с МК с использованием разных операционных систем, то есть, чтобы разработку можно было вести и в Windows, и в Linux, работать с самодельным устройством в них же плюс Android.</p>
+<p>Набросок технического задания:</p>
+<ul>
+<li>устройство (плата) должно содержать микроконтроллер с характеристиками:<ul>
+<li>достаточная распространенность (чтобы иметь легко обнаруживаемую учебную и справочную литературу, примеры кода);</li>
+<li>наличие бесплатных/свободных средств программирования, отладки для разных ОС;</li>
+<li>допустимая цена (до 300 р.);</li>
+<li>корпус, допускающий возможность несложного монтажа в домашних условиях (однозначно не шариковый, желательно выводы с шириной не менее 0,5 мм, в крайнем случае &mdash; 0,25 мм);</li>
+<li>наличие интерфейса USB для совместимости с большинством вычислительных устройств (ПК, телефоны, планшеты, телевизоры, etc.);</li>
+<li>наличие минимум двух байтовых портов для возможности одновременного ввода и вывода информации простейшими способами (кнопки и светодиоды) а также для подключения дополнительных устройств;</li>
+<li>желательно наличие аппаратно реализованных интерфейсов обмена информацией помимо USB, например, SPI для экранов мобильников и карт памяти;</li>
+<li>крайне желательна возможность внутрисхемного программирования по USB, чтобы не заморачиваться с программаторами (во всяком случае, поначалу);</li>
+</ul>
+</li>
+<li>устройство должно подключаться по USB, получать питание там же. Собственное питание необязательно, так как в процессе отладки оно все равно постоянно подключено к ПК, а самостоятельной ценности не имеет. Соответственно, потребление должно быть не более 150 мА;</li>
+<li>устройство должно иметь примитивные средства вывода информации: как минимум, байт, отображаемый на светодиодах;</li>
+<li>устройство должно иметь примитивные средства ввода информации: как минимум, три кнопки, не пересекающиеся по портам со светодиодными линиями;</li>
+<li>устройство должно иметь возможность подключения шины данных и питания для дополнительных устройств, например, экранов или энкодера, данных должно быть не менее двух байтов (дешевый китайский ЖК-экран 1602A-1 требует 11 разрядов);</li>
+<li>устройство должно обеспечивать возможность работы с дополнительными устройствами с питанием как 5 В, так и 3,3 В (экран 1602A-1 - 5 В, экраны мобильников - 3,3 В);</li>
+<li>устройство должно быть изготовлено по возможности на имеющейся в наличии элементной базе (из чего попало и палок);</li>
+<li>требования живучести и стойкости к механическим и климатическим воздействиям, надежности, сроку службы, эксплуатации, хранению, удобству технического обслуживания, размеру, массе, корпусу, консервации, упаковке и маркировке не предъявляются.</li>
+</ul>
+<p>После некоторого анализа того, что есть под рукой и того, что можно купить, остановился на AT90USB162. Не самый современный контроллер, но неплохой по соотношению цены и возможностей. USB есть, как и возможность программирования по USB без программатора с помощью утилиты FLIP от ATMEL, причем, под Windows и Linux. Встроенный преобразователь питания из +5 В, получаемых по USB, в +3,3 В. AVR, то есть, обширное сообщество, а значит, все вопросы, которые могут появиться поначалу, уже кто-то задавал, и ответы можно найти. Корпус TQFP32, плата легко разведется под лазерный утюг. Нашел на AliExpress за двести рублей без малого. Три порта ввода-вывода, из них два байтовых, один слегка подрезанный. Есть возможность использования UART, SPI, PS/2. Жалко, что нет АЦП, только аналоговый компаратор, ну да ладно, попробуем обойтись.</p>
+<p>Еще понадобится горсть кнопок, горсть джамперов (ножек для них и самих перемычек), пара переключателей, горсть светодиодов, кварц и шнурок для USB. Кнопки есть мышиные, светодиоды даже не помню, откуда снял, переключатели от сломанных детских игрушек с электроначинкой, шнурок от дохлой USB-мыши, кварц на 8 МГц (это важно) уже был куплен для какого-то несостоявшегося проектика.</p>
+<p>И вот тут бы по-хорошему проанализировать сперва средства разработки и отладки, но я отложу это на попозже. В конце концов, не такая уж дорогая игрушка, чтобы горевать, если что-то пойдет не так. Поэтому начну со схемы, пока развожу ее &mdash; глядишь, приедет из Китая контроллер. Спаяю &mdash; тогда и начну заниматься отладкой. В любительских целях это допустимо, ящитаю.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.site/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "usb-polygon-1.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
