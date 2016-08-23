@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-3: Первое включение</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.site/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.site/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.site/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.site id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.site/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.site/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.site/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.site/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-0">
+            <a href="http://romeogolf.site/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Вт 23 Август 2016</h4>
+    <article>
+      <h1>USB-polygon-3: Первое включение</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Включение и опознание</a></li>
+<li><a href="#_2">Проверка работоспособности платы</a><ul>
+<li><a href="#_3">Компилятор для начала</a></li>
+<li><a href="#_4">Программа для проверки</a></li>
+<li><a href="#_5">Компиляция и первые вопросы</a></li>
+</ul>
+</li>
+<li><a href="#_6">Выбор компилятора</a></li>
+<li><a href="#_7">Итог</a></li>
+</ul>
+</div>
+<h2 id="_1">Включение и опознание</h2>
+<p>Плата смонтирована и проверена &laquo;на дым&raquo;. Дым при включении не пошел, компьютер тоже не сгорел. Плата работает, правда, определяется как неизвестное устройство. </p>
+<p><a href="http://romeogolf.site/images/usb-polygon/unknown-device.png" title="Неизвестное устройство"><img alt="unknown-device" src="http://romeogolf.site/images/usb-polygon/preview/unknown-device-small.png" title="Неизвестное устройство" /></a> 
+<img alt="fault-device" src="http://romeogolf.site/images/usb-polygon/fault-device.png" title="Найдено новое оборудование" /> </p>
+<p>Контроллер для платы выбирался специально с таким расчетом, чтобы программировать без программатора, непосредственно через USB-порт. Пришло время проверить, как устройство готово к этой процедуре. С сайта Atmel скачиваю программу <a href="http://www.atmel.com/ru/ru/tools/flip.aspx">FLIP</a>, устанавливаю ее. Для скачивания, правда, придется зарегистрироваться, но регистрация очень простая, никаких особенных данных не просят. Есть варианты для Windows (работает и в 7, и в ХР) и Linux (проверил в Debian). </p>
+<p>Если на компьютере с Windows не установлена виртуальная машина Java, то надо выбрать дистрибутив FLIP, в который включена JRE.</p>
+<p>После установки FLIP в Windows на запрос драйвера после подключения платы нужно указать его местоположение в районе C:\Program Files\Atmel\Flip 3.4.7\usb (для Windows XP):</p>
+<p><a href="http://romeogolf.site/images/usb-polygon/driver.png" title="Выбор драйвера"><img alt="driver" src="http://romeogolf.site/images/usb-polygon/preview/driver-small.png" title="Выбор драйвера" /></a> </p>
+<p>Теперь устройство (чистое и непрошитое) будет определяться системой:</p>
+<p><a href="http://romeogolf.site/images/usb-polygon/device-manager.png" title="Диспетчер устройств"><img alt="device-manager" src="http://romeogolf.site/images/usb-polygon/preview/device-manager-small.png" title="Диспетчер устройств" /></a> </p>
+<p>И открываться в FLIP даже без нажатий на кнопку HWB на плате.</p>
+<p><a href="http://romeogolf.site/images/usb-polygon/flip-not-active.png" title="FLIP неактивный"><img alt="flip-grey" src="http://romeogolf.site/images/usb-polygon/preview/flip-not-active-small.png" title="FLIP неактивный" /></a> 
+<img alt="flip-select" src="http://romeogolf.site/images/usb-polygon/flip-device-sel.png" title="FLIP - выбор устройства" /> 
+<a href="http://romeogolf.site/images/usb-polygon/flip-active.png" title="FLIP активный"><img alt="flip-active" src="http://romeogolf.site/images/usb-polygon/preview/flip-active-small.png" title="FLIP активный" /></a> </p>
+<p>И вот FLIP запущен, устройство подключено, обнаружено и открыто, хотелось бы что-то туда прошить. Но что?!</p>
+<h2 id="_2">Проверка работоспособности платы</h2>
+<h3 id="_3">Компилятор для начала</h3>
+<p>Готовых прошивок для моей платы нет, разумеется. Надо написать для начала что-то совсем примитивное, помигать светодиодами. Просто убедиться, что плата прошивается и включается. Пришла пора выбора инструмента. Желательно что-то простое, даже консольное. В идеале &mdash; кроссплатформенное. Первое, что приходит в голову для AVR &mdash; Atmel Studio, но в плане простоты это перебор, а в плане кроссплатформенности &mdash; недобор.</p>
+<p>Неглубоко порывшись в интернетах, нашел упоминание о таком пакете, как <a href="https://ru.wikipedia.org/wiki/WinAVR" title="WinAVR">WinAVR</a>. Весит немного, устанавливается элементарно. Содержит в себе ряд утилит командной строки, обычно имеющихся в дистрибутивах Linux (cat, cmp, find, make, grep, gzip, less, sed и еще кое-что). Включает в себя и командную оболочку sh. Помимо компилятора имеется и подборка заголовочных файлов на разные случаи жизни, с мнемоникой для аппаратной составляющей разных контроллеров и с полезными функциями (типа crc16 или delay), которые можно использовать в своих проектах. В комплект входит еще и текстовый редактор Programmer`s notepad, который для небольших самоделок может вполне сойти за IDE, но я им не пользовался, попробовал только разик.</p>
+<p>Установил, настроил (в смысле, прописал в системной переменной PATH пути к папкам avr, bin и util\bin).</p>
+<h3 id="_4">Программа для проверки</h3>
+<p>Написал примитивнейший код на С в файле test.c:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;avr/io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;util/delay.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PORTD</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span> <span class="cm">/* инициализация порта со светодиодами */</span>
+    <span class="n">DDRD</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>  <span class="cm">/* назначение порта на выход */</span>
+    <span class="kt">char</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* инициализация счетчика */</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">PORTD</span> <span class="o">=</span> <span class="n">cnt</span><span class="p">;</span>
+        <span class="n">_delay_ms</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="cm">/* использование библиотечной функции задержки */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>Теперь его бы как-то подготовить для прошивки&hellip; WinAVR рассчитан в первую очередь на работу с Makefile. И хотелось бы заготовку какую-нибудь, потому что стряпать этот файл самостоятельно, конечно, можно, но тогда надо вникать в работу компилятора хотя бы в общих чертах. А мне бы это попозже, мне бы светодиодиком моргнуть сначала&hellip; </p>
+<p>Короче, нашел заготовку Makefile в книжке &laquo;Программирование на языке С для AVR и PIC микроконтроллеров. Изд. 2-е, переработанное и дополненное&raquo; Ю. А. Шпак, 2011. В этой книге кроме прочего в общих чертах описана работа с WinAVR, а в файлах на компакт-диске есть несколько проектов, заточенных именно под WinAVR, с Makefile в составе. Правда, позже обнаружил, что пример Makefile есть в составе WinAVR, в папке sample. А еще где-то там есть мастер создания Makefile, но с этим я уже не стал заморачиваться.</p>
+<h3 id="_5">Компиляция и первые вопросы</h3>
+<p>Поправил Makefile под свои цели, то есть, MCU присвоил значение at90usb162, F_CPU = 8000000, TARGET = test. Запустил make, получил hex-файл. Ну, не только hex, там много чего появилось, но для FLIP мне нужен hex.</p>
+<p>Make запускал не заморачиваясь из файлового менеджера Unreal commander. Логичнее было бы использовать консольный, типа FAR, но этот был уже открыт. Для того, чтобы консольное окно не закрылось, отработав, команду make запускал с зажатой клавишей Shift. Получилось так:</p>
+<p><a href="http://romeogolf.site/images/usb-polygon/winavr-make.png" title="Первая компиляция"><img alt="winavr-make" src="http://romeogolf.site/images/usb-polygon/preview/winavr-make-small.png" title="Первая компиляция" /></a> </p>
+<p>Выдача результата весьма информативна в плане человекочитаемости &mdash; за это спасибо Makefile. Можно также запустить make clean, эта команда сотрет все, что наделал make:</p>
+<p><img alt="winavr-make-clean" src="http://romeogolf.site/images/usb-polygon/winavr-make-clean.png" title="Make clean" /> </p>
+<p>А если запустить make вторично без clean, то получим такой вывод:</p>
+<p><a href="http://romeogolf.site/images/usb-polygon/winavr-make-2.png" title="Вторая компиляция"><img alt="winavr-make-2" src="http://romeogolf.site/images/usb-polygon/preview/winavr-make-2-small.png" title="Вторая компиляция" /></a> </p>
+<p>Здесь видно, что компиляции никакой не делалось, потому что незачем, зато есть размер программы до компиляции и после, что позволит сравнить, скажем, занимаемую в кристалле память при внесении изменений в код программы.</p>
+<p>В программе FLIP открыл полученный hex, запустил прошивку кнопкой RUN. Кнопкой Start Application запустил выполнение. Получилась ерунда какая-то: светодиод PD0 моргает, остальные &mdash; не горят. Нажал кнопку Reset, не помогло. Отключил плату от USB, включил снова &mdash; ура, заработало! Пока не понял, в чем дело, может, по каким-то причинам контроллер сбрасывается. Предположил, что из-за сторожевого таймера.</p>
+<p>Про наличие сторожевого таймера в контроллере я в курсе, а как с ним работать &mdash; пока нет. Думал, что он по умолчанию отключен, но пока не буду читать описание на эту тему, сделаю проще. Нашел готовый проект на основе такого контроллера и посмотрел, как этот таймер обездвижить, не вдаваясь в подробности. Добавил в программу </p>
+<div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;avr/wdt.h&gt;</span><span class="cp"></span>
+</pre></div>
+
+
+<p>и в самое начало функции main() еще три строчки:</p>
+<div class="highlight"><pre>    <span class="cm">/* Disable watchdog if enabled by bootloader/fuses */</span>
+    <span class="n">MCUSR</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">WDRF</span><span class="p">);</span>
+    <span class="n">wdt_disable</span><span class="p">();</span>
+</pre></div>
+
+
+<p>Помогло! Теперь счетчик стал моргать и после запуска программы кнопкой в окне FLIP, и кнопкой Reset на плате.</p>
+<p>Немножко побаловался, подключая и отключая плату по USB, понажимал кнопку Reset на плате, попробовал вводить в режим программирования комбинацией кнопок Reset и HWB. Покуражился и над программой &mdash; накладывал на счетчик битовые маски, выводил фиксированные числа. Пока что все получается.</p>
+<p>Надо сказать, код еще маленький, а уже красотой не блещет. Работа со сторожевым таймером не отлажена и сделана без понимания, для задержки используется довольно корявая библиотечная функция, неоправданно кушающая ресурсы. Но я не заморачиваюсь пока что. Основную свою цель код выполняет &mdash; работоспособность контроллера и платы проверена. А потом я не буду расширять возможности именно этой программы, а напишу более приличную или возьму чужую заготовку и переделаю под свои нужды. В любом случае, оттачивать эту времянку смысла нет.</p>
+<h2 id="_6">Выбор компилятора</h2>
+<p>Можно продолжить работу, написать что-то более интересное. Но немного смущает тот факт, что у WinAVR последняя активность автора проекта проявлялась довольно давно. Если проект заброшен, то не хотелось бы начинать с его использования, так как если вдруг начнет получаться что-то более-менее серьезное, потом могут появиться проблемы при необходимости перевода на другой более современный и развитый инструмент компиляции и сборки.</p>
+<p>Кроме того, WinAVR &mdash; это, все-таки, для Windows, поэтому надо как минимум найти аналог для Linux, точнее наоборот &mdash; то в Linux, из чего сделали этот аналог (потому как основой является gcc и ряд линуксовых утилит). А еще лучше найти нечто кроссплатформенное, чтобы проекты (те же Makefile) можно было перемещать между системами без правок.</p>
+<p>Стал копать в этом направлении. Накопал, что автор WinAVR работает теперь в Atmel в этом же направлении, над компилятором, входящим в состав Atmel Studio, а также доступным отдельно в виде Atmel AVR Toolchain <a href="http://www.atmel.com/tools/ATMELAVRTOOLCHAINFORWINDOWS.aspx" title="Atmel AVR Toolchain for Windows">for Windows</a> и <a href="http://www.atmel.com/tools/ATMELAVRTOOLCHAINFORLINUX.aspx" title="Atmel AVR Toolchain for Linux">for Linux</a></p>
+<p>Казалось бы, Atmel AVR Toolchain и WinAVR &mdash; это одно и то же, тем более, что от того же автора. Однако есть заметные отличия:</p>
+<ul>
+<li>В WinAVR входят утилиты для AVR и AVR32, а в Toolchain это разные комплекты;</li>
+<li>В Toolchain нет своего редактора, типа Programmer`s notepad, что само по себе не страшно, нормальных редакторов для написания кода навалом, предпочитаю VIM;</li>
+<li>В WinAVR есть папка sample, а в Toolchain только примеры, запрятанные в папке doc (которая есть и в WinAVR);</li>
+<li>Самое неприятное &mdash; в Toolchain нет папки utils, в которой есть командная оболочка sh. Значит, придется еще поставить линуксообразную среду, типа cygwin или mingw.</li>
+</ul>
+<p>Наверняка можно переделать Makefile таким образом, чтобы компиляция запускалась с использованием командной оболочки Windows. Однако так получилось, что cygwin у меня уже имеется, было нужно раньше по другим причинам. Опять же, Makefile пришлось бы делать разные для разных типов операционных систем.</p>
+<p>Cygwin, повторюсь, у меня установлен, причем, в довольно таки полной комплектации &mdash; довольно много выбрано пунктов в основном разделе, разделах разработки и отладки, практически все системные утилиты и, конечно, vim. В подробности установки вдаваться не буду, это отдельная тема.</p>
+<p>Запустил терминал, добавил в настройках bash добавку к системной переменной PATH &mdash; путь к Atmel AVR Toolchain:</p>
+<p><img alt="vim" src="http://romeogolf.site/images/usb-polygon/vim.png" title="vim ./.bashrc" /> 
+<img alt="bashrc" src="http://romeogolf.site/images/usb-polygon/bashrc.png" title="bashrc" /> </p>
+<p>Заодно добавил HISTCONTROL для удобства. Запустил для пробы make clean:</p>
+<p><img alt="cygwin-make-clean" src="http://romeogolf.site/images/usb-polygon/cygwin-make-clean.png" title="make clean in cygwin" /> </p>
+<p>Ну, и для гарании &mdash; make:</p>
+<p><a href="http://romeogolf.site/images/usb-polygon/cygwin-make.png" title="make clean in cygwin"><img alt="cygwin-make" src="http://romeogolf.site/images/usb-polygon/preview/cygwin-make-small.png" title="make clean in cygwin" /></a> </p>
+<p>Как видно, результаты идентичные с WinAVR. При этом, не пришлось трогать Makefile, и проект работоспособен в разных вариантах Windows (при установленном cygwin) и в Linux. WinAVR можно удалять. Atmel AVR Toolchain при желании можно позднее прикрутить к какой-нибудь среде, или к Atmel Studio, или (для пущей кроссплатформенности) к Eclipse, но пока вполне достаточно консоли. Для навигации по файлам проекта &mdash; любой файловый менеджер (у меня Unreal Commander), для написания/редактирования текста программ &mdash; любой текстовый редактор (у меня GVIM for Windows) и для компиляции &mdash; make в консоли cygwin. Пока что достаточно, а там видно будет.</p>
+<h2 id="_7">Итог</h2>
+<p>Устройство работоспособно, определяется, прошивается, запускается и сбрасывается. Инструмент выбран и худо-бедно настроен.</p>
+<p>В общем, все заработало, и можно приступать к чему-то более интересному, чем моргание светодиодиком. По крайней мере, хотя бы управляемое моргание. А уж больше всего хочется связаться с компьютером по USB и передавать туда-сюда какие-нибудь пакеты каких-нибудь данных. Но это уже другая история.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.site/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "usb-polygon-3.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
