@@ -1,5 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.site/" rel="alternate"></link><link href="http://romeogolf.site/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.site/</id><updated>2016-08-23T20:00:00+05:00</updated><entry><title>USB-polygon-3: Первое включение</title><link href="http://romeogolf.site/usb-polygon-3.html" rel="alternate"></link><updated>2016-08-23T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.site,2016-08-23:usb-polygon-3.html</id><summary type="html">&lt;div class="toc"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.site/" rel="alternate"></link><link href="http://romeogolf.site/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.site/</id><updated>2016-09-27T20:00:00+05:00</updated><entry><title>USB-polygon-4: Обмен по USB, начало</title><link href="http://romeogolf.site/usb-polygon-4.html" rel="alternate"></link><updated>2016-09-27T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.site,2016-09-27:usb-polygon-4.html</id><summary type="html">&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#_1"&gt;Выбор класса устройства&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_2"&gt;Выбор библиотеки&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_3"&gt;Подготовка&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_4"&gt;&amp;laquo;&amp;hellip; доработать напильником&amp;raquo;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_5"&gt;Маленькое расширение программы&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_6"&gt;Что дальше?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2 id="_1"&gt;Выбор класса устройства&lt;/h2&gt;
+&lt;p&gt;Продолжаю разговор про самодельную отладочную плату на контроллере AT90USB162.&lt;/p&gt;
+&lt;p&gt;В примененном контроллере есть возможность подключения к компьютеру по USB. Прежде чем использовать эту возможность, нужно определиться с классом устройства. Операционная система будет общаться с устройством посредством драйверов и выбирать соответствующий драйвер в зависимости от класса. Так что же выбрать?&lt;/p&gt;
+&lt;p&gt;В той же &lt;a href="https://en.wikipedia.org/wiki/USB#PHDC"&gt;Википедии&lt;/a&gt; насчитывается порядка двух десятков классов USB-устройств. Для сделанной отладочной платы можно сразу исключить узкоспецифичные, например, Audio, Video, Image, Printer и прочее подобное, а также Wireless Controller, поскольку к беспроводной связи этот макет не приспособлен совсем. Тогда выбор ограничивается такими классами:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;00 Unspesified&lt;/li&gt;
+&lt;li&gt;02 Communication Device Class &amp;amp; 0A CDC-data&lt;/li&gt;
+&lt;li&gt;03 Human Interface Device&lt;/li&gt;
+&lt;li&gt;05 Physical Interface Device&lt;/li&gt;
+&lt;li&gt;08 MassStorage Device Class&lt;/li&gt;
+&lt;li&gt;DC Diagnostic Device&lt;/li&gt;
+&lt;li&gt;EF Miscellaneous&lt;/li&gt;
+&lt;li&gt;FE Application-specific&lt;/li&gt;
+&lt;li&gt;FF Vendor-specific&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Классы Unspesified, Application-specific, Vendor-specific, Miscellaneous страшновато даже рассматривать. Явно придется делать много работы вручную &amp;mdash; писать кучу кода для устройства, наверняка писать драйвер для операционной системы. Хотелось бы для начала что-то попроще.&lt;/p&gt;
+&lt;p&gt;Про Diagnostic Device и Physical Interface Device не нашел информации. То есть, составить представление, что это за штуки такие &amp;mdash; можно, а как это сделать самому, да попроще &amp;mdash; не нашел.&lt;/p&gt;
+&lt;p&gt;CDC &amp;mdash; вроде бы неплохой класс, предназначенный для передачи приличных объемов информации в обоих направлениях. И теоретически эту информацию можно использовать не только таким способом, какой предполагает класс устройства, то есть, не только для преобразования в другие виды интерфейсов (типа COM), но и для управления самим устройством и даже для хранения на устройстве. Но все же этот класс тоже достаточно специфичен и узконаправлен. Не понравился он мне.&lt;/p&gt;
+&lt;p&gt;HID &amp;mdash; ничего себе штучка для реализации устройства с небольшими объемами и скоростями циркулирующей информации. В Windows работа с ним довольно проста благодаря встроенным драйверам. Я даже попробовал как-то сделать простенькую макетку на AT89C5131 по книге Агурова. Все оказалось довольно просто, где-то за неделю (занимаясь вечерами) устройство заработало. Однако у этого класса есть несколько минусов, которые мне сильно не понравились. Во-первых, хотя драйвер такому устройству не нужен, все же нужен INF-файл. То есть, воткнуть в любой компьютер, чтобы сразу заработало, не получится. Во-вторых, скорости обмена весьма дохленькие. Для моргания светодиодиком &amp;mdash; более чем достаточно, но я еще не знаю, во что выльется мой макет. Есть предположение, что в инструмент для настройки и отладки другого прибора с передачей приличных объемов информации, с записью промежуточных результатов работы в файл с последующим считыванием и все такое. Кроме того, после беглого обзора по форумам у меня сложилось впечатление, что в Linux работа с HID далеко не так проста, как в Windows, а как с этим делом в Android, я вообще не понял.&lt;/p&gt;
+&lt;p&gt;MassStorage Device &amp;mdash; на первый взгляд самое оно. Рассчитано на большие объемы информации, удовлетворительные скорости, в современных ОС не требует драйверов для установки. Да что там, современных &amp;mdash; где-то с Windows Me уже не требует. Тоже, конечно, не без недостатков. Во-первых, обмен может вестись только по инициативе хост-устройства, то есть, компьютера. Во-вторых, не мешало бы реализовать файловую систему, даже если она не нужна вовсе. Хотя, можно и обойтись, но придется заниматься костылевелосипедостроением. Опять же, строить файловую систему там, где она не нужна &amp;mdash; тоже велосипедокостыли те еще. И в-третьих, забегая вперед, уже после реализации этого класса был обнаружен неприятный факт: работа с MassStorage кэшируется ОС, и изменения на устройстве, видимые под видом файлов, системой игнорируются, так как данные читаются один раз ив дальнейшем берутся не из устройства, а из кэша. Это, конечно, можно объехать на кривой козе, но придется что-то писать вручную, а что именно &amp;mdash; я пока не знаю.&lt;/p&gt;
+&lt;p&gt;Есть еще казалось бы заманчивый вариант: MTP, Media Transfer Protocol. Активно используется современными смартфонами на Android. Вроде бы позволяет и обновившиеся данные в файлах перечитывать, и потоковые данные передавать/забирать. Вот только беглый обзор реализации на устройстве немного пугает, а поддержка в ОС огорчает: мне, к сожалению, надо еще пользоваться местами Windows XP, а я не смог по-человечески подключить к ней свой смартфон с четвертым андроидом. В семерке &amp;mdash; вопросов нет, в восьмом Debian &amp;mdash; тоже, но мне-то и XP надо. Опять же, вопрос &amp;mdash; можно ли подключить MTP-устройство к, скажем, планшету с Android? Пока не знаю, а MassStorage &amp;mdash; однозначно можно. Плюс к этому относительно невысокая скорость обмена большими объемами и разработчик &amp;mdash; Microsof, что настораживает.&lt;/p&gt;
+&lt;p&gt;В общем, остановился на MassStorage Device, попросту говоря, флэшка.&lt;/p&gt;
+&lt;h2 id="_2"&gt;Выбор библиотеки&lt;/h2&gt;
+&lt;p&gt;Несколько лет назад, как я уже упоминал, попробовал сделать простую макетку на AT89C5131. Никаких библиотек не использовал, но тогда и выбора особого не было, и с HID-устройствами работать несколько проще, и я тогда предпочитал собственные велосипеды готовым решениям даже в ущерб простоте и скорости написания кода. Сегодня я сначала посмотрю, нельзя ли подтянуть что-то готовое. Конечно, не всегда использование библиотек является оптимальным, например, если огромный монстр имеет тучу возможностей, а надо только моргнуть диодиком, или наоборот, дохленький кусочек кода для своих целей еще пилить и пилить, так что проще сразу с нуля начать. Ну, посмотрим, что есть готового.&lt;/p&gt;
+&lt;p&gt;Во-первых, конечно, родная атмеловская библиотека. В ней привлекает то, что она все же родная, под эти контроллеры заточенная, да еще и самим производителем. Документация опять же на сайте Atmel имеется, и на первый взгляд даже неплохая и с примерами.&lt;/p&gt;
+&lt;p&gt;Во-вторых, одна из самых популярных (по встречаемости на форумах и в результатах выдачи поисковиков) библиотека LUFA. Очень хорошие отзывы на форумах, широкий спектр применения, уже образовавшееся сообщество с возможностью найти ответы на возникающие вопросы, очень нетребовательная лицензя MIT (если вдруг макет перерастет во что-то значительное). Заточена под AVR-GCC, входящий в состав AVR-Toolchain, то есть, с чем я и так собирался работать.&lt;/p&gt;
+&lt;p&gt;В-третьих, V-USB. Библиотека с обилием примеров применения, но ее основной фишкой является программная эмуляция USB для контроллеров, не имеющих аппаратной реализации, кроме того, с ее использованием в основном встречались HID-устройства. Впрочем, достаточно и того, что это программная эмуляция. Не нужно.&lt;/p&gt;
+&lt;p&gt;В-четвертых, все прочие, типа Dr. Stefan Salewski&amp;rsquo;s AT90USB1287 Stack, PJRC Teensy Stack и все такое. Не очень популярные решения разного рода, имеющие крайне мало примеров, где можно было бы подсмотреть особенности практического применения. Не вижу причин использовать что-то из них, поскольку это именно тот случай, когда допиливать может оказаться не проще, чем собрать с нуля самому.&lt;/p&gt;
+&lt;p&gt;Посмотрел бегло по диагонали документацию к USB-стеку Atmel и описание примеров. Потом заглянул на &lt;a href="http://www.fourwalledcubicle.com/LUFA.php"&gt;страничку LUFA&lt;/a&gt;, где ознакомился с кратким описанием, скачал библиотеку и документацию. И LUFA понравилась больше. Порылся немножко по форумам: там тоже решение от Atmel больше ругают, чем хвалят, а LUFA &amp;mdash; наоборот. Ладно, выбираю LUFA.&lt;/p&gt;
+&lt;h2 id="_3"&gt;Подготовка&lt;/h2&gt;
+&lt;p&gt;На упомянутой чуть выше страничке LUFA скачал саму библиотеку и документацию к ней. В архиве с библиотекой есть папка &lt;code&gt;LUFA&lt;/code&gt; &amp;mdash; собственно, библиотека, и папка &lt;code&gt;DEMOS&lt;/code&gt; &amp;mdash; это не &amp;laquo;народ&amp;raquo; по-гречески, это примеры применения. Примеры замечательные и на самые разные случаи жизни, для устройств, хостов и приборов, которые способны и на то, и на другое. В папке &lt;code&gt;lufa-LUFA-151115\Demos\Device\LowLevel\&lt;/code&gt; можно найти и аудиоустройство, и мышь с клавиатурой, и HID, но, самое главное, там есть MassStorage. &lt;/p&gt;
+&lt;p&gt;Делаю отдельную папку для проекта, скажем, &lt;code&gt;lufa-test&lt;/code&gt;, и копирую в нее упомянутые &lt;code&gt;LUFA&lt;/code&gt; и &lt;code&gt;MassStorage&lt;/code&gt;. Разумеется, библиотеку можно не копировать, на то она и библиотека, но мало ли&amp;hellip; Вдруг захочется поковыряться немного в ее исходниках, так чтоб не запороть оригинал. А уж в &lt;code&gt;MassStorage&lt;/code&gt; буду ковыряться по полной программе, для того и копирую. Это будет основная папка проекта для макета.&lt;/p&gt;
+&lt;p&gt;Там уже лежит Makefile, значит, можно попробовать запустить &lt;code&gt;make&lt;/code&gt;, но не просто так, а в предварительно настроенном cygwin (о выборе и настройке компилятора &amp;mdash; в предыдущем &lt;a href="http://romeogolf.site/usb-polygon-3.html"&gt;выпуске&lt;/a&gt; цикла). Сперва захожу в соответствующую папку:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; /cygdrive/k/radio/asm/lufa-test/MassStorage/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;и командую &lt;code&gt;make&lt;/code&gt;. Получаю ответ:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;makefile:38: ../../../../LUFA/Build/lufa_atprogram.mk: No such file or directory
+make: *** Нет правила для сборки цели «../../../../LUFA/Build/lufa_atprogram.mk».  Останов.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Что не удивительно. Надо было все-таки сначала открыть и отредактировать Makefile под свои нужды. Для начала надо найти в нем переменную &lt;code&gt;LUFA_PATH&lt;/code&gt; и оставить в ней только одну пару точек в пути: &lt;code&gt;../LUFA&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Вот теперь &lt;code&gt;make&lt;/code&gt; замечательно запускается, проект компилируется, в папке проекта создаются всякого рода файлы, которых не было. Даже появился MassStorage.hex, который можно прошить в устройство посредством FLIP. Вот только не стоит пока этого делать &amp;mdash; бесполезно. &lt;/p&gt;
+&lt;p&gt;Первая же переменная в Makefile &amp;mdash; &lt;code&gt;MCU&lt;/code&gt; &amp;mdash; указывает на контроллер at90usb1287, а у меня at90usb162.
+Третья переменная &amp;mdash; &lt;code&gt;BOARD&lt;/code&gt; &amp;mdash; указывает на какую-то отладочную плату. Не важно, какую, важно, что у меня &amp;mdash; никакая, в списках не значится. &lt;/p&gt;
+&lt;p&gt;Однако, начало положено, есть какая-то заготовка.&lt;/p&gt;
+&lt;h2 id="_4"&gt;&amp;laquo;&amp;hellip; доработать напильником&amp;raquo;&lt;/h2&gt;
+&lt;p&gt;Начинаю подгонять заготовку под то, что имеется.&lt;/p&gt;
+&lt;p&gt;Для начала заменяю в Makefile значение &lt;code&gt;MCU&lt;/code&gt; с &lt;code&gt;at90usb1287&lt;/code&gt; на &lt;code&gt;at90usb162&lt;/code&gt;, а значение &lt;code&gt;BOARD&lt;/code&gt; &amp;mdash; на &lt;code&gt;NONE&lt;/code&gt;, чищу результаты компиляции при помощи &lt;code&gt;make clean&lt;/code&gt; и снова запускаю &lt;code&gt;make&lt;/code&gt;. Компиляция сваливается с ошибкой. Да не с одной, а с целой кучей:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;... до сих пор более-менее нормально ...
+
+Lib/DataflashManager.c: In &lt;span class="k"&gt;function&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;DataflashManager_WriteBlocks&amp;#39;&lt;/span&gt;:
+Lib/DataflashManager.c:52:77: warning: division by zero &lt;span class="o"&gt;[&lt;/span&gt;-Wdiv-by-zero&lt;span class="o"&gt;]&lt;/span&gt;
+  uint16_t &lt;span class="nv"&gt;CurrDFPage&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;BlockAddress * VIRTUAL_MEMORY_BLOCK_SIZE&lt;span class="o"&gt;)&lt;/span&gt; / D
+ATAFLASH_PAGE_SIZE&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                                                             ^
+Lib/DataflashManager.c:53:77: warning: division by zero &lt;span class="o"&gt;[&lt;/span&gt;-Wdiv-by-zero&lt;span class="o"&gt;]&lt;/span&gt;
+  uint16_t &lt;span class="nv"&gt;CurrDFPageByte&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;BlockAddress * VIRTUAL_MEMORY_BLOCK_SIZE&lt;span class="o"&gt;)&lt;/span&gt; % D
+ATAFLASH_PAGE_SIZE&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                                                             ^
+Lib/DataflashManager.c:68:21: error: &lt;span class="s1"&gt;&amp;#39;DF_CMD_BUFF1WRITE&amp;#39;&lt;/span&gt; undeclared &lt;span class="o"&gt;(&lt;/span&gt;first use i
+n this &lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  Dataflash_SendByte&lt;span class="o"&gt;(&lt;/span&gt;DF_CMD_BUFF1WRITE&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                     ^
+Lib/DataflashManager.c:68:21: note: each undeclared identifier is reported only 
+once &lt;span class="k"&gt;for&lt;/span&gt; each &lt;span class="k"&gt;function&lt;/span&gt; it appears in
+Lib/DataflashManager.c:98:44: error: &lt;span class="s1"&gt;&amp;#39;DF_CMD_BUFF2TOMAINMEMWITHERASE&amp;#39;&lt;/span&gt; undeclared
+ &lt;span class="o"&gt;(&lt;/span&gt;first use in this &lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+     Dataflash_SendByte&lt;span class="o"&gt;(&lt;/span&gt;UsingSecondBuffer ? DF_CMD_BUFF2TOMAINMEMWITHERASE : DF_
+CMD_BUFF1TOMAINMEMWITHERASE&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                            ^
+Lib/DataflashManager.c:98:77: error: &lt;span class="s1"&gt;&amp;#39;DF_CMD_BUFF1TOMAINMEMWITHERASE&amp;#39;&lt;/span&gt; undeclared
+ &lt;span class="o"&gt;(&lt;/span&gt;first use in this &lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+     Dataflash_SendByte&lt;span class="o"&gt;(&lt;/span&gt;UsingSecondBuffer ? DF_CMD_BUFF2TOMAINMEMWITHERASE : DF_
+CMD_BUFF1TOMAINMEMWITHERASE&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                                                             ^
+In file included from ../LUFA/../LUFA/Drivers/USB/USB.h:382:0,
+                 from Lib/../Descriptors.h:40,
+                 from Lib/../MassStorage.h:45,
+                 from Lib/DataflashManager.h:42,
+                 from Lib/DataflashManager.c:40:
+../LUFA/../LUFA/Drivers/Board/Dataflash.h:141:60: error: &lt;span class="s1"&gt;&amp;#39;DATAFLASH_CHIP0&amp;#39;&lt;/span&gt; undec
+lared &lt;span class="o"&gt;(&lt;/span&gt;first use in this &lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="c1"&gt;#define DATAFLASH_CHIP_MASK(index)      CONCAT_EXPANDED(DATAFLASH_CHIP, inde&lt;/span&gt;
+x&lt;span class="o"&gt;)&lt;/span&gt;
+                                                            ^
+../LUFA/../LUFA/Drivers/USB/../../Common/Common.h:210:37: note: in definition of
+ macro &lt;span class="s1"&gt;&amp;#39;CONCAT&amp;#39;&lt;/span&gt;
+     &lt;span class="c1"&gt;#define CONCAT(x, y)            x ## y&lt;/span&gt;
+                                     ^
+... и тому подобное ...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;И при беглом просмотре похоже на то, что все ошибки связаны с DataflashManager, модулем, расположенным тут же в папке &lt;code&gt;Lib&lt;/code&gt;. Модуль явно отвечает за управление флэш-памятью, это видно даже из названия, но написано и внутри в Doxygen-комментарии. А у меня на плате флэш нету и в ближайшем будущем не ожидается. Попробую тупо вырезать это дело: убираю в Makefile из значения переменной &lt;code&gt;SRC&lt;/code&gt; запись &amp;laquo;&lt;code&gt;Lib/DataflashManager.c&lt;/code&gt;&amp;raquo;, в h-файлах закрываю &amp;laquo;&lt;code&gt;include "DataflashManager.h"&lt;/code&gt;&amp;raquo;, в MassStorage.c и SCSI.c нахожу и закрываю (символами комментария) все строки с функциями, начинающимися с &lt;code&gt;Dataflash&lt;/code&gt;. Причем, естественно, не только сами строки, но всю содержащую конструкцию, типа &lt;code&gt;if&lt;/code&gt;, скажем.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;$ make
+ &lt;span class="o"&gt;[&lt;/span&gt;INFO&lt;span class="o"&gt;]&lt;/span&gt;    : Begin compilation of project &lt;span class="s2"&gt;&amp;quot;MassStorage&amp;quot;&lt;/span&gt;...
+
+avr-gcc.exe &lt;span class="o"&gt;(&lt;/span&gt;AVR_8_bit_GNU_Toolchain_3.5.2_1680&lt;span class="o"&gt;)&lt;/span&gt; 4.9.2
+Copyright &lt;span class="o"&gt;(&lt;/span&gt;C&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="m"&gt;2014&lt;/span&gt; Free Software Foundation, Inc.
+This is free software&lt;span class="p"&gt;;&lt;/span&gt; see the &lt;span class="nb"&gt;source&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; copying conditions.  There is NO
+warranty&lt;span class="p"&gt;;&lt;/span&gt; not even &lt;span class="k"&gt;for&lt;/span&gt; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+ &lt;span class="o"&gt;[&lt;/span&gt;GCC&lt;span class="o"&gt;]&lt;/span&gt;     : Compiling C file &lt;span class="s2"&gt;&amp;quot;SCSI.c&amp;quot;&lt;/span&gt;
+avr-gcc -c -pipe -gdwarf-2 -g2 -mmcu&lt;span class="o"&gt;=&lt;/span&gt;at90usb162 -fshort-enums -fno-inline-small-
+functions -fpack-struct -Wall -fno-strict-aliasing -funsigned-char -funsigned-bi
+tfields -ffunction-sections -I. -I../LUFA/.. -DARCH&lt;span class="o"&gt;=&lt;/span&gt;ARCH_AVR8 -DBOARD&lt;span class="o"&gt;=&lt;/span&gt;BOARD_NONE
+-DF_USB&lt;span class="o"&gt;=&lt;/span&gt;8000000UL -DF_CPU&lt;span class="o"&gt;=&lt;/span&gt;8000000UL -mrelax -fno-jump-tables -x c -Os -std&lt;span class="o"&gt;=&lt;/span&gt;gnu9 
+&lt;span class="m"&gt;9&lt;/span&gt; -Wstrict-prototypes -DUSE_LUFA_CONFIG_HEADER -IConfig/  -MMD -MP -MF Lib/SCSI.
+d Lib/SCSI.c -o Lib/SCSI.o
+Lib/SCSI.c: In &lt;span class="k"&gt;function&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;SCSI_Command_Read_Capacity_10&amp;#39;&lt;/span&gt;:
+Lib/SCSI.c:216:23: error: &lt;span class="s1"&gt;&amp;#39;LUN_MEDIA_BLOCKS&amp;#39;&lt;/span&gt; undeclared &lt;span class="o"&gt;(&lt;/span&gt;first use in this funct
+ion&lt;span class="o"&gt;)&lt;/span&gt;
+  Endpoint_Write_32_BE&lt;span class="o"&gt;(&lt;/span&gt;LUN_MEDIA_BLOCKS - 1&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                       ^
+Lib/SCSI.c:216:23: note: each undeclared identifier is reported only once &lt;span class="k"&gt;for&lt;/span&gt; ea
+ch &lt;span class="k"&gt;function&lt;/span&gt; it appears in
+Lib/SCSI.c:219:23: error: &lt;span class="s1"&gt;&amp;#39;VIRTUAL_MEMORY_BLOCK_SIZE&amp;#39;&lt;/span&gt; undeclared &lt;span class="o"&gt;(&lt;/span&gt;first use in t
+his &lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  Endpoint_Write_32_BE&lt;span class="o"&gt;(&lt;/span&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                       ^
+Lib/SCSI.c: In &lt;span class="k"&gt;function&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;SCSI_Command_ReadWrite_10&amp;#39;&lt;/span&gt;:
+Lib/SCSI.c:298:22: error: &lt;span class="s1"&gt;&amp;#39;LUN_MEDIA_BLOCKS&amp;#39;&lt;/span&gt; undeclared &lt;span class="o"&gt;(&lt;/span&gt;first use in this funct
+ion&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;BlockAddress &amp;gt;&lt;span class="o"&gt;=&lt;/span&gt; LUN_MEDIA_BLOCKS&lt;span class="o"&gt;)&lt;/span&gt;
+                      ^
+Lib/SCSI.c:320:62: error: &lt;span class="s1"&gt;&amp;#39;VIRTUAL_MEMORY_BLOCK_SIZE&amp;#39;&lt;/span&gt; undeclared &lt;span class="o"&gt;(&lt;/span&gt;first use in t
+his &lt;span class="k"&gt;function&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  CommandBlock.DataTransferLength -&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;uint32_t&lt;span class="o"&gt;)&lt;/span&gt;TotalBlocks * VIRTUAL_MEMORY_BLO
+CK_SIZE&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                                              ^
+make: *** &lt;span class="o"&gt;[&lt;/span&gt;../LUFA/Build/lufa_build.mk:295: Lib/SCSI.o&lt;span class="o"&gt;]&lt;/span&gt; Ошибка 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;После компиляции стало чуть получше, то есть, ошибок поменьше, но &amp;laquo;чуть&amp;raquo; не считается, потому что все равно не компилируется. А это потому, что теперь неизвестны константы, объявленные в DataflashManager. Ладно, &lt;code&gt;include&lt;/code&gt; возвращаю. Функции из этого модуля закрыты, компиляции модуль тоже не подлежит, но нужное из него возьмем.&lt;/p&gt;
+&lt;p&gt;Чищу результаты неудачной компиляции, запускаю &lt;code&gt;make&lt;/code&gt; &amp;mdash; Ура! Откомпилировано!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;... много-премного букв ...
+
+avr-size --mcu&lt;span class="o"&gt;=&lt;/span&gt;at90usb162 --format&lt;span class="o"&gt;=&lt;/span&gt;avr MassStorage.elf
+AVR Memory Usage
+----------------
+Device: at90usb162
+
+Program:    &lt;span class="m"&gt;4054&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;24.7% Full&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;.text + .data + .bootloader&lt;span class="o"&gt;)&lt;/span&gt;
+
+Data:        &lt;span class="m"&gt;113&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;22.1% Full&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;(&lt;/span&gt;.data + .bss + .noinit&lt;span class="o"&gt;)&lt;/span&gt;
+
+
+ &lt;span class="o"&gt;[&lt;/span&gt;INFO&lt;span class="o"&gt;]&lt;/span&gt;    : Finished building project &lt;span class="s2"&gt;&amp;quot;MassStorage&amp;quot;&lt;/span&gt;.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Запускаю FLIP. Не забываю на подключенной плате нажать Reset, не отпуская, нажать HWB, отпустить Reset, отпустить HWB. После чего в окне FLIP подключаюсь к плате, загружаю hex-файл и жму Run. Прошивка загружается. &lt;/p&gt;
+&lt;p&gt;Теперь плата отображается в Windows XP и в семерке в виде флэшки &amp;laquo;LUFA Dataflash Disk USB Device&amp;raquo;, ему выделяется буква диска, можно посмотреть свойства. Он пустой, без файловой системы, и Windows 7 все порывается при подключении его отформатировать.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="new-dew-lufa" src="http://romeogolf.site/images/usb-polygon/new-dev-lufa.png" title="New device LUFA" /&gt; 
+&lt;a href="http://romeogolf.site/images/usb-polygon/lufa-pref.png" title="LUFA preference"&gt;&lt;img alt="lufa-pref" src="http://romeogolf.site/images/usb-polygon/preview/lufa-pref-small.png" title="LUFA preference" /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;И в диспетчере устройств плата прописалась аж в трех местах (на примере Windows XP): &amp;laquo;Дисковые устройства&amp;raquo;, &amp;laquo;Контроллеры универсальной последовательной шины USB&amp;raquo; и &amp;laquo;Тома запоминающих устройств&amp;raquo;.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://romeogolf.site/images/usb-polygon/dev-man-lufa.png" title="LUFA preference"&gt;&lt;img alt="dev-man-lufa" src="http://romeogolf.site/images/usb-polygon/preview/dev-man-lufa-small.png" title="LUFA preference" /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;h2 id="_5"&gt;Маленькое расширение программы&lt;/h2&gt;
+&lt;p&gt;Теперь компьютер думает, что моя плата пусть хреновенькая, но все-таки флэшка. Однако, кроме как создавать видимость флэшки, плата больше ничего пока не может. А у нее ведь есть светодиодики и кнопки! Зря, что ли?&lt;/p&gt;
+&lt;p&gt;И вообще смешно получается &amp;mdash; взял готовый пример и только выкидывал из него лишнее. Надо же что-то и добавить!&lt;/p&gt;
+&lt;p&gt;Открываю основной файл проекта &amp;mdash; MassStorage.c. Ага, а в нем еще есть что убрать. Закрываю все строки с функциями, начинающимися на &amp;laquo;LEDs&amp;raquo;, потому что у меня хоть и есть светодиоды, но совсем не такие и не там. Кстати, заодно в MassStorage.h закрываю &amp;laquo;&lt;code&gt;include &amp;lt;LUFA/Drivers/Board/LEDs.h&amp;gt;&lt;/code&gt;&amp;raquo;, &amp;laquo;&lt;code&gt;include &amp;lt;LUFA/Drivers/Board/Dataflash.h&amp;gt;&lt;/code&gt;&amp;raquo; и &amp;laquo;&lt;code&gt;include &amp;lt;LUFA/Platform/Platform.h&amp;gt;&lt;/code&gt;&amp;raquo;, потому что у меня несколько не тот BOARD, что предполагался в демонстрационном примере.&lt;/p&gt;
+&lt;p&gt;Но вернмся к основному сишному файлу. Главная функция, как очевидно следует из названия, &lt;code&gt;main&lt;/code&gt;. В ней все, что идет перед началом бесконечного цикла &amp;mdash; инициализация всякого рода сущностей, от программных переменных до аппаратных регистров. В самом цикле &lt;code&gt;for (;;)&lt;/code&gt; будет крутиться то, что нам собственно и надо. Сейчас там вертится обработка событий USB, не требующая вот-прям-щаз-реакции, то, что не надо делать в прерываниях.&lt;/p&gt;
+&lt;p&gt;Инициализирую порты: порт D, на котором у меня светодиоды, и порт C, на котором кнопки. После имеющейся в заготовке строчки &lt;code&gt;GlobalInterruptEnable();&lt;/code&gt; пишу:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// начальное значение - все нули&lt;/span&gt;
+    &lt;span class="n"&gt;DDRD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0xFF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// все линии порта на вывод&lt;/span&gt;
+    &lt;span class="n"&gt;PORTC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// без &amp;quot;подтяжки&amp;quot; (есть внешняя)&lt;/span&gt;
+    &lt;span class="n"&gt;DDRC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// все линии порта на ввод&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;И объявляю переменные:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;        &lt;span class="c1"&gt;// тупо счетчик&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cnt_bt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// счетчик нажатий на кнопки&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mode_out&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;   &lt;span class="c1"&gt;// режим вывода&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// состояние кнопок&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;bt_old&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// состояние кнопок в прошлый раз&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Дальше в цикле &lt;code&gt;for (;;)&lt;/code&gt; после строчки &lt;code&gt;USB_USBTask();&lt;/code&gt; можно писать всякую отсебятину:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                              &lt;span class="c1"&gt;// инкремент счетчика - чтобы что-то изменялось&lt;/span&gt;
+        &lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PINC&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                      &lt;span class="c1"&gt;// считывание порта с кнопками&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;bt_old&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;             &lt;span class="c1"&gt;// если состояние порта изменилось&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;     &lt;span class="c1"&gt;// если нажаты сразу две верхние кнопки на разрядах 3 и 4&lt;/span&gt;
+            &lt;span class="n"&gt;mode_out&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                 &lt;span class="c1"&gt;// циклически изменить режим отображения,&lt;/span&gt;
+            &lt;span class="n"&gt;mode_out&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mode_out&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// которых всего 4 - 0, 1, 2 и 3 (2 разряда по маске)&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;                        &lt;span class="c1"&gt;// в противном случае&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cnt_bt&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  &lt;span class="c1"&gt;// верхняя кнопка увеличивает счет нажатий&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cnt_bt&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  &lt;span class="c1"&gt;// а вторая сверху - уменьшает&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="n"&gt;bt_old&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bt_now&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                &lt;span class="c1"&gt;// и сохраняем состояние порта для следующей проверки&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А дальше вывожу в порт D, то есть, на светодиоды, некоторые данные в зависимости от режима:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="k"&gt;switch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mode_out&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; 
+            &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// просто счетчик&lt;/span&gt;
+            &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; 
+            &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bt_now&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// состояние кнопок&lt;/span&gt;
+            &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cnt_bt&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// счетчик нажатий&lt;/span&gt;
+            &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x55&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// просто константа&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Теперь если я нажму на две верхние кнопки одновременно, то могу переключать выводимые данные:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;В режиме счетчика светодиоды горят все. Потому что счетчик на такой частоте успевает прокручиваться с таким темпом обновления, что глазом уследить за морганием светодиода практически нереально.&lt;/li&gt;
+&lt;li&gt;В режиме состояния кнопок горят светодиоды, соответствующие ненажатой кнопке, потому что нажатые кнопки замыкают подтянутый вывод на корпус.&lt;/li&gt;
+&lt;li&gt;В режиме счетчика нажатий верхняя кнопка увеличивает значение, выдаваемое на светодиодах, а вторая сверху кнопка &amp;mdash; уменьшает.&lt;/li&gt;
+&lt;li&gt;В режиме константы светодиоды горят через один, что соответствует шестнадцатиричной константе 0x55.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;При попытке переключения режимов, а также в режиме счетчика нажатий наглядно видна проблема дребезга контактов. Режимы скачут хаотично, счетчик изменяется не на еденицу, и на на какое-то фиксированное число, а тоже как хочет. В моем случае одна кнопка дребезжала настолько выразительно, что дребезг был заметен даже в режиме отображения текущего состояния. Это было, конечно, прикольно и наглядно, но настолько кошмарно, что я эту кнопку перепаял.&lt;/p&gt;
+&lt;p&gt;Самое простое, что можно здесь сделать &amp;mdash; это добавить задержку после конструкции &lt;code&gt;switch&lt;/code&gt;, например, вставить библиотечную функцию &lt;code&gt;_delay_ms(100);&lt;/code&gt;. Для того, чтобы оно заработала, надо не забыть добавить &lt;code&gt;include &amp;lt;util/delay.h&amp;gt;&lt;/code&gt; после &lt;code&gt;#include "MassStorage.h"&lt;/code&gt;. Теперь после компиляции и светодиоды в режиме счетчика перемигиваются с частотой 0,1 с, и на кнопки реакция более-менее нормальная, даже немного заторможенная: если нажимать быстро, некоторые нажатия могут пропуститься. &lt;/p&gt;
+&lt;p&gt;Но некрасиво это. И главный цикл тормозить так грубо &amp;mdash; очень плохо, и функция-задержка реализована так себе&amp;hellip; В общем, пришло время попробовать таймеры.&lt;/p&gt;
+&lt;p&gt;Убираю &lt;code&gt;_delay_ms()&lt;/code&gt;. Закрываю &lt;code&gt;cnt++;&lt;/code&gt;. После объявления переменных вставляю запуск таймеров:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="cm"&gt;/* запуск таймера 0 на период ~0.01 с */&lt;/span&gt;
+    &lt;span class="n"&gt;TCCR0B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;           &lt;span class="cm"&gt;/* 1 тик = 0.000032 с */&lt;/span&gt;
+    &lt;span class="n"&gt;TCNT0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;            &lt;span class="cm"&gt;/* 256 раз ~ 0.008192 с */&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* запуск таймера 1 на период 0.5 с */&lt;/span&gt;
+    &lt;span class="n"&gt;TCCR1B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;TCNT1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;65536&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;15625&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;После &lt;code&gt;USB_USBTask();&lt;/code&gt; проверяю таймер 1, и если он сработал &amp;mdash; увеличиваю счетчик:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="cm"&gt;/* проверка срабатывания таймера без прерываний */&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;TIFR1&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;TCNT1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;65536&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;15625&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;TIFR1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А всю остальную конструкцию &amp;mdash; от считывания порта с кнопками до отображения &amp;mdash; выполняем после проверки срабатывания таймера 0, для чего сразу после проверки таймера 1 вставляю следующее:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;TIFR0&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;TCNT0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;TIFR0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;и после завершающей &lt;code&gt;switch&lt;/code&gt; фигурной скобки ставлю еще одну скобку, закрывающую эту проверку. Хорошо бы еще соответственно сдвинуть отступы в коде для красоты.&lt;/p&gt;
+&lt;p&gt;Теперь светодиоды в режиме счетчика моргают с частотой в полсекунды. А с таймером 0 можно поиграться, устанавливая разные варианты &lt;code&gt;TCNT0&lt;/code&gt; и &lt;code&gt;TCCR0B&lt;/code&gt;, добиваясь такого времени опроса кнопок, чтобы и дребезг не влиял, и быстрые двойные щелчки по кнопке не пропускались. &lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;Предупреждение&lt;/dt&gt;
+&lt;dd&gt;Вообще-то говоря, приведенный код &amp;mdash; ни разу не пример для подражания. И разряды таким образом прописывать/маскировать нехорошо, и константы в коде числом задавать нездорово, и стиль оформления хромает. Но макет &amp;mdash; он и есть макет: и плата, и код. Я считаю позволительным для вещей, служащих лишь для проверки работоспособности, отступать от правил и стандартов в угоду быстроте. Тем более, что это не будет повторно использоваться или развиваться до чего-то приличного, а будет стерто и забыто.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;Итак, из заготовки (в качестве которой служит демонстрационный пример библиотеки LUFA) сделан &amp;laquo;проект&amp;raquo;, который позволяет компьютеру увидеть в плате &amp;laquo;флэшку&amp;raquo;, и при этом делает еще какую-то, пусть и не очень полезную, работу. Полноценного обмена с компьютером еще нет, хотя какой-то &amp;mdash; служебными пакетами &amp;mdash; уже есть.&lt;/p&gt;
+&lt;h2 id="_6"&gt;Что дальше?&lt;/h2&gt;
+&lt;p&gt;Раз обмен по USB как-то завелся, надо организовать обмен данными между платой и компьютером, причем, пользовательскими данными, которые нужны мне, а не компьютеру. Вижу три направления:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Обмен &amp;laquo;сырыми&amp;raquo; данными с &amp;laquo;железом&amp;raquo;, пользуясь дескриптором устройства, с помощью собственной программы.&lt;/li&gt;
+&lt;li&gt;Организация &amp;laquo;липовой&amp;raquo; файловой системы на устройстве и обмен средствами операционной системы &amp;mdash; посредством чтения/записи файлов, которых на самом деле нет, без написания программы для компьютере.&lt;/li&gt;
+&lt;li&gt;Организация &amp;laquo;липовой&amp;raquo; файловой системы и обмен данными через ReadFile/WriteFile, но уже с дескрипторами несуществующих в реальности файлов, опять же с помощью собственной программы.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Забегая вперед, скажу, что первый вариант проще с точки зрения программы для устройства (она уже почти готова), но сложнее в плане написания программы для ПК. Кроме того, в нем нехорошо с кроссплатформенностью, есть проблемы даже при переносе с Windows XP на семерку, не говоря о Linux. Второй вариант хорош тем, что для ПК вообще писать не надо, но не получается перечитать обновленный файл (если данные изменились, пока устройство было подключено), потому что данные кешируются при первом же чтении. И похоже, что финишем будет вынужденный третий вариант, но посмотрим, что получится.&lt;/p&gt;</summary><category term="usb-polygon"></category></entry><entry><title>USB-polygon-3: Первое включение</title><link href="http://romeogolf.site/usb-polygon-3.html" rel="alternate"></link><updated>2016-08-23T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.site,2016-08-23:usb-polygon-3.html</id><summary type="html">&lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#_1"&gt;Включение и опознание&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#_2"&gt;Проверка работоспособности платы&lt;/a&gt;&lt;ul&gt;
