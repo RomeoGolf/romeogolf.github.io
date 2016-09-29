@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-5: Обмен по USB, поиск устройства</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.site/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.site/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.site/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.site/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.site/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.site id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.site/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.site/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.site/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.site/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-0">
+            <a href="http://romeogolf.site/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.site/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">4</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.site/tag/raznoe.html">
+              разное
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.site/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Пт 30 Сентябрь 2016</h4>
+    <article>
+      <h1>USB-polygon-5: Обмен по USB, поиск устройства</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Подготовка</a></li>
+<li><a href="#_2">Заготовка проекта</a></li>
+<li><a href="#_3">Начинаем искать</a></li>
+</ul>
+</div>
+<h2 id="_1">Подготовка</h2>
+<p>На текущий момент самодельная отладочная плата на контроллере AT90USB162 при подключении к ПК определяется в Windows, как USB MassStorage-устройство, попросту &mdash; флэшка, и даже получает букву диска. Надо каким-то образом начинать обмен реальными данными, не только служебными. Зажечь нужные светодиоды по команде с компьютера, получить на экране число нажатий кнопки на устройстве, что-нибудь подобное для начала.</p>
+<p>Можно попробовать заставить плату прикинуться &laquo;настоящим&raquo; устройством с файлами и читать-писать эти &laquo;файлы&raquo; средствами операционной системы. Но это я отложу на попозже. Сперва попробую обмен с физическим устройством, а не с файлами на нем.</p>
+<p>Для этого сперва надо подготовить инструмент. Придется писать некоторый код для компьютера. Остановлюсь пока на Windows по ряду причин. Основная причина среди них &mdash; у меня уже есть под рукой кое-какая заготовка, в которой можно подглядеть идеи. Эта заготовка мне не очень нравится, но работает, и на нее можно опираться.</p>
+<p>Упомянутая заготовка написана на С++. Опять же, придется использовать API-функции операционной системы, что проще всего делать также на С++: в MSDN расписаны параметры функций и есть примеры, и ориентировано все на С++, для, скажем, Delphi придется переписывать. Полагаю, и примеры на всякого рода форумах тоже проще будет найти на том же С++. А я уже давно на нем ничего приличного не писал, и версию от Microsoft ставить не желаю. </p>
+<p>Зато у меня уже есть Eclipse, который используется для Java (в том числе, под Android) и таких проектов на Python, которые сложнее пары скриптовых файлов. Буду в качестве среды разработки использовать его же.</p>
+<p>Однако, Eclipse &mdash; это только среда, сам по себе он не будет ничего компилировать. А в качестве компилятора традиционно (хотя и не настоятельно бязательно) в связке с ним используется GCC. Для Windows этот компилятор (строго говоря &mdash; семейство компиляторов) сам по себе не бывает, а появляется в составе линуксообразного окружения, MinGW или Cygwin. Причем, Cygwin у меня уже имеется, и используется в том числе при работе с этой самоделкой &mdash; выбор и настройка инструментария описана в одном из предыдущих <a href="http://romeogolf.site/usb-polygon-3.html">выпусков</a></p>
+<p>Сделал пробный проектик под С++ и начал как-то с ним упражняться. Угрохал на это дело изрядно времени. Эх, стоило пошагово описывать все подводные камни на этом пути, нехилая лоция бы могла получиться&hellip; Короче, при всем моем уважении к этим продуктам (Eclipse и GCC), настройка их &mdash; это замечательный способ провести долгие зимние вечера, если больше нечем их занять. </p>
+<p>Темная тема оформления редактора кода не влияет на тему оформления остальных окон и панелей Eclipse, за них отвечает оконный менеджер, либо надо менять руками отдельно множество строк в конфигурации в разных местах и записывать при этом, что на что менял. Подтянуть настройки, сделанные в рабочем пространстве Java, для рабочего пространства С++ у меня так и не получилось. В настройках проекта надо не забывать добавлять опцию статической линковки некоторых библиотек, иначе не заработает на другой машине. Надо не забывать указывать про с++11, чтобы иметь возможность использовать современные фишки языка. И все это и тому подобное вылезало достаточно внезапно и с недостаточно очевидными причинами, просто не знаю, что бы я делал без StackOverflow.</p>
+<p>Наконец, что-то как-то заработало, стали получаться простые консольные приложения. В процессе выяснилось, что GCC в Cygwin и в MinGW имеют заметные отличия &mdash; бинарники библиотек отличаются, заголовочные файлы к этим библиотекам тоже. При попытке компиляции примеров, слизанных с форумов и сделанных в MS Visual Studio, компилятор из MinGW вызывал меньше проблем, так что пришлось устанавливать еще и этот набор софта.</p>
+<p>Итак, для написания кода на ПК буду использовать ОС Windows (XP и 7), Eclipse, GCC из состава MinGW. Все это было постепенно установлено и худо-бедно настроено. Не так, чтобы работать было комфортно, но вполне удовлетворительно, а чисто визуальные примочки (типа стилей подсветки синтаксиса или темной цветовой темы) прикручу как-нибудь позже, если будет лишнее время и желание.</p>
+<p>Дальше предполагаю такую последовательность действий:</p>
+<ul>
+<li>Обнаружить подключенные USB-устройства. Как вариант &mdash; сузить поиск до MassStorage-устройств. Поначалу плата-самоделка даже не нужна, хотя что-то типа флэшки желательно подключить. Сойдет и вмонтированный в корпус системника кардридер.</li>
+<li>Среди подключенных устройств найти свое по какому-либо идентификатору. Тут уже плату надо подключить, но можно ничего в ней не модифицировать.</li>
+<li>Открыть это устройство для обмена. То есть, получить его дескриптор, который можно передать функциям Readfile/Writefile. Здесь тоже плата нужна, и без доработок.</li>
+<li>Выполнить обмен без ошибок. Вот на этом этапе скорее всего придется что-то править в программе контроллера отладочной платы.</li>
+<li>Использовать результаты обмена: считать состояние кнопок, зажечь определенные светодиоды. Тут дописывать программу контроллера придется однозначно, без вариантов.</li>
+<li>В процессе решать возникающие проблемы, обеспечивать совместимость хотя бы в двух версиях Windows.</li>
+</ul>
+<h2 id="_2">Заготовка проекта</h2>
+<p>Запускаю Eclipse, создаю новый проект: <code>File -&gt; New -&gt; C++ Project</code>, получаю заготовку исходного кода, выдающего в консоли сакраментальное &laquo;Hello, World!&raquo;. </p>
+<p><a href="http://romeogolf.site/images/usb-polygon/05/new-prj-cpp.png" title="New Project"><img alt="new-prj" src="http://romeogolf.site/images/usb-polygon/05/preview/new-prj-cpp-small.png" title="New Project" /></a></p>
+<p>Сразу лезу в настройки проекта, потому что уже в курсе, что собранный код не запустится. <code>Project -&gt; Properties</code>, и в окне <code>Properties for usb-polygon</code> в правой панели выбираю <code>C/C++ Build -&gt; Settings</code>, на вкладке <code>Tool Settings</code> выбираю <code>MinGW C++ Linker -&gt; Miscellaneous</code> и в поле <code>Linker flags</code> вписываю <code>-static-libgcc -static-libstdc++</code></p>
+<p><a href="http://romeogolf.site/images/usb-polygon/05/linker-flag.png" title="Подключение библиотек"><img alt="linker-flag" src="http://romeogolf.site/images/usb-polygon/05/preview/linker-flag-small.png" title="Подключение библиотек" /></a></p>
+<p>Заодно на этой же вкладке выбираю <code>GCC C++ Compiler -&gt; Dialect</code>, и в поле <code>Language standard</code> ставлю <code>ISO C++11 (-srd=c++0x)</code>, пригодится.</p>
+<p><a href="http://romeogolf.site/images/usb-polygon/05/dialect.png"><img alt="dialect" src="http://romeogolf.site/images/usb-polygon/05/preview/dialect-small.png" /></a></p>
+<p>Теперь можно и <code>Project -&gt; Build Project</code>, и <code>Run As -&gt; Local C/C++ Application</code>, и в консоли, представленной одним из окошек среды Eclipse, появится то, что просили в тринадцатой строчке кода, который не я писал, оно само.</p>
+<h2 id="_3">Начинаем искать</h2>
+<p>Перед тем, как искать устройства USB, подключенные к компьютеру, стоит поискать в интернете, как это делают другие. Вариантов довольно много.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.site/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "drafts/usb-polygon-5.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
