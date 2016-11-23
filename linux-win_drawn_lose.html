@@ -90,10 +90,10 @@
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-4">
+          <li class="tag-2">
             <a href="http://romeogolf.site/tag/raznoe.html">
               разное
-                <span class="badge">1</span>
+                <span class="badge">2</span>
             </a>
           </li>
           <li class="tag-2">
@@ -186,47 +186,47 @@ UUID=6279-419e-b679 /               ext4    errors=remount-ro 0       1
 </ul>
 <p>Почитал про упомянутые штуки. Показалось, что udev &mdash; наиболее вероятная кандидатура пакостника. Однако поиск по системным логам через <code>grep 'fstab'</code> не дал ничего, и я не понял, кто и когда туда пишет.</p>
 <p>Тогда, предполагая, что этот &laquo;кто-то&raquo; пишет, основываясь на своих настройках, которые, в свою очередь, лежат где-то в <code>/etc/</code>, запустил поиск файла, содержащего <code>'fstab'</code></p>
-<div class="highlight"><pre>$ grep -r <span class="s2">&quot;fstab&quot;</span> /etc/
+<div class="highlight"><pre><span class="nv">$ </span>grep -r <span class="s2">&quot;fstab&quot;</span> /etc/
 </pre></div>
 
 
 <p>и самым интересным в результатах поиска был <code>/etc/udev/rules.d/10-automount.rules</code>:</p>
-<div class="highlight"><pre><span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mkdir -p /mnt/%k&quot;</span>
-<span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mount -o uid=1000 /dev/%k /mnt/%k&quot;</span>
-<span class="c1">#ACTION==&quot;remove&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/rmdir /mnt/%k&quot;</span>
+<div class="highlight"><pre><span class="c">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mkdir -p /mnt/%k&quot;</span>
+<span class="c">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mount -o uid=1000 /dev/%k /mnt/%k&quot;</span>
+<span class="c">#ACTION==&quot;remove&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/rmdir /mnt/%k&quot;</span>
 
-<span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mkdir -p /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
-<span class="c1">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mount -o uid=1000 /dev/%k /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
-<span class="c1">#ACTION==&quot;remove&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/rmdir /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
+<span class="c">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mkdir -p /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
+<span class="c">#ACTION==&quot;add&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/mount -o uid=1000 /dev/%k /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
+<span class="c">#ACTION==&quot;remove&quot; KERNEL==&quot;sd[a-z][0-9]&quot; RUN+=&quot;/bin/rmdir /mnt/%E{ID_VENDOR}_%E{ID_MODEL}_%n&quot;</span>
 
-<span class="c1"># монтирование съемных накопителей</span>
+<span class="c"># монтирование съемных накопителей</span>
 <span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sd[a-z]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;do-disk-rules&quot;</span>
 KERNEL!<span class="o">=</span><span class="s2">&quot;sd[a-z][0-9]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
 <span class="nv">LABEL</span><span class="o">=</span><span class="s2">&quot;do-disk-rules&quot;</span>
 <span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_USB_DRIVER<span class="o">}=</span><span class="s2">&quot;usb-storage&quot;</span>, <span class="nv">GROUP</span><span class="o">=</span><span class="s2">&quot;storage&quot;</span>
 IMPORT<span class="o">{</span>program<span class="o">}=</span><span class="s2">&quot;/sbin/blkid -o udev -p %N&quot;</span>
 <span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;remove&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i &#39;/\/dev\/%k /d&#39; /etc/fstab&quot;</span>
-<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;remove&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/rmdir /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k&quot;</span>
-<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/mkdir -p /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k&quot;</span>
-<span class="c1"># монтирование раздела fat32</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;remove&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/rmdir /media/</span><span class="nv">$env</span><span class="s2">{ID_FS_TYPE}-%k&quot;</span>
+<span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/mkdir -p /media/</span><span class="nv">$env</span><span class="s2">{ID_FS_TYPE}-%k&quot;</span>
+<span class="c"># монтирование раздела fat32</span>
 <span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}==</span><span class="s2">&quot;vfat&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i </span>
-<span class="s2">&#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k vfat rw,noauto,noatime,dmask=000,user,fmask=000,iocharset=utf8 0 0&#39; /etc/fstab&quot;</span>
-<span class="c1"># монтирование раздела ntfs</span>
+<span class="s2">&#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$env</span><span class="s2">{ID_FS_TYPE}-%k vfat rw,noauto,noatime,dmask=000,user,fmask=000,iocharset=utf8 0 0&#39; /etc/fstab&quot;</span>
+<span class="c"># монтирование раздела ntfs</span>
 <span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}==</span><span class="s2">&quot;ntfs&quot;</span>, RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i </span>
-<span class="s2">&#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k ntfs-3g rw,noauto,dmask=000,fmask=000,user,locale=ru_RU.utf8,allow_other 0 0&#39; /etc/fstab&quot;</span>
-<span class="c1"># монтирование прочих ФС</span>
+<span class="s2">&#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$env</span><span class="s2">{ID_FS_TYPE}-%k ntfs-3g rw,noauto,dmask=000,fmask=000,user,locale=ru_RU.utf8,allow_other 0 0&#39; /etc/fstab&quot;</span>
+<span class="c"># монтирование прочих ФС</span>
 <span class="nv">ACTION</span><span class="o">==</span><span class="s2">&quot;add&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;&quot;</span>, ENV<span class="o">{</span>ID_FS_TYPE<span class="o">}</span>!<span class="o">=</span><span class="s2">&quot;ntfs|vfat&quot;</span>, 
-RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i &#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}-%k </span><span class="nv">$e</span><span class="s2">nv{ID_FS_TYPE}  defaults,user 0 0&#39; /etc/fstab&quot;</span>
+RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i &#39;</span><span class="nv">$a</span><span class="s2">\/dev/%k /media/</span><span class="nv">$env</span><span class="s2">{ID_FS_TYPE}-%k </span><span class="nv">$env</span><span class="s2">{ID_FS_TYPE}  defaults,user 0 0&#39; /etc/fstab&quot;</span>
 <span class="nv">LABEL</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
 </pre></div>
 
 
 <p>Строчка в правилах монтирования однозначно соответствовала тому, что появляется в fstab. Возможно, авторы пакета, создавая настройки по умолчанию, предполагали, что основным диском будет hda, а sda &mdash; уже всякие флешки и все такое. А у меня два SATA-винчестера, и флешка становится sdc. Ну что же, пакостник найден, надо его слегка укротить. Сперва я сделал первое, что пришло в голову: вписал  после <code># монтирование съемных накопителей</code> пару строк:</p>
-<div class="highlight"><pre><span class="c1"># монтирование съемных накопителей</span>
+<div class="highlight"><pre><span class="c"># монтирование съемных накопителей</span>
 <span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sda[0..9]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
 <span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sdb[0..9]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;end-of-file&quot;</span>
 <span class="nv">KERNEL</span><span class="o">==</span><span class="s2">&quot;sd[a-z]&quot;</span>, <span class="nv">GOTO</span><span class="o">=</span><span class="s2">&quot;do-disk-rules&quot;</span>
-<span class="c1"># ... и далее по тексту ...</span>
+<span class="c"># ... и далее по тексту ...</span>
 </pre></div>
 
 
@@ -246,7 +246,7 @@ RUN+<span class="o">=</span><span class="s2">&quot;/bin/sed -i &#39;</span><span
 
 
 <p>Сделал так же. Перезапустил демон:</p>
-<div class="highlight"><pre>$ sudo acpid restart
+<div class="highlight"><pre><span class="nv">$ </span>sudo acpid restart
 </pre></div>
 
 

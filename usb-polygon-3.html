@@ -90,10 +90,10 @@
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-4">
+          <li class="tag-2">
             <a href="http://romeogolf.site/tag/raznoe.html">
               разное
-                <span class="badge">1</span>
+                <span class="badge">2</span>
             </a>
           </li>
           <li class="tag-2">
@@ -174,8 +174,8 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;avr/io.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;util/delay.h&gt;</span><span class="cp"></span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;avr/io.h&gt;</span>
+<span class="cp">#include &lt;util/delay.h&gt;</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
@@ -206,7 +206,7 @@
 <p>Здесь видно, что компиляции никакой не делалось, потому что незачем, зато есть размер программы до компиляции и после, что позволит сравнить, скажем, занимаемую в кристалле память при внесении изменений в код программы.</p>
 <p>В программе FLIP открыл полученный hex, запустил прошивку кнопкой RUN. Кнопкой Start Application запустил выполнение. Получилась ерунда какая-то: светодиод PD0 моргает, остальные &mdash; не горят. Нажал кнопку Reset, не помогло. Отключил плату от USB, включил снова &mdash; ура, заработало! Пока не понял, в чем дело, может, по каким-то причинам контроллер сбрасывается. Предположил, что из-за сторожевого таймера.</p>
 <p>Про наличие сторожевого таймера в контроллере я в курсе, а как с ним работать &mdash; пока нет. Думал, что он по умолчанию отключен, но пока не буду читать описание на эту тему, сделаю проще. Нашел готовый проект на основе такого контроллера и посмотрел, как этот таймер обездвижить, не вдаваясь в подробности. Добавил в программу </p>
-<div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;avr/wdt.h&gt;</span><span class="cp"></span>
+<div class="highlight"><pre><span class="cp">#include &lt;avr/wdt.h&gt;</span>
 </pre></div>
 
 
