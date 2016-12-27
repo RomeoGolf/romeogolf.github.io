@@ -288,8 +288,8 @@
 <p>В файле <code>usb-polygon.cpp</code> убираю автоматически созданный код и вставляю код из форума. Куча красных подчеркиваний. Сохраняю файл. Куча красного исчезает, но Eclipse начинает показывать свой норов: подчеркивает красным <code>_tprintf</code> (&laquo;Function &lsquo;printf&rsquo; could not be resolved&raquo;), хотя <code>tchar.h</code> подключен. Подключаю дополнительно <code>#include &lt;stdio.h&gt;</code>, и Eclipse перестает считать, что это &laquo;not resolved&raquo;. Убираю это подключение &mdash; <code>_tprintf</code> не подчеркивается. Чудеса&hellip; Ладно, оставляю на всякий случай.</p>
 <p>Теперь надо разобраться с функциями SetupDi&hellip;, которые считаются неопределенными. Дело в библиотеке SetupAPI, точнее, в ее отсутствии в проекте. Надо добавить в свойства проекта: <code>Project -&gt; Properties</code>, в окне свойств в левой панели выбрать <code>C/C++ Build -&gt; Settings</code>, и на вкладке <code>Tool Settings</code> выбрать <code>MinGW C++ Linker -&gt; Libraries</code>, для <code>Library search path (-L)</code> выбрать в файловой системе <code>C:\MinGW\lib</code>,  а для <code>Libraries (-l)</code> ввести руками <code>setupapi</code>.</p>
 <p>Пересобираю проект. Компиляция проходит успешно. Запускаю &mdash; в консоли чисто. Вставляю флэшку, запускаю проект еще раз, получаю (в Windows XP) что-то типа</p>
-<div class="highlight"><pre>\\?\usbstor#disk&amp;ven_usb&amp;prod_flash_drive&amp;rev_1.26#20030515401d8b314267&amp;0#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
-USB FLASH DRIVE USB Device
+<div class="highlight"><pre>\\?\usbstor#disk&amp;ven_kingston&amp;prod_dt_101_ii&amp;rev_1.00#001cc05fe930f961715b0183&amp;0#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+Kingston DT 101 II USB Device
 </pre></div>
 
 
@@ -299,7 +299,8 @@ LUFA Dataflash Disk USB Device
 </pre></div>
 
 
-<p>Нашли. И код нашли подходящий, и флешку с его помощью тоже нашли, и даже плату свою. Замечательно, начало положено, надо сохранить наработки в git.</p>
+<p>Надо сказать, в Windows 7 результат получается такой же, вот только ждать, когда система выделит плате букву диска, приходится долго, да еще и надо каждый раз отказываться от форматирования.</p>
+<p>Ну что же, нашли. И код нашли подходящий, и флешку с его помощью тоже нашли, и даже плату свою. Замечательно, начало положено, надо сохранить наработки в git.</p>
 <h2 id="_5">Коротко о коде</h2>
 <p>Как говорил Козьма Прутков, &laquo;Бросая в воду камешки, смотри на круги, ими образуемые; иначе такое бросание будет пустою забавою&raquo;.</p>
 <p>Тупо использовать чужой код &mdash; это очень нехорошо, надо хотя бы разобраться, как он работает. Это не трудно, с учетом того, что предварительно был проведен поиск по MSDN и разного рода литературе и форумам на тему решения задачи. Например, <a href="https://msdn.microsoft.com/ru-ru/library/windows/hardware/ff545011(v=vs.85).aspx">Guidelines for Using SetupAPI</a>, опять же, <a href="https://msdn.microsoft.com/library/windows/hardware/ff553567">Using Device Installation Functions</a>. Я уже и сам подходил к подобному решению, но медленно и некрасиво.</p>
