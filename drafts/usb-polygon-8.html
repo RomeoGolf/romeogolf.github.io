@@ -126,14 +126,150 @@
       
       <div class="toc">
 <ul>
-<li><a href="#_1">Физическое устройство</a></li>
+<li><a href="#_1">Завершая этап</a></li>
+<li><a href="#_2">Физическое устройство</a></li>
 <li><a href="#scsi-">Пользовательская SCSI-команда</a></li>
-<li><a href="#_2">Единицы информации: секторы, блоки, кластеры&hellip;</a></li>
+<li><a href="#_3">Единицы информации: секторы, блоки, кластеры&hellip;</a></li>
 </ul>
 </div>
-<h2 id="_1">Физическое устройство</h2>
+<h2 id="_1">Завершая этап</h2>
+<p>В результате проделанной работы получилось &laquo;сырое&raquo; с точки зрения файловой системы MassStorage-устройство, приспособленное к обмену информацией с ПК по USB. С определенными ограничениями, конечно: во-первых, требуется некоторый самописный код для ПК, причем, требующий прав администратора; во-вторых, на устройстве программа тоже выглядит не особенно изящно, нужно городить какие-то конструкции для идентификации запрашиваемой и получаемой информации по ее адресу, а также какое-то распределение в адресном пространстве источников и приемников информации. Ну, это уже зависит от конкретной задачи, а текущая задача &mdash; учебная &mdash; фактически выполнена.</p>
+<p>Теперь хотелось бы развить тему: сделать устройство, более точно имитирующее флэш-накопитель. То есть, надо добавить некоторое подобие файловой системы.</p>
+<p>Однако, перед этим хотелось бы провести еще пару экспериментов с &laquo;сырым&raquo; устройством.</p>
+<h2 id="_2">Физическое устройство</h2>
+<p>Первая &laquo;доделка&raquo; касается кода для ПК. Доступ к устройству осуществляется при помощи дескриптора (HANDLE), который возвращает функция <code>CreateFile</code>. Этой функции сейчас передается в качестве параметра <code>DevicePath</code>, который, в свою очередь, возвращается функцией <code>SetupDiEnumDeviceInterfaces</code>, принимающей среди параметров в том числе GUID интерфейса, можно диска, можно тома.</p>
+<p>Хочу попробовать достучаться до платы, как до физического устройства, PhysicalDrive. Есть мнение, что это будет более единообразно для разных версий ОС Windows, а также должно снять сомнения, к чему же правильнее обращаться &mdash; к диску или к тому. </p>
+<p>Для этого снова пригодится функция <code>DeviceIoControl</code>, которой вторым параметром нужно передать <code>IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</code>.</p>
+<p>В коде после комментария <code>// ----- работа с устройством -----</code> надо добавить объявление новых переменных:</p>
+<div class="highlight"><pre>                    <span class="kt">int</span> <span class="n">diskNum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                <span class="c1">// количество дисков</span>
+                    <span class="kt">char</span> <span class="n">physicalDrive</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span> <span class="c1">// строка под &quot;\\\\.\\PhysicalDrive%d&quot;</span>
+                    <span class="n">DWORD</span> <span class="n">bufsize</span><span class="p">,</span> <span class="n">bufsizeret</span><span class="p">;</span>      <span class="c1">// размеры буфера</span>
+                    <span class="n">VOLUME_DISK_EXTENTS</span> <span class="n">buf_ioctl</span><span class="p">;</span>  <span class="c1">// буфер для GET_VOLUME_DISK_EXTENTS</span>
+                    <span class="n">bufsize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">VOLUME_DISK_EXTENTS</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Однако, парочку появившихся типов этот код не знает. Не буду подключать соответствующий заголовок, просто запишу после объявления <code>struct scsi_st</code>:</p>
+<div class="highlight"><pre><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_DISK_EXTENT</span> <span class="p">{</span>
+  <span class="n">DWORD</span> <span class="n">DiskNumber</span><span class="p">;</span>
+  <span class="n">LARGE_INTEGER</span> <span class="n">StartingOffset</span><span class="p">;</span>
+  <span class="n">LARGE_INTEGER</span> <span class="n">ExtentLength</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">DISK_EXTENT</span><span class="p">,</span><span class="o">*</span><span class="n">PDISK_EXTENT</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">_VOLUME_DISK_EXTENTS</span> <span class="p">{</span>  <span class="n">DWORD</span> <span class="n">NumberOfDiskExtents</span><span class="p">;</span>  <span class="n">DISK_EXTENT</span> <span class="n">Extents</span><span class="p">[</span><span class="n">ANYSIZE_ARRAY</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">VOLUME_DISK_EXTENTS</span><span class="p">;</span>
+</pre></div>
+
+
+<p>А также такие <code>#define</code> после всех <code>#include</code>:</p>
+<div class="highlight"><pre><span class="cp">#define IOCTL_VOLUME_BASE   ((ULONG) &#39;V&#39;)</span>
+<span class="cp">#define IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS \</span>
+<span class="cp">  CTL_CODE(IOCTL_VOLUME_BASE, 0, METHOD_BUFFERED, FILE_ANY_ACCESS)</span>
+</pre></div>
+
+
+<p>Теперь ниже  <code>// ----- работа с устройством -----</code> после обявления переменных можно добавить код:</p>
+<div class="highlight"><pre>                    <span class="n">result</span> <span class="o">=</span> <span class="n">DeviceIoControl</span><span class="p">(</span><span class="n">hDevice</span><span class="p">,</span>
+                            <span class="n">IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</span><span class="p">,</span>
+                            <span class="nb">NULL</span><span class="p">,</span>
+                            <span class="mi">0</span><span class="p">,</span>
+                            <span class="o">&amp;</span><span class="n">buf_ioctl</span><span class="p">,</span>
+                            <span class="n">bufsize</span><span class="p">,</span>
+                            <span class="o">&amp;</span><span class="n">bufsizeret</span><span class="p">,</span>
+                            <span class="nb">NULL</span>
+                            <span class="p">);</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">OutFormatMsg</span><span class="p">(</span><span class="s">&quot;PhysicDiscErr&quot;</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="n">_tprintf</span><span class="p">(</span><span class="s">&quot;DiscNum = %lu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf_ioctl</span><span class="p">.</span><span class="n">NumberOfDiskExtents</span><span class="p">);</span>
+                        <span class="n">diskNum</span> <span class="o">=</span> <span class="n">buf_ioctl</span><span class="p">.</span><span class="n">Extents</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">DiskNumber</span><span class="p">;</span>
+                        <span class="n">_tprintf</span><span class="p">(</span><span class="s">&quot;Disk = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">diskNum</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">diskNum</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="n">sprintf</span><span class="p">(</span><span class="n">physicalDrive</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\\\\</span><span class="s">.</span><span class="se">\\</span><span class="s">PhysicalDrive%d&quot;</span><span class="p">,</span> <span class="n">diskNum</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="n">_tprintf</span><span class="p">(</span><span class="s">&quot;physicalDrive: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">physicalDrive</span><span class="p">);</span>
+                    <span class="p">}</span>
+</pre></div>
+
+
+<p>Теперь в консольном выводе появятся новые строки:</p>
+<div class="highlight"><pre>. . .
+--- This is my device! ---
+DiscNum = 1
+Disk = 1
+physicalDrive: \\.\PhysicalDrive1
+WriteFile done
+len = 1024
+ReadFile done
+data_2 = 0
+len = 1024
+</pre></div>
+
+
+<p>То есть, дисков 1, номер диска 1, строка для <code>CreateFile</code> сформирована. Можно сразу после пытаться получить дескриптор устройства по номеру физического диска:</p>
+<div class="highlight"><pre>                    <span class="n">HANDLE</span> <span class="n">hDevice2</span><span class="o">=</span><span class="n">CreateFile</span><span class="p">(</span>
+                            <span class="n">physicalDrive</span><span class="p">,</span>
+                            <span class="n">GENERIC_READ</span> <span class="o">|</span> <span class="n">GENERIC_WRITE</span><span class="p">,</span>
+                            <span class="c1">//0,</span>
+                            <span class="c1">//FILE_SHARE_READ or FILE_SHARE_WRITE,</span>
+                            <span class="mi">0</span><span class="p">,</span>
+                            <span class="nb">NULL</span><span class="p">,</span>
+                            <span class="n">OPEN_EXISTING</span><span class="p">,</span>
+                            <span class="n">FILE_FLAG_WRITE_THROUGH</span> <span class="o">|</span> <span class="n">FILE_FLAG_NO_BUFFERING</span><span class="p">,</span>
+                            <span class="nb">NULL</span>
+                            <span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">hDevice2</span> <span class="o">==</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">OutFormatMsg</span><span class="p">(</span><span class="s">&quot;CreateFile 2 Error&quot;</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="n">_tprintf</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&quot;CreateFile 2 done! </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">));</span>
+
+                        <span class="c1">// сюда вставить ReadFile и WriteFile;</span>
+                        <span class="c1">// сюда же можно и обе</span>
+                        <span class="c1">// DeviceIoControl с IOCTL_SCSI_PASS_THROUGH_DIRECT</span>
+
+                        <span class="n">CloseHandle</span><span class="p">(</span><span class="n">hDevice2</span><span class="p">);</span>
+                    <span class="p">}</span>
+</pre></div>
+
+
+<p>И в имеющихся <code>ReadFile</code> и <code>WriteFile</code> после их перестановки на новое место (указанное комментарием в коде) заменяю <code>hDevice</code> на <code>hDevice2</code>.</p>
+<p>Проверено &mdash; работает. Делает все то же, что и предыдущая версия.</p>
+<p>Еще можно попробовать заблокировать и размонтировать устройство при помощи <code>DeviceIoControl</code> с параметрами <code>FSCTL_LOCK_VOLUME</code> и <code>FSCTL_DISMOUNT_VOLUME</code> соответственно, но это уже другая история.</p>
 <h2 id="scsi-">Пользовательская SCSI-команда</h2>
-<h2 id="_2">Единицы информации: секторы, блоки, кластеры&hellip;</h2>
+<p>Теперь обращусь к устройству. До сих пор оно выполняло только стандартные команды, передаваемые при помощи <code>ScsiPassThroughDirect</code>, это <code>WRITE(10)</code> с кодом 0x2A и <code>READ (10)</code> с кодом 0x28.</p>
+<p>А если мне надо выполнить какое-то свое действие, не предусмотренное набором SCSI-команд? Или, скажем, надо именно записать, но, допустим, в нулевой &laquo;сектор&raquo;, а операционная система после очередного обновления безопасности не разрешает этого делать, чтобы сильно умелые ручки не портили MBR устройств? &laquo;Сектор&raquo; здесь написал в кавычках, потому что нет никаких секторов в помине, есть только используемые в обмене адреса данных, которые в нормальном устройстве могли бы действительно указывать на сектор.</p>
+<p>Пробую: в SCSI-команде записи закрываю строку с кодом команды, а вместо нее пишу ее копию, но с кодом 0xC1: команды от 0xC0 до 0xFF вроде бы vendor cpecific.</p>
+<p>Отчет о выполнении операции записи получен, однако на светодиодной индикации платы не видно, чтобы что-то записалось. Пора править код программы для устройства.</p>
+<p>Открываю <code>/Lib/SCSI.c</code>, нахожу там функцию <code>bool SCSI_DecodeSCSICommand(void)</code>, в ней переключатель <code>switch (CommandBlock.SCSICommandData[0])</code>, благо, кроме него там почти ничего нет. Сразу под строкой <code>case SCSI_CMD_WRITE_10:</code> добавляю строку <code>case 0xC1:</code>. Тем самым заставляю устройство реагировать на команду 0xC1 так же, как и на команду 0x2A.</p>
+<p>Проверяю &mdash; работает. То есть, запись снова проходит, и на светодиодах отображается переданный с ПК байт.</p>
+<p>Таким образом можно дублировать имеющиеся команды, можно писать совсем собственные. Для самописных команд можно особым образом обрабатывать Command Descriptor Block (CDB), а как это сделать &mdash; можно подсмотреть в используемой здесь функции <code>SCSI_Command_ReadWrite_10</code>, например. Там есть ближе к началу строки</p>
+<div class="highlight"><pre>    <span class="n">BlockAddress</span> <span class="o">=</span> <span class="n">SwapEndian_32</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">CommandBlock</span><span class="p">.</span><span class="n">SCSICommandData</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+    <span class="n">TotalBlocks</span>  <span class="o">=</span> <span class="n">SwapEndian_16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">uint16_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">CommandBlock</span><span class="p">.</span><span class="n">SCSICommandData</span><span class="p">[</span><span class="mi">7</span><span class="p">]);</span>
+</pre></div>
+
+
+<p>В них функция извлекает адрес и длину из указателя на 2 и 7 байты CDB. Можно напихать в CDB для самописной команды свою информацию в нужные места, а в обработчике вытащить ее аналогичным образом, зная место и размер.</p>
+<p>Ну вот, теперь с &laquo;сырым&raquo; устройством практически всё. Что касается кода &mdash; надо закоммитить текущие изменения в git с тегами &laquo;v0.3&raquo; для обеих программ.</p>
+<p>Перед переходом к файловой системе еще хотелось бы систематизировать информацию об информации, которая в чем только ни измеряется, аж голова кругом. Мало того, что есть байты, слова, двойные слова, младшими вперед, старшими вперед, так это все еще рассматривается в оптовом виде кластерами, секторами, логическими блоками&hellip; Попробую разобраться.</p>
+<h2 id="_3">Единицы информации: секторы, блоки, кластеры&hellip;</h2>
+<p>байт, слово</p>
+<p>сектор</p>
+<p>кластер</p>
+<p>логический блок</p>
+<p>блок виртуальной памяти</p>
+<p>дорожка (в секторах)</p>
+<p>цилиндр</p>
+<div class="highlight"><pre>#define VIRTUAL_MEMORY_BLOCK_SIZE       512
+#define DATAFLASH_PAGE_SIZE             1024
+
+
+#define BYTES_PER_SECTOR                512
+#define BYTES_PER_SECT_SHIFT            9
+#define SECTORS_PER_CLUSTER             8
+#define SECTORS_PER_CLUST_SHIFT         3
+#define BYTES_PER_CLUSTER               (BYTES_PER_SECTOR * SECTORS_PER_CLUSTER)
+#define BYTES_PER_CLUST_SHIFT           (BYTES_PER_SECT_SHIFT + SECTORS_PER_CLUST_SHIFT)
+</pre></div>
       <br/>	
       <footer>
           <div>
