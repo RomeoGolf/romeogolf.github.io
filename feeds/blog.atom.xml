@@ -1,5 +1,446 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.github.io/" rel="alternate"></link><link href="http://romeogolf.github.io/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.github.io/</id><updated>2017-01-09T20:00:00+05:00</updated><entry><title>USB-polygon-6: Обмен по USB, поиск среди устройств</title><link href="http://romeogolf.github.io/usb-polygon-6.html" rel="alternate"></link><updated>2017-01-09T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-09:usb-polygon-6.html</id><summary type="html">&lt;div class="toc"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.github.io/" rel="alternate"></link><link href="http://romeogolf.github.io/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.github.io/</id><updated>2017-01-25T20:00:00+05:00</updated><entry><title>USB-polygon-7: Обмен по USB, подготовка устройства</title><link href="http://romeogolf.github.io/usb-polygon-7.html" rel="alternate"></link><updated>2017-01-25T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-25:usb-polygon-7.html</id><summary type="html">&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#_1"&gt;Проект заново&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_2"&gt;&amp;laquo;Лампочки и кнопки&amp;raquo;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_3"&gt;Проверка связи&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#-"&gt;Пиши-читай (заготовка)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#flash-"&gt;Чтение и запись мимо flash-памяти&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_4"&gt;Еще немного о взаимодействии с ПК&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2 id="_1"&gt;Проект заново&lt;/h2&gt;
+&lt;p&gt;Продолжаем разговор. Попробую завести какой-то обмен между платой и ПК. Подготовлю заготовку контроллерной программы, но не буду продолжать то, что сделано раньше, а начну сначала.&lt;/p&gt;
+&lt;p&gt;Создаю папку &lt;code&gt;usb-polygon&lt;/code&gt;, копирую в нее demo-проект &lt;code&gt;MassStorage&lt;/code&gt; из &lt;code&gt;ClassDriver&lt;/code&gt; и саму библиотеку &lt;code&gt;LUFA&lt;/code&gt; (второе, в принципе, не обязательно, но я так сделаю), и в &lt;code&gt;MassStorage&lt;/code&gt; создаю git-репозиторий.&lt;/p&gt;
+&lt;p&gt;Далее правлю &lt;code&gt;Makefile&lt;/code&gt;, оставляя в переменной &lt;code&gt;LUFA_PATH&lt;/code&gt; только одну пару точек (библиотека теперь лежит одним уровнем выше) и закрываю комментариями переменные &lt;code&gt;COMPILER_PATH&lt;/code&gt; и &lt;code&gt;SHELL&lt;/code&gt; &amp;mdash; они не нужны, если cygwin уже настроен, как описано в предыдущих выпусках цикла. В результате получаю первую успешную компиляцию проекта с получением hex-файла, который, однако, еще нельзя использовать.&lt;/p&gt;
+&lt;p&gt;Надо исправить в &lt;code&gt;Makefile&lt;/code&gt; переменную &lt;code&gt;MCU&lt;/code&gt; на &lt;code&gt;at90usb162&lt;/code&gt; и &lt;code&gt;BOARD&lt;/code&gt; на &lt;code&gt;NONE&lt;/code&gt; и начинать править код, потому что компилятор выдаст ошибки. Чтобы получить удачную компиляцию, в коде &lt;code&gt;MassStorage.c&lt;/code&gt; закрываю комментариями функции (и блоки, их содержащие), с &lt;code&gt;Dataflash&lt;/code&gt; в названии, а заодно и с &lt;code&gt;LED&lt;/code&gt; в названии, потому что в моей плате хоть и есть светодиоды, но не такие и не там. Также закрываю Dataflash-функции в модуле &lt;code&gt;Lib/SCSI.c&lt;/code&gt; и директивы &lt;code&gt;#include&lt;/code&gt; с файлами &lt;code&gt;LEDs.c&lt;/code&gt;, &lt;code&gt;Dataflash.c&lt;/code&gt; и &lt;code&gt;Platform.c&lt;/code&gt; в заголовочном файле &lt;code&gt;MassStorage.h&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id="_2"&gt;&amp;laquo;Лампочки и кнопки&amp;raquo;&lt;/h2&gt;
+&lt;p&gt;Теперь надо добавить код, который будет выдавать что-то интересное на светодиоды и реагировать на кнопки.&lt;/p&gt;
+&lt;p&gt;Перед главной функцией (&lt;code&gt;main&lt;/code&gt;) добавляю объявление переменной &amp;mdash; контрольного счетчика, который можно будет увеличивать разными способами: в основном цикле безусловно или при обнаружении изменения флага, в прерываниях, еще как-нибудь:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;          &lt;span class="c1"&gt;// просто счетчик&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;В главной функции после &lt;code&gt;GlobalInterruptEnable();&lt;/code&gt; добавляю инициализацию портов, объявление переменных и запуск таймеров:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// начальное значение - все нули&lt;/span&gt;
+    &lt;span class="n"&gt;DDRD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0xFF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// все линии порта на вывод&lt;/span&gt;
+    &lt;span class="n"&gt;PORTC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// без &amp;quot;подтяжки&amp;quot; (есть внешняя)&lt;/span&gt;
+    &lt;span class="n"&gt;DDRC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// все линии порта на ввод&lt;/span&gt;
+
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cnt_bt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// счетчик нажатий на кнопки&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mode_out&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;   &lt;span class="c1"&gt;// режим вывода&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// состояние кнопок&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;bt_old&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// состояние кнопок в прошлый раз&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* запуск таймера 0 на период ~0.01 с */&lt;/span&gt;
+    &lt;span class="cm"&gt;/* (защита от дребезга) */&lt;/span&gt;
+    &lt;span class="n"&gt;TCCR0B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="cm"&gt;/* 1 тик = 0.000032 с */&lt;/span&gt;
+    &lt;span class="n"&gt;TCNT0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;   &lt;span class="cm"&gt;/* 256 раз ~ 0.008192 c  */&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* запуск таймера 1 на период 0.5 с */&lt;/span&gt;
+    &lt;span class="cm"&gt;/* (счетчик с полусекундной задержкой) */&lt;/span&gt;
+    &lt;span class="n"&gt;TCCR1B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;              &lt;span class="cm"&gt;/* 1 тик = 0.000032 с */&lt;/span&gt;
+    &lt;span class="n"&gt;TCNT1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;65536&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;15625&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="cm"&gt;/* разрешение прерываний таймера 1*/&lt;/span&gt;
+    &lt;span class="cm"&gt;/*TIMSK1 = (1 &amp;lt;&amp;lt; TOIE1);*/&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;В главном цикле &lt;code&gt;for&lt;/code&gt; после &lt;code&gt;USB_USBTask();&lt;/code&gt; добавляю код:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="cm"&gt;/* проверка срабатывания таймера без прерываний по флагу */&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;TIFR1&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;TCNT1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;65536&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;15625&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="cm"&gt;/* перезапуск таймера 1 */&lt;/span&gt;
+            &lt;span class="n"&gt;TIFR1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;              &lt;span class="cm"&gt;/* сброс флага таймера 1 */&lt;/span&gt;
+            &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                  &lt;span class="cm"&gt;/* инкремент контрольного счетчика по таймеру */&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+
+        &lt;span class="cm"&gt;/* обработка действий по срабатыванию таймера 0 */&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;TIFR0&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;TCNT0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="cm"&gt;/* перезапуск таймера 0 */&lt;/span&gt;
+            &lt;span class="n"&gt;TIFR0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="cm"&gt;/* сброс флага срабатывания таймера 0 */&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* cnt++;*/&lt;/span&gt;     &lt;span class="c1"&gt;// инкремент счетчика - чтобы что-то изменялось&lt;/span&gt;
+            &lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PINC&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                  &lt;span class="c1"&gt;// считывание порта с кнопками&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;bt_old&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;         &lt;span class="c1"&gt;// если состояние порта изменилось&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="c1"&gt;// если нажаты сразу две верхние кнопки на разрядах 3 и 4&lt;/span&gt;
+                    &lt;span class="n"&gt;mode_out&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;             &lt;span class="c1"&gt;// циклически изменить режим отображения,&lt;/span&gt;
+                    &lt;span class="n"&gt;mode_out&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mode_out&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;// которых всего 4 - 0, 1, 2 и 3 (2 разряда по маске)&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;                    &lt;span class="c1"&gt;// в противном случае&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cnt_bt&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  &lt;span class="c1"&gt;// верхняя кнопка увеличивает счет нажатий&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;bt_now&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0x20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;cnt_bt&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;  &lt;span class="c1"&gt;// а вторая сверху - уменьшает&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+                &lt;span class="n"&gt;bt_old&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bt_now&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;            &lt;span class="c1"&gt;// и сохраняем состояние порта для следующей проверки&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+
+            &lt;span class="k"&gt;switch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mode_out&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
+                    &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// просто счетчик&lt;/span&gt;
+                    &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
+                     &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bt_now&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;            &lt;span class="c1"&gt;// состояние кнопок&lt;/span&gt;
+                    &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
+                    &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cnt_bt&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// счетчик нажатий&lt;/span&gt;
+                    &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                    &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x55&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// просто константа&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;После главного цикла добавлю на всякий случай незадействованный обработчик прерывания таймера 1:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* обработчик прерывания таймера, если разрешено, для проверки */&lt;/span&gt;
+&lt;span class="n"&gt;ISR&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TIMER1_OVF_vect&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;TCNT1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;65536&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;15625&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// перезапуск таймера&lt;/span&gt;
+    &lt;span class="n"&gt;cnt&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                  &lt;span class="c1"&gt;// инкремент контрольного счетчика&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Все это компилируется и работает на плате в автономном режиме: светодиоды по умолчанию демонстрируют счетчик, изменяющийся с полусекундным интервалом, одновременное нажатие на верхние две кнопки переключает режим отображения, позволяя показать состояние кнопок, &amp;laquo;кнопочный&amp;raquo; счетчик (увеличиваемый нажатием на верхнюю кнопку и уменьшаемый нажатием на вторую) или просто константу 0х55 (светодиоды горят через один). Плата при этом видна в системе как флэш-накопитель с файловой системой RAW и емкостью 0. Причем, Windows 7 дает ей букву очень не сразу и настойчиво предлагает отформатировать. Сохраняю очередной коммит в git и добавляю ему тег &amp;laquo;v0.1&amp;raquo;.&lt;/p&gt;
+&lt;h2 id="_3"&gt;Проверка связи&lt;/h2&gt;
+&lt;p&gt;Для начала хочу сделать так, чтобы плата посредством светодиодов показала, что видит обращение к себе со стороны компьютера.&lt;/p&gt;
+&lt;p&gt;Под объявлением счетчика cnt добавляю объявление еще одного:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cnt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cnt_usb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;В переключателе &lt;code&gt;switch (mode_out)&lt;/code&gt; вместо вывода константы делаю вывод этого счетчика:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;                &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                    &lt;span class="n"&gt;PORTD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cnt_usb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;И &lt;code&gt;mode_out&lt;/code&gt; при объявлении присваиваю значение 3, чтобы показывало, что там творится при подаче питания с порта. Ну и надо наконец найти подходящее место, в которое вставить инкремент этого счетчика.&lt;/p&gt;
+&lt;p&gt;Нахожу функцию &lt;code&gt;void MassStorage_Task(void)&lt;/code&gt;, в которой обрабатываются SCSI-команды, подаваемые устройству. Вот сразу после выяснения статуса команды проверяю этот статус и, если команда выполнена успешно, увеличиваю значение счетчика: после&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="cm"&gt;/* Decode the received SCSI command, set returned status code */&lt;/span&gt;
+        &lt;span class="n"&gt;CommandStatus&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Status&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SCSI_DecodeSCSICommand&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="nl"&gt;MS_SCSI_COMMAND_Pass&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;MS_SCSI_COMMAND_Fail&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;вставляю&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CommandStatus&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Status&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;MS_SCSI_COMMAND_Pass&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+            &lt;span class="n"&gt;cnt_usb&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;После компиляции и прошивки  запускаю выполнение (под Windows 7). Счетчик мгновенно досчитывает до значения 11. Потом потихонечку отсчитывает до 18, а потом резко наматывает довольно много, одновременно на экране ПК появляется предложение отформатировать диск, а счетчик продолжает считать. Буква диска получена. Счетчик еще считает потихонечку. Выделение буквы диска в проводнике вызывает всплеск отсчета, щелчок правой кнопкой &amp;mdash; тоже, как и выбор пункта &amp;laquo;Свойства&amp;raquo; контекстного меню.&lt;/p&gt;
+&lt;p&gt;А счетчик продолжает считать. Система при подключении опрашивает устройство, чтобы узнать, что это и какие драйвера подключать. Потом пытается прочитать информацию о файловой системе, раз уж это MassStorage. Ну и потом периодически опрашивает, чтобы быть в курсе &amp;mdash; не уснуло ли, а то и вовсе отключилось.&lt;/p&gt;
+&lt;p&gt;Кстати, если сравнивать статус не с &lt;code&gt;MS_SCSI_COMMAND_Pass&lt;/code&gt;, а с &lt;code&gt;MS_SCSI_COMMAND_Fail&lt;/code&gt;, счетчик ведет себя похоже, только не тикает, пока к устройству нет обращения. По-видимому, это связано с нереализованными в устройстве операциями записи и чтения. Точнее, с испорченными &amp;mdash; там же были закрыты функции Dataflash.&lt;/p&gt;
+&lt;p&gt;Сделаю из этого в git отдельную ветку, скажем, test_usb.&lt;/p&gt;
+&lt;p&gt;Продолжу проверку связи. Условие с приращением счетчика &lt;code&gt;cnt_usb&lt;/code&gt; в &lt;code&gt;MassStorage.c&lt;/code&gt; я закрою, зато добавлю строчку &lt;code&gt;cnt_usb++&lt;/code&gt; в модуле &lt;code&gt;SCSI.c&lt;/code&gt; в функции &lt;code&gt;bool SCSI_DecodeSCSICommand(void)&lt;/code&gt;, в переключателе &lt;code&gt;CommandBlock.SCSICommandData[0]&lt;/code&gt; при выборе &lt;code&gt;SCSI_CMD_INQUIRY'. Ну и добавлю объявление переменной&lt;/code&gt;cnt_usb&lt;code&gt;в&lt;/code&gt;SCSI.h&lt;code&gt;, где-нибудь в самом конце перед&lt;/code&gt;#endif`:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        &lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cnt_usb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Такая модификация позволяет узнать, когда и сколько раз система выдает устройству запрос &lt;code&gt;INQUIRY&lt;/code&gt;. Оказывается, пять раз после подключения, а потом по разику после запуска программы на С++ из предыдущего &lt;a href="http://romeogolf.github.io/usb-polygon-6.html"&gt;выпуска&lt;/a&gt;, потому что там есть явная подача этой команды при помощи &lt;code&gt;DeviceIoControl&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Аналогичным образом &amp;mdash; переставляя инкремент счетчика в разные пункты данного &lt;code&gt;switch&lt;/code&gt; &amp;mdash; можно исследовать количество и интенсивность подачи разных SCSI-команд системой устройству при подключении или при программном обращении. Это тема забавная, но не очень интересная, потому что такую информацию можно найти не обязательно методами реверс-инжиниринга, достаточно почитать документацию. Но сохраню коммит с подсчетом &lt;code&gt;INQUIRY&lt;/code&gt; в той же ветке и вернусь в ветку &lt;code&gt;master&lt;/code&gt; к тегу &amp;laquo;v0.1&amp;raquo;.&lt;/p&gt;
+&lt;h2 id="-"&gt;Пиши-читай (заготовка)&lt;/h2&gt;
+&lt;p&gt;На следующем этапе пробую реализовать запись и чтение данных по USB. Понятно, что в прототипе функции чтения и записи реализованы так, чтобы читать и писать в микросхему флэш-памяти, то есть, сделано это все в модуле DataflashManager. Но у меня флэшки нет, и данный модуль мне не нужен. Однако, убрать его совсем я пока не могу, потому что в нем есть важные макроопределения, без которых не компилируется проект. Значит, нужно эти самые &lt;code&gt;#define&lt;/code&gt; перенести в нужный модуль (лучше, пожалуй, сделать для этого отдельный, но это попозже, пока для проверки &amp;mdash; так) и переписать функции чтения-записи без участия флэш.&lt;/p&gt;
+&lt;p&gt;Для начала в заголовочном файле SCSI.h, где-нибудь в самом конце перед &lt;code&gt;#endif&lt;/code&gt;, вставляю&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* ----- instead DataflashManager ----- */&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* ------------------------------------ */&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;для строк, которые должны заменить &lt;code&gt;DataflashManager.h&lt;/code&gt;, и начинаю заполнять этот пробел. Сначала надо вставить то, что в &lt;code&gt;DataflashManager.h&lt;/code&gt; отсутствует, но подключается через &lt;code&gt;#include&lt;/code&gt;. Подключается хитро, с проверкой переменной &lt;code&gt;BOARD&lt;/code&gt;, определенной в makefile, поэтому возьму этот кусок из &lt;code&gt;LUFA\CodeTemplates\DriverStubs\Dataflash.h&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* from ..\..\LUFA\CodeTemplates\DriverStubs\Dataflash.h */&lt;/span&gt;
+    &lt;span class="cm"&gt;/* Public Interface - May be used in end-application: */&lt;/span&gt;
+        &lt;span class="cm"&gt;/* Macros: */&lt;/span&gt;
+            &lt;span class="cm"&gt;/** Constant indicating the total number of dataflash ICs mounted on the selected board. */&lt;/span&gt;
+            &lt;span class="cp"&gt;#define DATAFLASH_TOTALCHIPS     1 &lt;/span&gt;&lt;span class="c1"&gt;// TODO: Replace with the number of Dataflashes on the board, max 2&lt;/span&gt;
+            &lt;span class="cm"&gt;/** Mask for no dataflash chip selected. */&lt;/span&gt;
+            &lt;span class="cp"&gt;#define DATAFLASH_NO_CHIP        0&lt;/span&gt;
+            &lt;span class="cm"&gt;/** Mask for the first dataflash chip selected. */&lt;/span&gt;
+            &lt;span class="cp"&gt;#define DATAFLASH_CHIP1          1 &lt;/span&gt;&lt;span class="c1"&gt;// TODO: Replace with mask with the pin attached to the first Dataflash /CS set&lt;/span&gt;
+            &lt;span class="cm"&gt;/** Mask for the second dataflash chip selected. */&lt;/span&gt;
+            &lt;span class="cp"&gt;#define DATAFLASH_CHIP2          2 &lt;/span&gt;&lt;span class="c1"&gt;// TODO: Replace with mask with the pin attached to the second Dataflash /CS set&lt;/span&gt;
+            &lt;span class="cm"&gt;/** Internal main memory page size for the board&amp;#39;s dataflash ICs. */&lt;/span&gt;
+            &lt;span class="cp"&gt;#define DATAFLASH_PAGE_SIZE      1024 &lt;/span&gt;&lt;span class="c1"&gt;// TODO: Replace with the page size for the Dataflash ICs&lt;/span&gt;
+            &lt;span class="cm"&gt;/** Total number of pages inside each of the board&amp;#39;s dataflash ICs. */&lt;/span&gt;
+            &lt;span class="cp"&gt;#define DATAFLASH_PAGES          8192 &lt;/span&gt;&lt;span class="c1"&gt;// TODO: Replace with the total number of pages inside one of the Dataflash ICs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Недостающие значения заполнил чем-то интуитивно похожим на правду, не разбираясь пока в тонкостях использования. Дальше переписываю уже из &lt;code&gt;DataflashManager.h&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/* from DataflashManager.h */&lt;/span&gt;
+    &lt;span class="cm"&gt;/* Preprocessor Checks: */&lt;/span&gt;
+        &lt;span class="cp"&gt;#if (DATAFLASH_PAGE_SIZE % 16)&lt;/span&gt;
+            &lt;span class="cp"&gt;#error Dataflash page size must be a multiple of 16 bytes.&lt;/span&gt;
+        &lt;span class="cp"&gt;#endif&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* Defines: */&lt;/span&gt;
+        &lt;span class="cm"&gt;/** Total number of bytes of the storage medium, comprised of one or more Dataflash ICs. */&lt;/span&gt;
+        &lt;span class="cp"&gt;#define VIRTUAL_MEMORY_BYTES         ((uint32_t)DATAFLASH_PAGES * DATAFLASH_PAGE_SIZE * DATAFLASH_TOTALCHIPS)&lt;/span&gt;
+        &lt;span class="cm"&gt;/** Block size of the device. This is kept at 512 to remain compatible with the OS despite the underlying&lt;/span&gt;
+&lt;span class="cm"&gt;         *  storage media (Dataflash) using a different native block size. Do not change this value.&lt;/span&gt;
+&lt;span class="cm"&gt;         */&lt;/span&gt;
+        &lt;span class="cp"&gt;#define VIRTUAL_MEMORY_BLOCK_SIZE    512&lt;/span&gt;
+        &lt;span class="cm"&gt;/** Total number of blocks of the virtual memory for reporting to the host as the device&amp;#39;s total capacity. Do not&lt;/span&gt;
+&lt;span class="cm"&gt;         *  change this value; change VIRTUAL_MEMORY_BYTES instead to alter the media size.&lt;/span&gt;
+&lt;span class="cm"&gt;         */&lt;/span&gt;
+        &lt;span class="cp"&gt;#define VIRTUAL_MEMORY_BLOCKS        (VIRTUAL_MEMORY_BYTES / VIRTUAL_MEMORY_BLOCK_SIZE)&lt;/span&gt;
+        &lt;span class="cm"&gt;/** Blocks in each LUN, calculated from the total capacity divided by the total number of Logical Units in the device. */&lt;/span&gt;
+        &lt;span class="cp"&gt;#define LUN_MEDIA_BLOCKS             (VIRTUAL_MEMORY_BLOCKS / TOTAL_LUNS)&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* Function Prototypes: */&lt;/span&gt;
+        &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;WriteBlocks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;uint32_t&lt;/span&gt; &lt;span class="n"&gt;BlockAddress&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                          &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;ReadBlocks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;uint32_t&lt;/span&gt; &lt;span class="n"&gt;BlockAddress&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                         &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;При этом укорачиваю названия функций чтения и записи. В &lt;code&gt;SCSI.c&lt;/code&gt; вставляю пока пустые определения объявленных в заголовочнике функций:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;WriteBlocks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;uint32_t&lt;/span&gt; &lt;span class="n"&gt;BlockAddress&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                          &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;ReadBlocks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;uint32_t&lt;/span&gt; &lt;span class="n"&gt;BlockAddress&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                         &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;После этого в функции &lt;code&gt;SCSI_Command_ReadWrite_10&lt;/code&gt; раскомментирую блок &lt;code&gt;if (IsDataRead == DATA_READ)&lt;/code&gt; и в нем тоже укорачиваю названия функций чтения и записи, чтобы соответствовали. Теперь можно закрыть пока что комментариями&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//      #include &amp;quot;DataflashManager.h&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;в заголовочниках &lt;code&gt;SCSI.h&lt;/code&gt; и &lt;code&gt;MassStorage.h&lt;/code&gt;. Теперь &lt;code&gt;make clean&lt;/code&gt;, &lt;code&gt;make&lt;/code&gt; и проверка работоспособности &amp;mdash; прошивка и созерцание диодиков. Работает, как раньше, но без модуля &lt;code&gt;DataflashManager&lt;/code&gt;. Надо добавить коммит git.&lt;/p&gt;
+&lt;p&gt;Правда, совсем стирать этот модуль рано, ведь функции чтения и записи еще пустые, а для их реализации надо опираться на имеющиеся.&lt;/p&gt;
+&lt;h2 id="flash-"&gt;Чтение и запись мимо flash-памяти&lt;/h2&gt;
+&lt;p&gt;Из модуля &lt;code&gt;DataflashManager&lt;/code&gt; беру тела функций &lt;code&gt;DataflashManager_ReadBlocks&lt;/code&gt; и &lt;code&gt;DataflashManager_WriteBlocks&lt;/code&gt; для &lt;code&gt;ReadBlocks&lt;/code&gt; и &lt;code&gt;WriteBlocks&lt;/code&gt; соответственно, стираю оттуда все, связанное с flash-памятью, добавляю по паре собственных переменных и модифицирую получение данных из буфера конечной точки. Получается следующее:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/** Writes blocks (OS blocks, not Dataflash pages) to the storage medium, the board Dataflash IC(s), from&lt;/span&gt;
+&lt;span class="cm"&gt; *  the pre-selected data OUT endpoint. This routine reads in OS sized blocks from the endpoint and writes&lt;/span&gt;
+&lt;span class="cm"&gt; *  them to the Dataflash in Dataflash page sized blocks.&lt;/span&gt;
+&lt;span class="cm"&gt; *&lt;/span&gt;
+&lt;span class="cm"&gt; *  \param[in] BlockAddress  Data block starting address for the write sequence&lt;/span&gt;
+&lt;span class="cm"&gt; *  \param[in] TotalBlocks   Number of blocks of data to write&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;WriteBlocks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;uint32_t&lt;/span&gt; &lt;span class="n"&gt;BlockAddress&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                  &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;CurrDFPage&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;BlockAddress&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;DATAFLASH_PAGE_SIZE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;CurrDFPageByte&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;BlockAddress&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;DATAFLASH_PAGE_SIZE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;uint8_t&lt;/span&gt;  &lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CurrDFPageByte&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;uint8_t&lt;/span&gt;  &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+
+    &lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;first&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* Wait until endpoint is ready before continuing */&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_WaitUntilReady&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+      &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kt"&gt;uint8_t&lt;/span&gt; &lt;span class="n"&gt;BytesInBlockDiv16&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="cm"&gt;/* Write an endpoint packet sized data block to the Dataflash */&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BytesInBlockDiv16&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="cm"&gt;/* Check if the endpoint is currently empty */&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_IsReadWriteAllowed&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="cm"&gt;/* Clear the current endpoint bank */&lt;/span&gt;
+                &lt;span class="n"&gt;Endpoint_ClearOUT&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+                &lt;span class="cm"&gt;/* Wait until the host has sent another packet */&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_WaitUntilReady&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+                  &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="cm"&gt;/* Check if end of Dataflash page reached */&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DATAFLASH_PAGE_SIZE&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="cm"&gt;/* Reset the Dataflash buffer counter, increment the page counter */&lt;/span&gt;
+                &lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;CurrDFPage&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Write one 16-byte chunk of data to the Dataflash */&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;14&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Endpoint_Read_8&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;first&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;first&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;data_PC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Increment the Dataflash page 16 byte block counter */&lt;/span&gt;
+            &lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Increment the block 16 byte block counter */&lt;/span&gt;
+            &lt;span class="n"&gt;BytesInBlockDiv16&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Check if the current command is being aborted by the host */&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IsMassStoreReset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+
+        &lt;span class="cm"&gt;/* Decrement the blocks remaining counter */&lt;/span&gt;
+        &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* If the endpoint is empty, clear it ready for the next packet from the host */&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_IsReadWriteAllowed&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
+      &lt;span class="n"&gt;Endpoint_ClearOUT&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="cm"&gt;/** Reads blocks (OS blocks, not Dataflash pages) from the storage medium, the board Dataflash IC(s), into&lt;/span&gt;
+&lt;span class="cm"&gt; *  the pre-selected data IN endpoint. This routine reads in Dataflash page sized blocks from the Dataflash&lt;/span&gt;
+&lt;span class="cm"&gt; *  and writes them in OS sized blocks to the endpoint.&lt;/span&gt;
+&lt;span class="cm"&gt; *&lt;/span&gt;
+&lt;span class="cm"&gt; *  \param[in] BlockAddress  Data block starting address for the read sequence&lt;/span&gt;
+&lt;span class="cm"&gt; *  \param[in] TotalBlocks   Number of blocks of data to read&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;ReadBlocks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;uint32_t&lt;/span&gt; &lt;span class="n"&gt;BlockAddress&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                 &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;CurrDFPage&lt;/span&gt;          &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;BlockAddress&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;DATAFLASH_PAGE_SIZE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;uint16_t&lt;/span&gt; &lt;span class="n"&gt;CurrDFPageByte&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;BlockAddress&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;DATAFLASH_PAGE_SIZE&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;uint8_t&lt;/span&gt;  &lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CurrDFPageByte&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;uint8_t&lt;/span&gt;  &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="kt"&gt;uint8_t&lt;/span&gt;  &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* Wait until endpoint is ready before continuing */&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_WaitUntilReady&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+      &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kt"&gt;uint8_t&lt;/span&gt; &lt;span class="n"&gt;BytesInBlockDiv16&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="cm"&gt;/* Read an endpoint packet sized data block from the Dataflash */&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BytesInBlockDiv16&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="cm"&gt;/* Check if the endpoint is currently full */&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_IsReadWriteAllowed&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="cm"&gt;/* Clear the endpoint bank to send its contents to the host */&lt;/span&gt;
+                &lt;span class="n"&gt;Endpoint_ClearIN&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+                &lt;span class="cm"&gt;/* Wait until the endpoint is ready for more data */&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_WaitUntilReady&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+                  &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Check if end of Dataflash page reached */&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DATAFLASH_PAGE_SIZE&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="cm"&gt;/* Reset the Dataflash buffer counter, increment the page counter */&lt;/span&gt;
+                &lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;CurrDFPage&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+
+            &lt;span class="n"&gt;data_8&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data_device&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Read one 16-byte chunk of data from the Dataflash */&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;14&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="n"&gt;Endpoint_Write_8&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pdata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Increment the Dataflash page 16 byte block counter */&lt;/span&gt;
+            &lt;span class="n"&gt;CurrDFPageByteDiv16&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Increment the block 16 byte block counter */&lt;/span&gt;
+            &lt;span class="n"&gt;BytesInBlockDiv16&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="cm"&gt;/* Check if the current command is being aborted by the host */&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IsMassStoreReset&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+
+        &lt;span class="cm"&gt;/* Decrement the blocks remaining counter */&lt;/span&gt;
+        &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/* If the endpoint is full, send its contents to the host */&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Endpoint_IsReadWriteAllowed&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
+      &lt;span class="n"&gt;Endpoint_ClearIN&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;data_8&lt;/code&gt; &amp;mdash; это массив для обмена данными с буфером конечной точки, &lt;code&gt;data_PC&lt;/code&gt; и &lt;code&gt;data_device&lt;/code&gt; будут контрольными переменными для их отображения на светодиодах и в консоли ПК соответственно, а &lt;code&gt;first&lt;/code&gt; нужна для того, чтобы в контрольную переменную попал первый байт передаваемого из ПК массива и не перезатерся при дальнейшей передаче 16-байтных кусков. Контрольные переменные надо не забыть объявить в &lt;code&gt;SCSI.h&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="cm"&gt;/* variables */&lt;/span&gt;
+        &lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="kt"&gt;uint8_t&lt;/span&gt; &lt;span class="n"&gt;data_PC&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="kt"&gt;uint8_t&lt;/span&gt; &lt;span class="n"&gt;data_device&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А также их надо определить и использовать в &lt;code&gt;MassStorage.c&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;:cpp
+uint8_t data_PC;
+uint8_t data_device;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;перед главной функцией, &lt;code&gt;data_device = cnt_bt;&lt;/code&gt; перед &lt;code&gt;switch (mode_out) {&lt;/code&gt; и &lt;code&gt;PORTD = data_PC;&lt;/code&gt; вместо &lt;code&gt;PORTD = 0x55&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Компиляция, прошивка, проверка. Теперь код для ПК, написанный несколько ранее на С++, работает ожидаемо: в консоли пишет &lt;code&gt;data_2 =&lt;/code&gt; и число, соответствующее счетчику &lt;code&gt;cnt_bt&lt;/code&gt; на устройстве (увеличивается нажатием верхней кнопки, уменьшается второй кнопкой, отображается на светодиодах в &amp;laquo;режиме 2&amp;raquo;), а на светодиодах в &amp;laquo;режиме 3&amp;raquo; вместо константы 0x55 отображается то, что указано в коде С++ в нулевом элементе массива q.&lt;/p&gt;
+&lt;p&gt;И буква устройству в Windows 7 стала выделяться гораздо быстрее &amp;mdash; практически сразу после подключения.&lt;/p&gt;
+&lt;p&gt;Это изменения, достойные новой версии. Коммит с тегом &amp;laquo;v0.2&amp;raquo;&lt;/p&gt;
+&lt;h2 id="_4"&gt;Еще немного о взаимодействии с ПК&lt;/h2&gt;
+&lt;p&gt;Вернусь к коду на С++, написанному для ПК. В операциях чтения и записи, реализованных через &lt;code&gt;DeviceIoControl&lt;/code&gt;, размер передаваемых данных указывается дважды: в поле &lt;code&gt;myspti.t_spti.DataTransferLength&lt;/code&gt; и в 7&amp;ndash;8 байтах &lt;code&gt;myspti.t_spti.Cdb&lt;/code&gt;, причем, в первом случае &amp;mdash; в байтах, а во втором &amp;mdash; в логических блоках. Насколько я разобрался, размер логического блока соответствует &lt;code&gt;VIRTUAL_MEMORY_BLOCK_SIZE&lt;/code&gt; на устройстве, то есть 512 байтов. Так вот, эти два размера в &lt;code&gt;myspti&lt;/code&gt; должны соответствовать друг другу, иначе могут быть ошибки. Например, можно поставить &lt;code&gt;q1 = 512&lt;/code&gt; и &lt;code&gt;myspti.t_spti.Cdb[8] = 0x01&lt;/code&gt; и будет работать, а &lt;code&gt;q1 = 1024&lt;/code&gt; и &lt;code&gt;myspti.t_spti.Cdb[8] = 0x01&lt;/code&gt; вызовет ошибку.&lt;/p&gt;
+&lt;p&gt;А теперь я закрою эти две сложные конструкции чтения и записи с заполнением структур &lt;code&gt;myspti&lt;/code&gt; и вызовом &lt;code&gt;DeviceIoControl&lt;/code&gt; блочным комментарием, а вмето них, чуть выше их, напишу следующее:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;                    &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;WriteFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;q1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;q2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;OutFormatMsg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ReadFile Error&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;WriteFile done&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;len = %lu&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;q2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt;
+
+
+                    &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ReadFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;q1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;q2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;OutFormatMsg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ReadFile Error&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ReadFile done&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;data_2 = %x&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;len = %lu&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;q2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;То есть, воспользуюсь для чтения и записи специально предназначенными для этого функциями. Компилирую, прошиваю, проверяю. &lt;/p&gt;
+&lt;p&gt;Работает! Ура? Вроде, ура. Теперь уже можно использовать разработанное устройство для общения с ПК &amp;mdash; передавать данные в обе стороны и как-то их использовать.&lt;/p&gt;
+&lt;p&gt;Причем, можно использовать не только данные, но и адрес. То есть, устройство, получив данные, может проанализировать адрес, по которому была команда их записать (или, получив команду чтения, проанализировать адрес, с которого данные затребованы) и выполнить определенные действия в зависимости от этого адреса. Сам адрес-то фиктивный, никакой памяти, к которой относится адресация, на плате нет. При использовании &lt;code&gt;ReadFile/WriteFile&lt;/code&gt; можно управлять адресом c ПК при помощи предварительно выполненной функции &lt;code&gt;SetFilePointer(hDevice, 0, NULL, FILE_BEGIN);&lt;/code&gt;, а в программе устройства анализировать &lt;code&gt;BlockAddress&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Пожалуй, на этом надо заканчивать, и так слишком много получилось для одного выпуска. Продолжение следует&amp;hellip;&lt;/p&gt;</summary><category term="usb-polygon"></category></entry><entry><title>USB-polygon-6: Обмен по USB, поиск среди устройств</title><link href="http://romeogolf.github.io/usb-polygon-6.html" rel="alternate"></link><updated>2017-01-09T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-09:usb-polygon-6.html</id><summary type="html">&lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#_1"&gt;А что мы, собственно, нашли?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#_2"&gt;Как спросить устройство?&lt;/a&gt;&lt;/li&gt;
