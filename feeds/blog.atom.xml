@@ -1,5 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.github.io/" rel="alternate"></link><link href="http://romeogolf.github.io/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.github.io/</id><updated>2017-01-25T20:00:00+05:00</updated><entry><title>USB-polygon-7: Обмен по USB, подготовка устройства</title><link href="http://romeogolf.github.io/usb-polygon-7.html" rel="alternate"></link><updated>2017-01-25T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-25:usb-polygon-7.html</id><summary type="html">&lt;div class="toc"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.github.io/" rel="alternate"></link><link href="http://romeogolf.github.io/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.github.io/</id><updated>2017-01-29T20:00:00+05:00</updated><entry><title>USB-polygon-8: Обмен по USB, еще о взаимодействии с «чистым» устройством</title><link href="http://romeogolf.github.io/usb-polygon-8.html" rel="alternate"></link><updated>2017-01-29T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-29:usb-polygon-8.html</id><summary type="html">&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#_1"&gt;Завершая этап&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_2"&gt;Физическое устройство&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#scsi-"&gt;Пользовательская SCSI-команда&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2 id="_1"&gt;Завершая этап&lt;/h2&gt;
+&lt;p&gt;В результате проделанной работы получилось &amp;laquo;сырое&amp;raquo; с точки зрения файловой системы MassStorage-устройство, приспособленное к обмену информацией с ПК по USB. С определенными ограничениями, конечно: во-первых, требуется некоторый самописный код для ПК, причем, требующий прав администратора; во-вторых, на устройстве программа тоже выглядит не особенно изящно, нужно городить какие-то конструкции для идентификации запрашиваемой и получаемой информации по ее адресу, а также какое-то распределение в адресном пространстве источников и приемников информации. Ну, это уже зависит от конкретной задачи, а текущая задача &amp;mdash; учебная &amp;mdash; фактически выполнена.&lt;/p&gt;
+&lt;p&gt;Теперь хотелось бы развить тему: сделать устройство, более точно имитирующее флэш-накопитель. То есть, надо добавить некоторое подобие файловой системы.&lt;/p&gt;
+&lt;p&gt;Однако, перед этим хотелось бы провести еще пару экспериментов с &amp;laquo;сырым&amp;raquo; устройством.&lt;/p&gt;
+&lt;h2 id="_2"&gt;Физическое устройство&lt;/h2&gt;
+&lt;p&gt;Первая &amp;laquo;доделка&amp;raquo; касается кода для ПК. Доступ к устройству осуществляется при помощи дескриптора (HANDLE), который возвращает функция &lt;code&gt;CreateFile&lt;/code&gt;. Этой функции сейчас передается в качестве параметра &lt;code&gt;DevicePath&lt;/code&gt;, который, в свою очередь, возвращается функцией &lt;code&gt;SetupDiEnumDeviceInterfaces&lt;/code&gt;, принимающей среди параметров в том числе GUID интерфейса, можно диска, можно тома.&lt;/p&gt;
+&lt;p&gt;Хочу попробовать достучаться до платы, как до физического устройства, PhysicalDrive. Есть мнение, что это будет более единообразно для разных версий ОС Windows, а также должно снять сомнения, к чему же правильнее обращаться &amp;mdash; к диску или к тому. &lt;/p&gt;
+&lt;p&gt;Для этого снова пригодится функция &lt;code&gt;DeviceIoControl&lt;/code&gt;, которой вторым параметром нужно передать &lt;code&gt;IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;В коде после комментария &lt;code&gt;// ----- работа с устройством -----&lt;/code&gt; надо добавить объявление новых переменных:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;                    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;diskNum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;                &lt;span class="c1"&gt;// количество дисков&lt;/span&gt;
+                    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;physicalDrive&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt; &lt;span class="c1"&gt;// строка под &amp;quot;\\\\.\\PhysicalDrive%d&amp;quot;&lt;/span&gt;
+                    &lt;span class="n"&gt;DWORD&lt;/span&gt; &lt;span class="n"&gt;bufsize&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bufsizeret&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;      &lt;span class="c1"&gt;// размеры буфера&lt;/span&gt;
+                    &lt;span class="n"&gt;VOLUME_DISK_EXTENTS&lt;/span&gt; &lt;span class="n"&gt;buf_ioctl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// буфер для GET_VOLUME_DISK_EXTENTS&lt;/span&gt;
+                    &lt;span class="n"&gt;bufsize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VOLUME_DISK_EXTENTS&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Однако, парочку появившихся типов этот код не знает. Не буду подключать соответствующий заголовок, просто запишу после объявления &lt;code&gt;struct scsi_st&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;_DISK_EXTENT&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;DWORD&lt;/span&gt; &lt;span class="n"&gt;DiskNumber&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="n"&gt;LARGE_INTEGER&lt;/span&gt; &lt;span class="n"&gt;StartingOffset&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="n"&gt;LARGE_INTEGER&lt;/span&gt; &lt;span class="n"&gt;ExtentLength&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;DISK_EXTENT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;PDISK_EXTENT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;_VOLUME_DISK_EXTENTS&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;  &lt;span class="n"&gt;DWORD&lt;/span&gt; &lt;span class="n"&gt;NumberOfDiskExtents&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="n"&gt;DISK_EXTENT&lt;/span&gt; &lt;span class="n"&gt;Extents&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ANYSIZE_ARRAY&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;VOLUME_DISK_EXTENTS&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А также такие &lt;code&gt;#define&lt;/code&gt; после всех &lt;code&gt;#include&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#define IOCTL_VOLUME_BASE   ((ULONG) &amp;#39;V&amp;#39;)&lt;/span&gt;
+&lt;span class="cp"&gt;#define IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS \&lt;/span&gt;
+&lt;span class="cp"&gt;  CTL_CODE(IOCTL_VOLUME_BASE, 0, METHOD_BUFFERED, FILE_ANY_ACCESS)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Теперь ниже  &lt;code&gt;// ----- работа с устройством -----&lt;/code&gt; после обявления переменных можно добавить код:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;                    &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DeviceIoControl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="n"&gt;IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;buf_ioctl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="n"&gt;bufsize&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;bufsizeret&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="nb"&gt;NULL&lt;/span&gt;
+                            &lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;OutFormatMsg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;PhysicDiscErr&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;DiscNum = %lu&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;buf_ioctl&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NumberOfDiskExtents&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                        &lt;span class="n"&gt;diskNum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;buf_ioctl&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Extents&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;DiskNumber&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Disk = %d&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;diskNum&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;diskNum&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                            &lt;span class="n"&gt;sprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;physicalDrive&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\\\\&lt;/span&gt;&lt;span class="s"&gt;.&lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;&lt;span class="s"&gt;PhysicalDrive%d&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;diskNum&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                        &lt;span class="p"&gt;}&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;physicalDrive: %s&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;physicalDrive&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Теперь в консольном выводе появятся новые строки:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;. . .
+--- This is my device! ---
+DiscNum = 1
+Disk = 1
+physicalDrive: \\.\PhysicalDrive1
+WriteFile done
+len = 1024
+ReadFile done
+data_2 = 0
+len = 1024
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;То есть, дисков 1, номер диска 1, строка для &lt;code&gt;CreateFile&lt;/code&gt; сформирована. Можно сразу после пытаться получить дескриптор устройства по номеру физического диска:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;                    &lt;span class="n"&gt;HANDLE&lt;/span&gt; &lt;span class="n"&gt;hDevice2&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;CreateFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                            &lt;span class="n"&gt;physicalDrive&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="n"&gt;GENERIC_READ&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;GENERIC_WRITE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="c1"&gt;//0,&lt;/span&gt;
+                            &lt;span class="c1"&gt;//FILE_SHARE_READ or FILE_SHARE_WRITE,&lt;/span&gt;
+                            &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="n"&gt;OPEN_EXISTING&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="n"&gt;FILE_FLAG_WRITE_THROUGH&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;FILE_FLAG_NO_BUFFERING&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="nb"&gt;NULL&lt;/span&gt;
+                            &lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;INVALID_HANDLE_VALUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;OutFormatMsg&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;CreateFile 2 Error&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;_tprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_T&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;CreateFile 2 done! &lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+
+                        &lt;span class="c1"&gt;// сюда вставить ReadFile и WriteFile;&lt;/span&gt;
+                        &lt;span class="c1"&gt;// сюда же можно и обе&lt;/span&gt;
+                        &lt;span class="c1"&gt;// DeviceIoControl с IOCTL_SCSI_PASS_THROUGH_DIRECT&lt;/span&gt;
+
+                        &lt;span class="n"&gt;CloseHandle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hDevice2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;И в имеющихся &lt;code&gt;ReadFile&lt;/code&gt; и &lt;code&gt;WriteFile&lt;/code&gt; после их перестановки на новое место (указанное комментарием в коде) заменяю &lt;code&gt;hDevice&lt;/code&gt; на &lt;code&gt;hDevice2&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Проверено &amp;mdash; работает. Делает все то же, что и предыдущая версия.&lt;/p&gt;
+&lt;p&gt;Еще можно попробовать заблокировать и размонтировать устройство при помощи &lt;code&gt;DeviceIoControl&lt;/code&gt; с параметрами &lt;code&gt;FSCTL_LOCK_VOLUME&lt;/code&gt; и &lt;code&gt;FSCTL_DISMOUNT_VOLUME&lt;/code&gt; соответственно, но это уже другая история.&lt;/p&gt;
+&lt;h2 id="scsi-"&gt;Пользовательская SCSI-команда&lt;/h2&gt;
+&lt;p&gt;Теперь обращусь к устройству. До сих пор оно выполняло только стандартные команды, передаваемые при помощи &lt;code&gt;ScsiPassThroughDirect&lt;/code&gt;, это &lt;code&gt;WRITE(10)&lt;/code&gt; с кодом 0x2A и &lt;code&gt;READ (10)&lt;/code&gt; с кодом 0x28.&lt;/p&gt;
+&lt;p&gt;А если мне надо выполнить какое-то свое действие, не предусмотренное набором SCSI-команд? Или, скажем, надо именно записать, но, допустим, в нулевой &amp;laquo;сектор&amp;raquo;, а операционная система после очередного обновления безопасности не разрешает этого делать, чтобы сильно умелые ручки не портили MBR устройств? &amp;laquo;Сектор&amp;raquo; здесь написал в кавычках, потому что нет никаких секторов в помине, есть только используемые в обмене адреса данных, которые в нормальном устройстве могли бы действительно указывать на сектор.&lt;/p&gt;
+&lt;p&gt;Пробую: в SCSI-команде записи закрываю строку с кодом команды, а вместо нее пишу ее копию, но с кодом 0xC1: команды от 0xC0 до 0xFF вроде бы vendor cpecific.&lt;/p&gt;
+&lt;p&gt;Отчет о выполнении операции записи получен, однако на светодиодной индикации платы не видно, чтобы что-то записалось. Пора править код программы для устройства.&lt;/p&gt;
+&lt;p&gt;Открываю &lt;code&gt;/Lib/SCSI.c&lt;/code&gt;, нахожу там функцию &lt;code&gt;bool SCSI_DecodeSCSICommand(void)&lt;/code&gt;, в ней переключатель &lt;code&gt;switch (CommandBlock.SCSICommandData[0])&lt;/code&gt;, благо, кроме него там почти ничего нет. Сразу под строкой &lt;code&gt;case SCSI_CMD_WRITE_10:&lt;/code&gt; добавляю строку &lt;code&gt;case 0xC1:&lt;/code&gt;. Тем самым заставляю устройство реагировать на команду 0xC1 так же, как и на команду 0x2A.&lt;/p&gt;
+&lt;p&gt;Проверяю &amp;mdash; работает. То есть, запись снова проходит, и на светодиодах отображается переданный с ПК байт.&lt;/p&gt;
+&lt;p&gt;Таким образом можно дублировать имеющиеся команды, можно писать совсем собственные. Для самописных команд можно особым образом обрабатывать Command Descriptor Block (CDB), а как это сделать &amp;mdash; можно подсмотреть в используемой здесь функции &lt;code&gt;SCSI_Command_ReadWrite_10&lt;/code&gt;, например. Там есть ближе к началу строки&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="n"&gt;BlockAddress&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SwapEndian_32&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;uint32_t&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;CommandBlock&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SCSICommandData&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+    &lt;span class="n"&gt;TotalBlocks&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SwapEndian_16&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;uint16_t&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;CommandBlock&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SCSICommandData&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;В них функция извлекает адрес и длину из указателя на 2 и 7 байты CDB. Можно напихать в CDB для самописной команды свою информацию в нужные места, а в обработчике вытащить ее аналогичным образом, зная место и размер.&lt;/p&gt;
+&lt;p&gt;Ну вот, теперь с &amp;laquo;сырым&amp;raquo; устройством практически всё. Что касается кода &amp;mdash; надо закоммитить текущие изменения в git с тегами &amp;laquo;v0.3&amp;raquo; для обеих программ.&lt;/p&gt;
+&lt;p&gt;Далее начнется работа по имитации файловой системы на устройстве, несмотря на отсутствие памяти для этой самой фкйловой системы.&lt;/p&gt;</summary><category term="usb-polygon"></category></entry><entry><title>USB-polygon-7: Обмен по USB, подготовка устройства</title><link href="http://romeogolf.github.io/usb-polygon-7.html" rel="alternate"></link><updated>2017-01-25T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-25:usb-polygon-7.html</id><summary type="html">&lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#_1"&gt;Проект заново&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#_2"&gt;&amp;laquo;Лампочки и кнопки&amp;raquo;&lt;/a&gt;&lt;/li&gt;

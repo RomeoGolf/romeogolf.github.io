@@ -48,7 +48,7 @@
                 <span class="badge">3</span>
             </a>
           </li>
-          <li class="tag-2">
+          <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/markdown.html">
               markdown
                 <span class="badge">2</span>
@@ -60,7 +60,7 @@
                 <span class="badge">6</span>
             </a>
           </li>
-          <li class="tag-2">
+          <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/rfquiz.html">
               rfquiz
                 <span class="badge">2</span>
@@ -72,7 +72,7 @@
                 <span class="badge">1</span>
             </a>
           </li>
-          <li class="tag-2">
+          <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/triangulum.html">
               triangulum
                 <span class="badge">2</span>
@@ -81,28 +81,28 @@
           <li class="tag-1">
             <a href="http://romeogolf.github.io/tag/usb-polygon.html">
               usb-polygon
-                <span class="badge">7</span>
+                <span class="badge">8</span>
             </a>
           </li>
-          <li class="tag-2">
+          <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/windows.html">
               windows
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-2">
+          <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/raznoe.html">
               разное
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-2">
+          <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/remont.html">
               ремонт
                 <span class="badge">2</span>
             </a>
           </li>
-          <li class="tag-2">
+          <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/svoimi-rukami.html">
               своими руками
                 <span class="badge">2</span>
@@ -120,7 +120,7 @@
 
     <div class="content">
   <section class="main-section blog-section" id="blog-posts">
-    <h4 class="date">Пн 23 Январь 2017</h4>
+    <h4 class="date">Вс 29 Январь 2017</h4>
     <article>
       <h1>USB-polygon-8: Обмен по USB, еще о взаимодействии с &laquo;чистым&raquo; устройством</h1>
       
@@ -129,7 +129,6 @@
 <li><a href="#_1">Завершая этап</a></li>
 <li><a href="#_2">Физическое устройство</a></li>
 <li><a href="#scsi-">Пользовательская SCSI-команда</a></li>
-<li><a href="#_3">Единицы информации: секторы, блоки, кластеры&hellip;</a></li>
 </ul>
 </div>
 <h2 id="_1">Завершая этап</h2>
@@ -250,26 +249,7 @@ len = 1024
 
 <p>В них функция извлекает адрес и длину из указателя на 2 и 7 байты CDB. Можно напихать в CDB для самописной команды свою информацию в нужные места, а в обработчике вытащить ее аналогичным образом, зная место и размер.</p>
 <p>Ну вот, теперь с &laquo;сырым&raquo; устройством практически всё. Что касается кода &mdash; надо закоммитить текущие изменения в git с тегами &laquo;v0.3&raquo; для обеих программ.</p>
-<p>Перед переходом к файловой системе еще хотелось бы систематизировать информацию об информации, которая в чем только ни измеряется, аж голова кругом. Мало того, что есть байты, слова, двойные слова, младшими вперед, старшими вперед, так это все еще рассматривается в оптовом виде кластерами, секторами, логическими блоками&hellip; Попробую разобраться.</p>
-<h2 id="_3">Единицы информации: секторы, блоки, кластеры&hellip;</h2>
-<p>байт, слово</p>
-<p>сектор</p>
-<p>кластер</p>
-<p>логический блок</p>
-<p>блок виртуальной памяти</p>
-<p>дорожка (в секторах)</p>
-<p>цилиндр</p>
-<div class="highlight"><pre>#define VIRTUAL_MEMORY_BLOCK_SIZE       512
-#define DATAFLASH_PAGE_SIZE             1024
-
-
-#define BYTES_PER_SECTOR                512
-#define BYTES_PER_SECT_SHIFT            9
-#define SECTORS_PER_CLUSTER             8
-#define SECTORS_PER_CLUST_SHIFT         3
-#define BYTES_PER_CLUSTER               (BYTES_PER_SECTOR * SECTORS_PER_CLUSTER)
-#define BYTES_PER_CLUST_SHIFT           (BYTES_PER_SECT_SHIFT + SECTORS_PER_CLUST_SHIFT)
-</pre></div>
+<p>Далее начнется работа по имитации файловой системы на устройстве, несмотря на отсутствие памяти для этой самой фкйловой системы.</p>
       <br/>	
       <footer>
           <div>
@@ -284,7 +264,7 @@ len = 1024
         <div class="comments">
           <div id="disqus_thread"></div>
           <script type="text/javascript">
-            var disqus_identifier = "drafts/usb-polygon-8.html";
+            var disqus_identifier = "usb-polygon-8.html";
             (function() {
               var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                   dsq.src = 'http://romeogolf.disqus.com/embed.js';
