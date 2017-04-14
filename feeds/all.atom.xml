@@ -124,7 +124,7 @@ len = 1024
 
 &lt;p&gt;В них функция извлекает адрес и длину из указателя на 2 и 7 байты CDB. Можно напихать в CDB для самописной команды свою информацию в нужные места, а в обработчике вытащить ее аналогичным образом, зная место и размер.&lt;/p&gt;
 &lt;p&gt;Ну вот, теперь с &amp;laquo;сырым&amp;raquo; устройством практически всё. Что касается кода &amp;mdash; надо закоммитить текущие изменения в git с тегами &amp;laquo;v0.3&amp;raquo; для обеих программ.&lt;/p&gt;
-&lt;p&gt;Далее начнется работа по имитации файловой системы на устройстве, несмотря на отсутствие памяти для этой самой фкйловой системы.&lt;/p&gt;</summary><category term="usb-polygon"></category></entry><entry><title>USB-polygon-7: Обмен по USB, подготовка устройства</title><link href="http://romeogolf.github.io/usb-polygon-7.html" rel="alternate"></link><updated>2017-01-25T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-25:usb-polygon-7.html</id><summary type="html">&lt;div class="toc"&gt;
+&lt;p&gt;Далее начнется работа по имитации файловой системы на устройстве, несмотря на отсутствие памяти для этой самой файловой системы.&lt;/p&gt;</summary><category term="usb-polygon"></category></entry><entry><title>USB-polygon-7: Обмен по USB, подготовка устройства</title><link href="http://romeogolf.github.io/usb-polygon-7.html" rel="alternate"></link><updated>2017-01-25T20:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-01-25:usb-polygon-7.html</id><summary type="html">&lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#_1"&gt;Проект заново&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#_2"&gt;&amp;laquo;Лампочки и кнопки&amp;raquo;&lt;/a&gt;&lt;/li&gt;
