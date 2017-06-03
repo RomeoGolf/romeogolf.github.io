@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-12: Имитация файлов</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.github.io/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.github.io/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.github.io/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.github.io/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.github.io/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.github.io id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.github.io/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.github.io/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.github.io/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.github.io/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">10</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/raznoe.html">
+              разное
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Ср 24 Май 2017</h4>
+    <article>
+      <h1>USB-polygon-12: Имитация файлов</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Файлы: какие надо и где их взять</a></li>
+<li><a href="#_2">Подготовка управляющей структуры</a></li>
+<li><a href="#_3">Заготовка для первого файла</a></li>
+<li><a href="#fat">Изменения в функциях чтения FAT и чтения данных</a></li>
+<li><a href="#_4">Остальные файлы</a><ul>
+<li><a href="#readme">Файл ReadMe</a></li>
+<li><a href="#_5">Большой файл</a></li>
+<li><a href="#_6">Файл, изменяющийся вручную</a></li>
+</ul>
+</li>
+<li><a href="#_7">Итог</a></li>
+</ul>
+</div>
+<h2 id="_1">Файлы: какие надо и где их взять</h2>
+<p>В предыдущем <a href="http://romeogolf.github.io/drafts/usb-polygon-11.html">выпуске</a> цикла проект для самодельного устройства был доведен до такого состояния, что <abbr title="Операционная система">ОС</abbr> <abbr title="Персональный компьютер">ПК</abbr> определяет его, как двухгигабайтную флэшку, причем, Windows 7 уже не предлагает ее отформатировать. Однако, по мнению <abbr title="Операционная система">ОС</abbr> флэшка пуста. Надо ее &laquo;наполнить&raquo;.</p>
+<p>Для начала о том, какие файлы я хотел бы видеть.</p>
+<p>Во-первых, текстовый файл с неким идентификатором. Это для того, чтобы собственная программа для <abbr title="Персональный компьютер">ПК</abbr>, проверив наличие воткнутых в порты флэшек и обнаружив несколько одновременно, могла с легкостью отличить нужную (то есть, данное устройство) по наличию файла с определенным именем и определенным содержимым. Очень хорошо на мой взгляд подойдет для этой цели GUID в текстовом виде.</p>
+<p>Во-вторых, некий текстовый файл, скажем, Readme. Для отладки работы с текстами разного размера и содержимого, хранящимися в памяти программ устройства, как с файлами.</p>
+<p>В-третьих, &laquo;файл&raquo;, содержимое которого изменялось бы при воздействии на устройство, скажем, с отображением состояния счетчика, который меняется при нажатии на кнопки. Отображать состояние счетчика хорошо бы в текстовом виде, да еще и с каким-нибудь комментарием, чтобы открывать чем попало, хоть в notepad.</p>
+<p>В-четвертых, &laquo;файл&raquo; с размером, заведомо превышающим то, что может храниться в памяти устройства, скажем, счетчик где-нибудь мегабайтного размера, в текстовом виде для удобства просмотра.</p>
+<p>Потом, хотелось бы, чтобы можно было управлять количеством файлов и их размером, а также способом подготовки информации при запросе конкретного файла. То есть, должна быть какая-то управляющая структура, перечисляющая имя файла, его размер и соответствующую ему подпрограмму, отвечающую за вывод данных. А наполнение корневого каталога должно формироваться в соответствии с этой структурой, и данные по запросу каждого файла должны готовиться указанными в ней функциями.</p>
+<h2 id="_2">Подготовка управляющей структуры</h2>
+<p>Именно такое решение &mdash; с таблицей элементов <abbr title="Файловая система">ФС</abbr> &mdash; описано в <a href="https://habrahabr.ru/post/247673/">статье</a> на <a href="https://habrahabr.ru/">Хабрахабре</a>. Эта статья вообще сильно перекликается с тем, что я тут делаю, только для другого процессора. Идея не очень сложная, понятная, только надо ее подогнать под AVR и LUFA.</p>
+<p>Для начала объявляю структуру таблицы файлов с коротким именем файла, длиной файла и подпрограммой подготовки его данных. А непосредственно перед ней объявлю и тип указателя на функцию для этой подпрограммы, чтобы она принимала указатель на порцию данных, размер порции и ее смещение в файле. Так как ничего интерфейсного в этих сущностях я пока не вижу, объявлять буду в файле <code>fake_fs.c</code>, сразу после определения констант, таким образом:</p>
+<div class="highlight"><pre><span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">ProcedureForRead</span><span class="p">)(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">11</span><span class="p">];</span>
+  <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
+  <span class="n">ProcedureForRead</span> <span class="n">procedureForRead</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">FileEntry</span><span class="p">;</span>
+</pre></div>
+
+
+<p>Имя предполагается короткое, &laquo;8.3&raquo;, поэтому на поле имени отведено 11 символов. Поле будет копироваться в описатель файла как есть, поэтому надо сразу заполнять его правильно: без точки-разделителя, с дополнением пробелами имени до 8 символов и расширения до 3 символов.</p>
+<h2 id="_3">Заготовка для первого файла</h2>
+<p>Чуть выше расположу объявления для файла, содержащего GUID в текстовом виде:</p>
+<div class="highlight"><pre><span class="cp">#define SIZE_OF_KEY 38</span>
+<span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">guidKey</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span> <span class="s">&quot;{7065c23a-3818-43c5-bdf0-55567ade31e7}&quot;</span><span class="p">;</span>
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readKey</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Чтобы данные файла лежали в памяти программ и не засоряли оперативную, нужен для начала макрос <code>PROGMEM</code>, и потом еще некоторые макросы из модуля <code>pgmspace.h</code>, который следует подключить в начале файла:</p>
+<div class="highlight"><pre><span class="cp">#include &quot;avr/pgmspace.h&quot;</span>
+</pre></div>
+
+
+<p>И собственно функция, выдающая данные этого &laquo;файла&raquo;:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readKey</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">SIZE_OF_KEY</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="n">SIZE_OF_KEY</span><span class="p">)</span> <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">guidKey</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">offset</span><span class="p">),</span> <span class="n">SIZE_OF_KEY</span> <span class="o">-</span> <span class="n">offset</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">guidKey</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">offset</span><span class="p">),</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Суть: если адрес очередного запрошенного куска данных (адрес начала плюс размер передаваемого куска) выходит за границы размера файла, то скопировать в отведенный буфер только помещающийся кусок. Если же запрошенный кусок помещается с запасом &mdash; скопировать его весь. А если смещение сразу выходит за границы файла &mdash; ничего не делать.</p>
+<p>Еще после объявления структуры таблицы файлов надо объявить саму таблицу, содержащую приведенный выше &laquo;файл&raquo;, с просьбой разместить ее в памяти программ и с ограничительной записью в конце:</p>
+<div class="highlight"><pre><span class="k">static</span> <span class="k">const</span> <span class="n">FileEntry</span> <span class="n">fileTable</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="p">{</span><span class="s">&quot;KEY_FILETXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_KEY</span><span class="p">,</span> <span class="n">readKey</span><span class="p">},</span>
+    <span class="p">{{</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<h2 id="fat">Изменения в функциях чтения <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> и чтения данных</h2>
+<p>Функцию чтения данных нужно дописать. Теперь она будет иметь такой вид:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="cm">/* root, chunck 1 */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;L&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;U&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;F&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span>
+
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;_&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x08</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+    <span class="cm">/* root, chunck 2 */</span>
+    <span class="cm">/* все нули */</span>
+    <span class="p">}</span> <span class="k">else</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">&gt;=</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">&lt;</span> <span class="n">ROOT_SECTOR</span> <span class="o">+</span> <span class="n">SECTORS_PER_CLUSTER</span><span class="p">))</span> <span class="p">{</span>
+        <span class="kt">uint16_t</span> <span class="n">readingChunck</span> <span class="o">=</span> <span class="p">(((</span><span class="n">BlockAddress</span> <span class="o">-</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">BYTES_PER_SECT_SHIFT</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="kt">uint16_t</span> <span class="n">fileNum</span> <span class="o">=</span> <span class="p">(</span><span class="n">readingChunck</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">fileNum</span> <span class="o">&lt;=</span> <span class="n">lastFileNo</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">readingChunck</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">fileNum</span><span class="p">].</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="mi">11</span><span class="p">);</span>
+
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">ATTR_ARCHIVE</span><span class="p">;</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span> <span class="cm">/* reserv */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x04</span><span class="p">;</span> <span class="cm">/* creation minisec */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x72</span><span class="p">;</span> <span class="cm">/* creation time */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span> <span class="cm">/* creation time */</span>
+
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="kt">uint32_t</span> <span class="n">firstCluster</span> <span class="o">=</span> <span class="n">ROOT_CLUSTER</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="kt">uint32_t</span> <span class="n">clustFileSize</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">fileNum</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="n">pgm_read_dword</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">));</span>
+                    <span class="n">clustFileSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">%</span> <span class="n">BYTES_PER_CLUSTER</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span>
+                        <span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="nl">BYTES_PER_CLUST_SHIFT</span> <span class="p">:</span>
+                        <span class="p">(</span><span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="n">BYTES_PER_CLUST_SHIFT</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                    <span class="n">firstCluster</span> <span class="o">+=</span> <span class="n">clustFileSize</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x79</span><span class="p">;</span> <span class="cm">/*  */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x40</span><span class="p">;</span> <span class="cm">/*  */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x79</span><span class="p">;</span> <span class="cm">/*  */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x40</span><span class="p">;</span> <span class="cm">/*  */</span>
+
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">firstCluster</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">firstCluster</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span> <span class="cm">/*  */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span> <span class="cm">/*  */</span>
+
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x79</span><span class="p">;</span> <span class="cm">/*  */</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x40</span><span class="p">;</span> <span class="cm">/*  */</span>
+
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">firstCluster</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">firstCluster</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+
+                <span class="cm">/* file size */</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">pgm_read_dword</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">fileNum</span><span class="p">].</span><span class="n">size</span><span class="p">));</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">&gt;=</span> <span class="n">ROOT_SECTOR</span> <span class="o">+</span> <span class="n">SECTORS_PER_CLUSTER</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">BlockAddress</span> <span class="o">-=</span> <span class="n">BOOT_SECTOR</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="kt">uint32_t</span> <span class="n">readingClustNo</span> <span class="o">=</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">&lt;&lt;</span> <span class="n">BYTES_PER_SECT_SHIFT</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">BYTES_PER_CLUST_SHIFT</span><span class="p">;</span>
+        <span class="kt">uint32_t</span> <span class="n">clustFileSize</span><span class="p">;</span>
+        <span class="kt">uint32_t</span> <span class="n">lastFileEndClust</span> <span class="o">=</span> <span class="n">ROOT_CLUSTER</span> <span class="p">;</span>
+        <span class="n">ProcedureForRead</span> <span class="n">pFunc</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">lastFileNo</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">pgm_read_dword</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">));</span>
+            <span class="n">clustFileSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">%</span> <span class="n">BYTES_PER_CLUSTER</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span>
+                    <span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="nl">BYTES_PER_CLUST_SHIFT</span> <span class="p">:</span>
+                    <span class="p">(</span><span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="n">BYTES_PER_CLUST_SHIFT</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">readingClustNo</span> <span class="o">&gt;</span> <span class="n">lastFileEndClust</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">readingClustNo</span> <span class="o">&lt;=</span> <span class="n">lastFileEndClust</span> <span class="o">+</span> <span class="n">clustFileSize</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">memcpy_P</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pFunc</span><span class="p">,</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">procedureForRead</span><span class="p">),</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PGM_VOID_P</span><span class="p">));</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">pFunc</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="kt">uint32_t</span> <span class="n">offset</span> <span class="o">=</span>
+                    <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">-</span> <span class="p">((</span><span class="n">lastFileEndClust</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">SECTORS_PER_CLUST_SHIFT</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="n">BYTES_PER_SECT_SHIFT</span><span class="p">)</span> <span class="o">+</span>
+                    <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">);</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;</span> <span class="n">size</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="n">pFunc</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">fileTable</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">lastFileEndClust</span> <span class="o">+=</span> <span class="n">clustFileSize</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>В нее добавились:</p>
+<ul>
+<li>Проверка попадания адреса в корневой каталог для имитации файловой записи в этом каталоге. В этом случае вычисляется размер файла и адрес его первого кластера, чтобы дописать в корневой каталог в конце того, что там уже записано (на текущий момент там записан только идентификатор тома, но файлов может быть несколько, а функция универсальная)</li>
+<li>Проверка попадания адреса за пределы корневого каталога для имитации содержимого файла. Тогда файл будет выдаваться 16-байтными кусками, в соответстви с адресом и смещением запрошенного куска.</li>
+</ul>
+<p>Функция <code>read_fat</code> также заметно разрослась и усложнилась:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_fat</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">nextClaster</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">size</span> <span class="o">=</span> <span class="n">pgm_read_dword</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">));</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+        <span class="cm">/* first fat */</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xF8</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0F</span><span class="p">;</span>
+        <span class="cm">/* second fat */</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xF8</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="cm">/* root dir */</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0F</span><span class="p">;</span>
+        <span class="cm">/* file1 */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">fileTable</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="n">SECTORS_PER_CLUSTER</span> <span class="o">*</span> <span class="n">BYTES_PER_SECTOR</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">SECTORS_PER_CLUSTER</span> <span class="o">*</span> <span class="n">BYTES_PER_SECTOR</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">nextClaster</span> <span class="o">=</span> <span class="p">(</span><span class="n">ROOT_CLUSTER</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">nextClaster</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nextClaster</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nextClaster</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+          <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nextClaster</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kt">uint32_t</span> <span class="n">readingClustNo</span> <span class="o">=</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">&lt;&lt;</span> <span class="n">BYTES_PER_SECT_SHIFT</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="kt">uint32_t</span> <span class="n">clustFileSize</span><span class="p">;</span>
+        <span class="kt">uint32_t</span> <span class="n">lastFileEndClust</span> <span class="o">=</span> <span class="n">ROOT_CLUSTER</span><span class="p">;</span>
+        <span class="kt">uint16_t</span> <span class="n">currFileNo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span><span class="mi">4</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">currFileNo</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">lastFileNo</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">pgm_read_dword</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">));</span>
+                <span class="n">clustFileSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">%</span> <span class="n">BYTES_PER_CLUSTER</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span>
+                        <span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="nl">BYTES_PER_CLUST_SHIFT</span> <span class="p">:</span>
+                        <span class="p">(</span><span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="n">BYTES_PER_CLUST_SHIFT</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">readingClustNo</span> <span class="o">==</span> <span class="n">lastFileEndClust</span> <span class="o">+</span> <span class="n">clustFileSize</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">((</span><span class="n">readingClustNo</span> <span class="o">&gt;</span> <span class="n">lastFileEndClust</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">readingClustNo</span> <span class="o">&lt;</span> <span class="n">lastFileEndClust</span> <span class="o">+</span> <span class="n">clustFileSize</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">nextClaster</span> <span class="o">=</span> <span class="p">(</span><span class="n">readingClustNo</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nextClaster</span> <span class="o">&gt;&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nextClaster</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nextClaster</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="n">data_buf</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nextClaster</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">lastFileEndClust</span> <span class="o">+=</span> <span class="n">clustFileSize</span><span class="p">;</span>
+                <span class="n">currFileNo</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">readingClustNo</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>В нее добавились операции по вычислению положения файла в области данных для заполнения соответствующих элементов таблицы <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>.</p>
+<p>Чтобы эти изменения работали, требуется добавить глобальные переменные, необходимые для вычисления принадлежности запрашиваемых адресов тому или иному файлу. Это количество кластеров, занятых файлами, и номер последнего файла:</p>
+<div class="highlight"><pre><span class="kt">uint32_t</span> <span class="n">nClusters</span><span class="p">;</span>
+<span class="kt">uint32_t</span> <span class="n">lastFileNo</span><span class="p">;</span>
+</pre></div>
+
+
+<p>Их необходимо инициализировать, для чего потребуется функция, определяющая по таблице файлов соответствующие параметры:</p>
+<div class="highlight"><pre><span class="kt">void</span> <span class="nf">fakeFsInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">nClusters</span> <span class="o">=</span> <span class="n">ROOT_CLUSTER</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">clustFileSize</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">pgm_read_byte</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">pgm_read_dword</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">));</span>
+        <span class="n">clustFileSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">%</span> <span class="n">BYTES_PER_CLUSTER</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span>
+                <span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="nl">BYTES_PER_CLUST_SHIFT</span> <span class="p">:</span>
+                <span class="p">(</span><span class="n">size</span> <span class="o">&gt;&gt;</span> <span class="n">BYTES_PER_CLUST_SHIFT</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">nClusters</span> <span class="o">+=</span> <span class="n">clustFileSize</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">lastFileNo</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Эту функцию необходимо вызвать в файле <code>MassStorage.c</code> в функции <code>SetupHardware()</code> сразу после вызова <code>USB_Init()</code>, для чего надо не забыть включить <code>#include "Lib/fake_fs.h"</code> в <code>MassStorage</code>.</p>
+<p>Для ускорения работы можно было бы вообще все вычисления, выполняемые при подготовке данных <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> и корневого каталога, сделать в функции инициализации, а не на лету при получении запроса на чтение файла. Однако, тогда надо хранить параметры каждого файла: кластер начала, количество кластеров, размер в байтах, смещение для элемента-описателя в каталоге и для элементов списка в <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>. Но тогда при увеличении числа имитируемых файлов будет разрастаться занимаемая оперативная память, а ее очень-очень мало. А вот код, вычисляющий эти данные на лету, от количества файлов не зависит.</p>
+<p>Если уж на то пошло, то быстрее всего не вычислять ничего, а сложить образ файловой системы где-то в памяти. Получаем в результате обыкновенную флэшку и необходимость иметь солидный объем памяти (по сравнению с имеющейся сейчас). Поэтому жертвую вычислениями в пользу памяти.</p>
+<p>Тем более, результат имеется: теперь устройство, подключенное к <abbr title="Персональный компьютер">ПК</abbr>, можно открыть, как флэшку, на которой в корневом каталоге записан файл <code>KEY_FILE.TXT</code>, и этот файл можно открыть блокнотом (который notepad.exe) и прочитать GUID. Готов очередной GIT-коммит.</p>
+<h2 id="_4">Остальные файлы</h2>
+<p>Имеется заготовка для добавления прочих файлов, перечисленных в начале выпуска. Дальше должно пойти проще: надо вставить в таблицу файлов новое имя файла и имя функции получения данных этого файла, а также ввести его размер. Если это текст &mdash; посчитать вручную, а если нет (например, результат каких-то действий или передачи данных извне) &mdash; задать желаемую величину.</p>
+<h3 id="readme">Файл ReadMe</h3>
+<p>Добавляю текстовый файл размером чуть побольше. Для этого объявляю соответствующие строковую переменную, константу-размер строки и функцию чтения:</p>
+<div class="highlight"><pre><span class="cp">#define SIZE_OF_README  (92 + 53)</span>
+<span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">readme</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;This is a test device whithout any flash-memory.</span><span class="se">\r\n</span><span class="s">&quot;</span>
+    <span class="s">&quot;This device have a fake file system FAT32.</span><span class="se">\r\n</span><span class="s">&quot;</span>
+    <span class="s">&quot;All files in the device are generated by a program.&quot;</span><span class="p">};</span>
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readMe</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+</pre></div>
+
+
+<p>В таблицу файлов добавляю вторую строку (между строкой файла <code>KEY_FILETXT</code> и ограничительной строкой):</p>
+<div class="highlight"><pre>    <span class="p">{</span><span class="s">&quot;README  TXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_README</span><span class="p">,</span> <span class="n">readMe</span><span class="p">},</span>
+</pre></div>
+
+
+<p>Ну и определяю функцию чтения этого файла, очень похожую на чтение <code>KEY_FILE.TXT</code>. Настолько похожую, что можно бы написать общую унифицированную, но не буду, поскольку текстовых файлов из строковой константы мне больше не надо. А функция такая:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readMe</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">SIZE_OF_README</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="n">SIZE_OF_README</span><span class="p">)</span> <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">readme</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">offset</span><span class="p">),</span> <span class="n">SIZE_OF_README</span> <span class="o">-</span> <span class="n">offset</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">readme</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">offset</span><span class="p">),</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Теперь &laquo;флэшка&raquo; содержит два текстовых файла. Второй &mdash; из трех строчек. Английский в этих строчках, вероятно, хромает, но не в нем дело, &laquo;в музыканта не стрелять, играет, как умеет&raquo;.</p>
+<p>Сохраняю коммит и продолжаю.</p>
+<h3 id="_5">Большой файл</h3>
+<p>Теперь добавлю файл, который не читает данные из памяти программ, а собирает их на лету, в процессе запросов на чтение. Для простоты пусть это будет набор возрастающих чисел, 32-разрядный счетчик. И лучше в текстовом виде, чтобы не заморачиваться с его просмотром, а открыть тем же блокнотом. И пусть он будет, скажем, мегабайтным.</p>
+<p>Объявляю константу-размер и функцию чтения:</p>
+<div class="highlight"><pre><span class="cp">#define SIZE_OF_TEST    0x100000</span>
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readTest</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Вставляю третью строчку в таблицу файлов:</p>
+<div class="highlight"><pre>    <span class="p">{</span><span class="s">&quot;TESTFILETXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_TEST</span><span class="p">,</span> <span class="n">readTest</span><span class="p">},</span>
+</pre></div>
+
+
+<p>И определяю объявленную функцию:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readTest</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">SIZE_OF_TEST</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x20</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x20</span><span class="p">;</span>
+
+    <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="n">nibble</span> <span class="o">=</span> <span class="n">nibble</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="nl">nibble</span> <span class="p">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="n">nibble</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x20</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x20</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Здесь наполнение файла формируется из смещения. В 16-байтный кусок можно вместить в текстовом виде 2 числа по 6 цифр (для наглядности и простоты формирования &mdash; шестнадцатиричных) с двумя пробелами для разделения.</p>
+<p>Смещение (<code>offset</code>) 16-байтовых кусков изменяется на 16. Если его разделить на 8 (путем сдвига вправо на 3 разряда), то получим величину, изменяющуюся на 2. Внутри процедуры формирования числа дополнительно увеличиваем на 1. Получаем последовательно изменяющееся число, и при достижении файлом мегабайтного размера получаем набор чисел от 000000 до 01FFFF.</p>
+<p>После компиляции в корневом каталоге &laquo;флэшки&raquo; появляется еще один файл. Размер его гораздо больше, чем память программ и оперативная память устройства, вместе взятые (16 КБ + 512 Б). Первый раз он открывается блокнотом довольно долго. Оно и понятно: процедура чтения включает в себя всякого рода вычисления. Зато второй и последующие разы файл открывается моментально, потому, что <abbr title="Операционная система">ОС</abbr> уже сохранила состояние <abbr title="Файловая система">ФС</abbr> устройства и прочитанные с него файлы в своем кэше и берет данные из кэша, а не с устройства. Это может вызвать некоторые проблемы при попытке чтения обновляющихся данных на следующем этапе.</p>
+<h3 id="_6">Файл, изменяющийся вручную</h3>
+<p>Для оценки поведения устройства в связке с <abbr title="Операционная система">ОС</abbr>, а также для отладки получения изменяющихся данных нужна имитация файла, содержимое которого зависит от действий пользователя, скажем, нажатия на кнопки. Такой счетчик нажатий в программе уже объявлен, это <code>data_device</code> в <code>MassStorage.c</code>. Надо перенести объявление ее (а заодно и <code>data_PC</code>) в интерфейсную часть &mdash; в заголовочный файл, а он уже подключен где надо.</p>
+<p>Опять же, добавляю размер файла и функцию подготовки его данных:</p>
+<div class="highlight"><pre><span class="cp">#define SIZE_OF_USERDATA    0x10</span>
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readUserData</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Добавляю четвертую строчку таблицы:</p>
+<div class="highlight"><pre>    <span class="p">{</span><span class="s">&quot;USERDATATXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_USERDATA</span><span class="p">,</span> <span class="n">readUserData</span><span class="p">},</span>
+</pre></div>
+
+
+<p>и определяю функцию:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readUserData</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">&quot;Counter = &quot;</span><span class="p">;</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">data_device</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xF</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="p">((</span><span class="n">data_device</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">)</span> <span class="o">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="p">((</span><span class="n">data_device</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&amp;</span><span class="mh">0xF</span><span class="p">);</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_device</span> <span class="o">&amp;</span> <span class="mh">0xF</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">9</span> <span class="o">?</span> <span class="mi">48</span> <span class="o">+</span> <span class="p">(</span><span class="n">data_device</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">)</span> <span class="o">:</span> <span class="mi">55</span> <span class="o">+</span> <span class="p">(</span><span class="n">data_device</span> <span class="o">&amp;</span><span class="mh">0xF</span><span class="p">);</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;h&#39;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Здесь формируется шестнадцатиричное текстовое представление переменной <code>data_device</code>, которое вставляется в сопроводительную подпись. Вся собранная строка добита пробелами до конца, до 16 символов. Точнее говоря, собирается на 16-символьной заготовке, изначально заполненной пробелами.</p>
+<p>Теперь появился еще один текстовый файл. Если его открыть блокнотом, можно увидеть строку</p>
+<div class="highlight"><pre>Counter = 00h   
+</pre></div>
+
+
+<p>Можно понажимать на кнопки устройства, на верхнюю и вторую сверху. Ничего в файле не изменится. Более того, можно закрыть файл, снова понажимать на кнопки и опять открыть файл, а там по-прежнему будет <code>00h</code>. А вот если нажать кнопку &laquo;Reset&raquo; на устройстве (&laquo;флэшка&raquo; на компьютере определится заново), потом нажать разика три на верхнюю кнопку, и уже потом открыть файл, можно увидеть</p>
+<div class="highlight"><pre>Counter = 03h   
+</pre></div>
+
+
+<p>И эти показания уже не изменятся до очередного сброса или перезапуска питания. Получаем очередное наглядное подтверждение того, что <abbr title="Операционная система">ОС</abbr> читает носитель в кэш и потом использует данные кэша.</p>
+<p>Сохраняю коммит в GIT. Эта версия уже заслуживает номера &laquo;1.0&raquo;.</p>
+<h2 id="_7">Итог</h2>
+<p>В результате получено устройство, которое успешно делает вид, что оно &mdash; флэшка с файловой системой FAT32 и набором файлов, данные для которых можно брать из памяти устройства, можно формировать на лету путем вычислений, можно получать из каких-то внешних источников, хотя бы и от кнопок.</p>
+<p>Правда, с получением изменяющихся данных есть некоторые сложности из-за кэширования их средствами <abbr title="Операционная система">ОС</abbr>. Эту тему рассмотрю чуть позже.</p>
+<p>Имитируемые файлы пока что только читаются. Хотя можно в текстовом редакторе их поправить, дать команду записи и никаких ошибок при этом не получить. Ибо изменения также будут делаться в кэше, а при попытке <abbr title="Операционная система">ОС</abbr> сбросить изменения в носитель она получит ответ, что &laquo;все в порядке, принято&raquo;. Тему записи в устройство и использования записанных данных откладываю пока на неопределенный срок</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.github.io/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "drafts/usb-polygon-12.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>

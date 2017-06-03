@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-11: Начало имитации ФС</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.github.io/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.github.io/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.github.io/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.github.io/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.github.io/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.github.io id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.github.io/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.github.io/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.github.io/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.github.io/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">10</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/raznoe.html">
+              разное
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Ср 24 Май 2017</h4>
+    <article>
+      <h1>USB-polygon-11: Начало имитации ФС</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Проект продолжается</a></li>
+<li><a href="#_2">Незаметные изменения</a></li>
+<li><a href="#_3">Имитация ФС</a></li>
+<li><a href="#_4">Имитация корневого каталога</a></li>
+</ul>
+</div>
+<h2 id="_1">Проект продолжается</h2>
+<p>Работа над программой для платы была приостановлена на <a href="http://romeogolf.github.io/usb-polygon-8.html">выпуске 8</a> цикла.</p>
+<p>Программа для микроконтроллера AT90USB162 в ее нынешнем состоянии позволяет определить устройство на компьютере, как запоминающее устройство USB без файловой системы, из-за чего Windows 7 при подключении платы предлагает ее отформатировать. С платой можно вести какой-никакой информационный обмен в обе стороны, правда, для этого нужно написать специальную программу для <abbr title="Персональный компьютер">ПК</abbr>, работа над которой также приостановлена в  <a href="http://romeogolf.github.io/usb-polygon-8.html">восьмом выпуске</a>.</p>
+<p>Если же <abbr title="Персональный компьютер">ПК</abbr> обнаружит, что на плате есть <abbr title="файловая система">ФС</abbr> FAT32 (даже если на самом деле ее нет), то можно читать с устройства данные, видимые на компьютере, как файлы, и записывать как бы файлы на устройство, причем, стандартными средствами, например, файловым менеджером. Насчет записи у меня, правда, пока есть небольшие сомнения в простоте реализации, но попробую позже. Начну, однако, с чтения, но до чтения надо еще заставить <abbr title="Персональный компьютер">ПК</abbr> увидеть FAT32.</p>
+<h2 id="_2">Незаметные изменения</h2>
+<p>В папке <code>usb-polygon-embed/MassStorage/Lib</code> остались файлы (кода на С и заголовочный) модуля <code>DataflashManager</code> Он уже не нужен, важные строки из него перенесены в модуль <code>SCSI</code>, подключение этих файлов через <code>#include</code> закрыто комментарием. Удаляю это всё &mdash; файлы и закомментированное подключение &mdash; и компилирую. Работает. Добавляю два файла: <code>fake_fs.c</code> и <code>fake_fs.h</code>, пока пустые. Подключаю новый заголовочник в <code>SCSI.h</code> вместо <code>DataflashManager</code>.</p>
+<p>То, что получилось, компилируется и работает: по сути, ничего не изменилось. Но сохраняю этот коммит в GIT, чтобы обозначить начало очередного этапа.</p>
+<p>Далее, в <code>fake_fs.h</code> надо вставить традиционный финт ушами для предотвращения повторного включения заголовочников:</p>
+<div class="highlight"><pre><span class="cp">#ifndef _FAKE_FS_H_</span>
+<span class="cp">#define _FAKE_FS_H_</span>
+</pre></div>
+
+
+<p>в начале файла и</p>
+<div class="highlight"><pre><span class="cp">#endif</span>
+</pre></div>
+
+
+<p>в конце. А между ними нужно вставить вырезанный из <code>SCCI.h</code> кусок, который был туда вставлен из <code>DataflashManager</code> и <code>..\..\LUFA\CodeTemplates\DriverStubs\Dataflash.h</code>:</p>
+<div class="highlight"><pre><span class="cm">/* ----- instead DataflashManager ----- */</span>
+<span class="cm">/* from ..\..\LUFA\CodeTemplates\DriverStubs\Dataflash.h */</span>
+    <span class="cm">/* Public Interface - May be used in end-application: */</span>
+        <span class="cm">/* Macros: */</span>
+            <span class="cm">/** Constant indicating the total number of dataflash ICs mounted on the selected board. */</span>
+            <span class="cp">#define DATAFLASH_TOTALCHIPS     1 </span><span class="c1">// TODO: Replace with the number of Dataflashes on the board, max 2</span>
+            <span class="cm">/** Mask for no dataflash chip selected. */</span>
+            <span class="cp">#define DATAFLASH_NO_CHIP        0</span>
+            <span class="cm">/** Mask for the first dataflash chip selected. */</span>
+            <span class="cp">#define DATAFLASH_CHIP1          1 </span><span class="c1">// TODO: Replace with mask with the pin attached to the first Dataflash /CS set</span>
+            <span class="cm">/** Mask for the second dataflash chip selected. */</span>
+            <span class="cp">#define DATAFLASH_CHIP2          2 </span><span class="c1">// TODO: Replace with mask with the pin attached to the second Dataflash /CS set</span>
+            <span class="cm">/** Internal main memory page size for the board&#39;s dataflash ICs. */</span>
+            <span class="cp">#define DATAFLASH_PAGE_SIZE      1024 </span><span class="c1">// TODO: Replace with the page size for the Dataflash ICs</span>
+            <span class="cm">/** Total number of pages inside each of the board&#39;s dataflash ICs. */</span>
+            <span class="cp">#define DATAFLASH_PAGES          8192 </span><span class="c1">// TODO: Replace with the total number of pages inside one of the Dataflash ICs</span>
+
+<span class="cm">/* from DataflashManager.h */</span>
+    <span class="cm">/* Preprocessor Checks: */</span>
+        <span class="cp">#if (DATAFLASH_PAGE_SIZE % 16)</span>
+            <span class="cp">#error Dataflash page size must be a multiple of 16 bytes.</span>
+        <span class="cp">#endif</span>
+
+    <span class="cm">/* Defines: */</span>
+        <span class="cm">/** Total number of bytes of the storage medium, comprised of one or more Dataflash ICs. */</span>
+        <span class="cp">#define VIRTUAL_MEMORY_BYTES         ((uint32_t)DATAFLASH_PAGES * DATAFLASH_PAGE_SIZE * DATAFLASH_TOTALCHIPS)</span>
+        <span class="cm">/** Block size of the device. This is kept at 512 to remain compatible with the OS despite the underlying</span>
+<span class="cm">         *  storage media (Dataflash) using a different native block size. Do not change this value.</span>
+<span class="cm">         */</span>
+        <span class="cp">#define VIRTUAL_MEMORY_BLOCK_SIZE    512</span>
+        <span class="cm">/** Total number of blocks of the virtual memory for reporting to the host as the device&#39;s total capacity. Do not</span>
+<span class="cm">         *  change this value; change VIRTUAL_MEMORY_BYTES instead to alter the media size.</span>
+<span class="cm">         */</span>
+        <span class="cp">#define VIRTUAL_MEMORY_BLOCKS        (VIRTUAL_MEMORY_BYTES / VIRTUAL_MEMORY_BLOCK_SIZE)</span>
+        <span class="cm">/** Blocks in each LUN, calculated from the total capacity divided by the total number of Logical Units in the device. */</span>
+        <span class="cp">#define LUN_MEDIA_BLOCKS             (VIRTUAL_MEMORY_BLOCKS / TOTAL_LUNS)</span>
+
+    <span class="cm">/* Function Prototypes: */</span>
+        <span class="kt">void</span> <span class="nf">WriteBlocks</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span>
+                                          <span class="kt">uint16_t</span> <span class="n">TotalBlocks</span><span class="p">);</span>
+        <span class="kt">void</span> <span class="nf">ReadBlocks</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span>
+                                         <span class="kt">uint16_t</span> <span class="n">TotalBlocks</span><span class="p">);</span>
+
+    <span class="cm">/* variables */</span>
+        <span class="k">extern</span> <span class="kt">uint8_t</span> <span class="n">data_PC</span><span class="p">;</span>
+        <span class="k">extern</span> <span class="kt">uint8_t</span> <span class="n">data_device</span><span class="p">;</span>
+<span class="cm">/* ------------------------------------ */</span>
+</pre></div>
+
+
+<p>А в файл <code>fake_fs.c</code> из <code>SCSI.c</code> переношу код функций <code>WriteBlocks</code> и <code>ReadBlocks</code>.</p>
+<p>В начале файла <code>fake_fs.c</code> должна быть строка <code>#include "fake_fs.h"</code>, а внутри конструкции <code>#ifndef _FAKE_FS_H_</code> файла <code>fake_fs.h</code> должна быть строка <code>#include "../MassStorage.h"</code>. И надо не забыть поправить Makefile, добавив к определению <code>SRC</code> новый модуль:</p>
+<div class="highlight"><pre><span class="nv">SRC</span>          <span class="o">=</span> <span class="k">$(</span>TARGET<span class="k">)</span>.c Descriptors.c Lib/SCSI.c Lib/fake_fs.c <span class="k">$(</span>LUFA_SRC_USB<span class="k">)</span>
+</pre></div>
+
+
+<p>В результате этих изменений проект компилируется, загружается и работает. Отличий в работе от версии, которая была до изменений, не видно, и не должно быть видно. Это только подготовка. Но уже можно сохранить еще один GIT-коммит.</p>
+<p>До сих пор были только перестановки кусков кода из файла в файл. Пора начать вносить изменения в сам код. Добавляю объявления двух функций:</p>
+<div class="highlight"><pre><span class="cm">/* data &quot;device -&gt; PC&quot; */</span>
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+<span class="cm">/* data &quot;PC -&gt; device&quot; */</span>
+<span class="kt">void</span> <span class="nf">process_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Эти функции вызываются в <code>ReadBlocks</code> и <code>WriteBlocks</code> соответственно, в первом случае перед блоком операций <code>Endpoint_Write_8</code>, во втором &mdash; после блока <code>Endpoint_Read_8</code>, а строчки, которые раньше отвечали за обмен с <abbr title="Персональный компьютер">ПК</abbr> байтами <code>data_PC</code> и <code>data_device</code> теперь будут вызываться из них:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_device</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">process_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">data_PC</span> <span class="o">=</span> <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Еще переменную <code>first</code> надо объявить не в функции <code>WriteBlocks</code>, где она была до этого, а в начале файла, добавив <code>static</code> в начале объявления. Это заготовки функций, которые будут отвечать за подготовку данных для передачи в <abbr title="Персональный компьютер">ПК</abbr> и обработки принятых из <abbr title="Персональный компьютер">ПК</abbr> данных.</p>
+<p>Для нормальной работы с данными функциям нужно знать не только содржимое блока данных, но и запрошенный адрес. Этот адрес, разделенный на адрес сектора (<code>BlockAddress</code>) и смещение 16-байтовой пачки внутри сектора (<code>BytesInBlockDiv16</code>), передается функции в виде параметра, хотя пока и не используется.</p>
+<p>То, что получилось в итоге, компилируется, запускается и работает так же, как и до изменений. По-прежнему доступен обмен однобайтными данными в обе стороны при помощи самодельной программы на C++, описанной в выпусках <a href="http://romeogolf.github.io/usb-polygon-5.html">5</a>, <a href="http://romeogolf.github.io/usb-polygon-6.html">6</a> и <a href="http://romeogolf.github.io/usb-polygon-8.html">8</a>. Сохраняю очередной коммит, но пора вносить серьезные дополнения.</p>
+<h2 id="_3">Имитация <abbr title="файловая система">ФС</abbr></h2>
+<p>То, что делает функция обработки полученных данных <code>process_data</code> в рамках имитации <abbr title="файловая система">ФС</abbr> неважно. А вот подготовка данных для передачи &mdash; это то, что в первую очередь интересует. Нужно, чтобы на запрос <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr> она подсовывала что-то, похожее на <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr>, при запросе <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> &mdash; что-то, похожее на <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> и так далее.</p>
+<p>А что может запросить <abbr title="операционная система">ОС</abbr>? <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr>, загрузочную запись раздела, <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>, корневой каталог &mdash; это минимум. Значит, для начала в <code>fake_fs.c</code> определяю константы, которые описал в предыдущем <a href="http://romeogolf.github.io/usb-polygon-10.html#const">выпуске</a>:</p>
+<div class="highlight"><pre><span class="cp">#define ATTR_READ 0x01</span>
+<span class="cp">#define ATTR_HIDDEN 0x02</span>
+<span class="cp">#define ATTR_SYSTEM 0x04</span>
+<span class="cp">#define ATTR_VOL_LABEL 0x08</span>
+<span class="cp">#define ATTR_DIR 0x10</span>
+<span class="cp">#define ATTR_ARCHIVE 0x20</span>
+<span class="cp">#define ATTR_LONG_FNAME 0x0F</span>
+
+<span class="cp">#define BYTES_PER_SECTOR    512</span>
+<span class="cp">#define BYTES_PER_SECT_SHIFT    9</span>
+<span class="cp">#define SECTORS_PER_CLUSTER 8</span>
+<span class="cp">#define SECTORS_PER_CLUST_SHIFT 3</span>
+<span class="cp">#define BYTES_PER_CLUSTER   (BYTES_PER_SECTOR * SECTORS_PER_CLUSTER)</span>
+<span class="cp">#define BYTES_PER_CLUST_SHIFT   (BYTES_PER_SECT_SHIFT + SECTORS_PER_CLUST_SHIFT)</span>
+
+<span class="cm">/* должно быть кратно секторам на кластер */</span>
+<span class="cp">#define SECTORS_PER_FAT     8</span>
+<span class="cp">#define MBR_SECTOR      0</span>
+<span class="cp">#define BOOT_SECTOR     62</span>
+<span class="cp">#define FAT1_SECTOR     (BOOT_SECTOR + 1)</span>
+<span class="cp">#define FAT2_SECTOR     (FAT1_SECTOR + SECTORS_PER_FAT)</span>
+<span class="cp">#define ROOT_SECTOR     (FAT2_SECTOR + SECTORS_PER_FAT)</span>
+<span class="cp">#define ROOT_CLUSTER        (SECTORS_PER_FAT * 2 / SECTORS_PER_CLUSTER)</span>
+<span class="cm">/* предполагается, что root-каталог занимает 1 сектор */</span>
+
+<span class="cm">/*</span>
+<span class="cm"> *</span>
+<span class="cm"> * область данных и соответствующие ей 32-р. блоки фат:</span>
+<span class="cm"> *</span>
+<span class="cm"> * 0 кластер - фат1</span>
+<span class="cm"> * 1 кластер - фат2</span>
+<span class="cm"> * 2 кластер - корневой каталог</span>
+<span class="cm"> * 3 кластер - первый файл</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+</pre></div>
+
+
+<p>Далее - функции подготовки данных при попытке чтения <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr>, загрузочного сектора раздела и <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>, которые передают набор байтов, соответствующий запрошенным адресам, как описано в предыдущем <a href="http://romeogolf.github.io/usb-polygon-10.html">выпуске</a>. Здесь важна колонка &laquo;r:c&raquo; таблиц <a href="http://romeogolf.github.io/usb-polygon-10.html#table3">3</a> и <a href="http://romeogolf.github.io/usb-polygon-10.html#table4">4</a>, где &laquo;r&raquo; соответствует пачке байтов <code>BytesInBlockDiv16</code>, а &laquo;c&raquo; &mdash; байту внутри пачки:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_mbr</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>    <span class="cm">/* по умолчанию нули */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">28</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0C</span><span class="p">;</span> <span class="cm">/* type FAT32 with LBA */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">BOOT_SECTOR</span><span class="p">;</span> <span class="cm">/* start LBA */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x10</span><span class="p">;</span> <span class="cm">/* num of sect */</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">31</span><span class="p">)</span> <span class="p">{</span>     <span class="cm">/* part 4, signature */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x55</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xAA</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_boot_sect</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xEB</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x58</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x90</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;M&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;S&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;D&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;O&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;S&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;5&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;.&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x02</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x08</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x02</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xF8</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mi">63</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mi">62</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x10</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x08</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x02</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x06</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x80</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x29</span><span class="p">;</span>
+    <span class="cm">/* datetime (vol id) */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">148</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">13</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+    <span class="cm">/* vol label */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;N&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;O&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x20</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;N&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;M&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;E&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* vol label */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="cm">/* fs type */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;F&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;T&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;3&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;2&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">31</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x55</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xAA</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_fat</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="cm">/* first fat */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xF8</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="cm">/* second fat */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xF8</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0F</span><span class="p">;</span>
+    <span class="cm">/* root dir */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+    <span class="cm">/* file1 */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>А вызвать эти функции нужно в подходящий момент, то есть, когда запрашивают соответствующие адреса. Поэтому правлю <code>prepare_data</code>, теперь она выглядит так:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+    <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pdata</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">MBR_SECTOR</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pdata</span> <span class="o">=</span> <span class="n">read_mbr</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">pdata</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">BOOT_SECTOR</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pdata</span> <span class="o">=</span> <span class="n">read_boot_sect</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">pdata</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">&gt;=</span> <span class="n">FAT1_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">FAT2_SECTOR</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="n">pdata</span> <span class="o">=</span> <span class="n">read_fat</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">BlockAddress</span> <span class="o">-</span> <span class="n">FAT1_SECTOR</span><span class="p">,</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">pdata</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">FAT2_SECTOR</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">ROOT_SECTOR</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="n">pdata</span> <span class="o">=</span> <span class="n">read_fat</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">BlockAddress</span> <span class="o">-</span> <span class="n">FAT2_SECTOR</span><span class="p">,</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">pdata</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>И, чтобы не задумываться, в каком месте файла разместить определение, вставлю в начале файла их объявление:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_mbr</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_boot_sect</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+<span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_fat</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Еще надо убрать модификатор <code>const</code> с параметров <code>BlockAddress</code> функций <code>ReadBlocks</code> и  <code>WriteBlocks</code>, а также в конце этих функций, после строки <code>TotalBlocks--;</code> добавить <code>BlockAddress++;</code>, потому что до сих пор никто не требовал переходить к следующему сектору в процессе чтения.</p>
+<p>Теперь после компиляции, перепрошивки и перезапуска устройство уже гораздо больше похоже на флэшку. Вот как оно выгляжит при подключении в Windows 7:</p>
+<p><img alt="Device in Win7" src="http://romeogolf.github.io/images/usb-polygon/11/device_7_1.png" title="Устройство в Windows 7" /></p>
+<p>И его свойства:</p>
+<p><img alt="Device in Win7" src="http://romeogolf.github.io/images/usb-polygon/11/device_7_2.png" title="Устройство в Windows 7" /></p>
+<p>Правда, в Windows XP оно не пустое, а наоборот, полное:</p>
+<p><img alt="Device in WinXP" src="http://romeogolf.github.io/images/usb-polygon/11/device_xp.png" title="Устройство в Windows XP" /></p>
+<h2 id="_4">Имитация корневого каталога</h2>
+<p>Добавлю заготовку для имитации содержимого корневого каталога. Пока что вставлю туда один описатель файла, соответствующий идентификатору тома. Объявляю функцию для чтения из области данных:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+</pre></div>
+
+
+<p>В функции <code>prepare_data</code> перед последним <code>else</code> вставляю четыре строчки:</p>
+<div class="highlight"><pre>    <span class="p">}</span> <span class="k">else</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">ROOT_SECTOR</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">pdata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">pdata</span><span class="p">;</span>
+</pre></div>
+
+
+<p>И сама функция:</p>
+<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="cm">/* root, chunck 1 */</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;L&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;U&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;F&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span>
+
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;_&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+    <span class="n">data_buf</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x08</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+    <span class="cm">/* root, chunck 2 */</span>
+    <span class="cm">/* все нули */</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>В Windows XP &laquo;флэшка&raquo; по-прежнему полная, однако у нее появилось имя.</p>
+<p>Дальше надо имитировать наполнение &laquo;флэшки&raquo; файлами. Но хотелось бы сделать это наполнение более-менее управляемым, чтобы изменить эти &laquo;файлы&raquo; было не слишком сложно. Задача вырисовывается посложнее, чем имитация описателя тома в корневом каталоге, продолжу позже.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.github.io/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "drafts/usb-polygon-11.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>

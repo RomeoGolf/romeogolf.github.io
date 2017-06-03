@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-13: чтение изменяющихся данных</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.github.io/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.github.io/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.github.io/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.github.io/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.github.io/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.github.io id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.github.io/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.github.io/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.github.io/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.github.io/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">10</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/raznoe.html">
+              разное
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Ср 24 Май 2017</h4>
+    <article>
+      <h1>USB-polygon-13: чтение изменяющихся данных</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Данные могут меняться</a></li>
+<li><a href="#_2">Борьба с кэшем</a></li>
+<li><a href="#_3">Пример программы</a></li>
+</ul>
+</div>
+<h2 id="_1">Данные могут меняться</h2>
+<p>В предыдущем <a href="http://romeogolf.github.io/drafts/usb-polygon-12.html">выпуске</a> отладочную плату научили прикидываться флэшкой и получили возможность читать ее файлы (которых на самом деле нет). Однако, данные в этих &laquo;файлах&raquo;, в отличие от обычной флэшки, могут изменяться в то время, пока плата подключена к <abbr title="Персональный компьютер">ПК</abbr>. А <abbr title="Операционная система">ОС</abbr> кэширует состояние <abbr title="Файловая система">ФС</abbr> накопителя и однажды прочитанные файлы, в дальнейшем информация берется уже из кэша.</p>
+<p>А между прочим, возможность изменения данных в устройстве &mdash; его самое интересное отличие от настоящей флэшки. Плата может получать данные извне, скажем, по UART или SPI, а <abbr title="Персональный компьютер">ПК</abbr> &mdash; получать принятую информацию, просто читая ее из файла, без использования драйверов (и тем более, без необходимости их написания). Что делать?</p>
+<h2 id="_2">Борьба с кэшем</h2>
+<p>Поначалу я долго рыл просторы всяких интернетов в поисках возможности сбросить кэш <abbr title="Операционная система">ОС</abbr>. Не нарыл совсем ничего. А жаль, потому что хотелось иметь возможность по-прежнему читать устройство, грубо говоря, мышью &mdash; с использованием стандартного файлового менеджера, стандартного просмотрщика и все такое. Просто периодически давал бы команду <abbr title="Операционная система">ОС</abbr> забыть, что этот файл уже читали и требовал перечитать заново по шине.</p>
+<p>Не получилось. Может, такой способ и есть, я не нашел. Поэтому придется воспользоваться другим, который в чем-то проще, в чем-то сложнее. Дело в том, что у функции <code>CreateFile</code> есть среди флагов, которые можно передать в параметрах, флаг <code>FILE_FLAG_NO_BUFFERING</code>, который заставит функцию чтения <code>ReadFile</code> игнорировать буфер и читать каждый раз с устройства.</p>
+<p>Это само по себе несложно &mdash; вручную открывать и читать файл. Плохо только то, что для чтения файла, имеющего возможность изменения, придется писать собственную программку.</p>
+<p>Может быть, ничего страшного в этой необходимости и нет. Ведь устройство получилось нестандартное, всего лишь имитирующее стандартную флэшку. Значит, данные, которые я буду из него получать, тоже будут нестандартные, какого-то определенного формата, который знаю только я. Следовательно, все равно придется писать какую-то программку для их правильной интерпретации. Но все равно немного обидно.</p>
+<p>Однако, напишу пример такой программы.</p>
+<h2 id="_3">Пример программы</h2>
+<p>Не сильно заморачиваясь, написал на С++ несложный код:</p>
+<div class="highlight"><pre><span class="cp">#define WINVER 0x0501</span>
+<span class="cp">#define _WIN32_WINNT 0x0501</span>
+
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;windows.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include &lt;conio.h&gt;</span>
+
+<span class="cp">#define BUF_SIZE 512</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="n">OPENFILENAME</span> <span class="n">ofn</span><span class="p">;</span>       <span class="c1">// common dialog box structure</span>
+    <span class="kt">char</span> <span class="n">szFile</span><span class="p">[</span><span class="mi">260</span><span class="p">];</span>       <span class="c1">// buffer for file name</span>
+    <span class="n">HWND</span> <span class="n">hwnd</span> <span class="o">=</span> <span class="n">GetConsoleWindow</span><span class="p">();</span>              <span class="c1">// owner window</span>
+
+    <span class="c1">// Initialize OPENFILENAME</span>
+    <span class="n">ZeroMemory</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ofn</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ofn</span><span class="p">));</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">lStructSize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ofn</span><span class="p">);</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">hwndOwner</span> <span class="o">=</span> <span class="n">hwnd</span><span class="p">;</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">lpstrFile</span> <span class="o">=</span> <span class="n">szFile</span><span class="p">;</span>
+    <span class="c1">// Set lpstrFile[0] to &#39;\0&#39; so that GetOpenFileName does not </span>
+    <span class="c1">// use the contents of szFile to initialize itself.</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">lpstrFile</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">nMaxFile</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">szFile</span><span class="p">);</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">lpstrFilter</span> <span class="o">=</span> <span class="s">&quot;All</span><span class="se">\0</span><span class="s">*.*</span><span class="se">\0</span><span class="s">Text</span><span class="se">\0</span><span class="s">*.TXT</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">nFilterIndex</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">lpstrFileTitle</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">nMaxFileTitle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">lpstrInitialDir</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">ofn</span><span class="p">.</span><span class="n">Flags</span> <span class="o">=</span> <span class="n">OFN_PATHMUSTEXIST</span> <span class="o">|</span> <span class="n">OFN_FILEMUSTEXIST</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">GetOpenFileName</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ofn</span><span class="p">)</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Selected file %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ofn</span><span class="p">.</span><span class="n">lpstrFile</span><span class="p">);</span>
+        <span class="n">HANDLE</span> <span class="n">hf</span> <span class="o">=</span> <span class="n">CreateFile</span><span class="p">(</span><span class="n">ofn</span><span class="p">.</span><span class="n">lpstrFile</span><span class="p">,</span>
+            <span class="n">GENERIC_READ</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">LPSECURITY_ATTRIBUTES</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span>
+            <span class="n">OPEN_EXISTING</span><span class="p">,</span>
+            <span class="n">FILE_FLAG_NO_BUFFERING</span> <span class="o">|</span> <span class="n">FILE_ATTRIBUTE_NORMAL</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">HANDLE</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">hf</span> <span class="o">!=</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">DWORD</span> <span class="n">dwBytesRead</span><span class="p">;</span>
+            <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">BUF_SIZE</span><span class="p">];</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span><span class="p">,</span> <span class="n">old_s</span><span class="p">;</span>
+            <span class="kt">bool</span> <span class="n">fExit</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Press </span><span class="se">\&quot;</span><span class="s">Esc</span><span class="se">\&quot;</span><span class="s"> for exit.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">fExit</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">_kbhit</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">getch</span><span class="p">()</span> <span class="o">==</span> <span class="mi">27</span><span class="p">)</span> <span class="n">fExit</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="n">SetFilePointer</span><span class="p">(</span><span class="n">hf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">ReadFile</span><span class="p">(</span><span class="n">hf</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">BUF_SIZE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dwBytesRead</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">buf</span><span class="p">[</span><span class="n">dwBytesRead</span><span class="p">]</span><span class="o">=</span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="n">buf</span><span class="p">;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">old_s</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                        <span class="n">old_s</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Could not read from file \</span>
+<span class="s">                        (error GetLastError())&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="n">CloseHandle</span><span class="p">(</span><span class="n">hf</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Invalid handle.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;No file.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Первые два <code>define</code> требуются для использования функции <code>GetOpenFileName()</code>.</p>
+<p>Включение <code>conio</code> нужно для функции <code>_kbhit</code>, для выхода из цикла по нажатию на клавишу, необходимость остальных <code>include</code> очевидна.</p>
+<p><code>#define BUF_SIZE 512</code> требует особого внимания. Здесь определен размер буфера для чтения из файла на фейковом носителе. Он обязан быть кратным размеру сектора, иначе работать не будет. Это требование накладывает флаг <code>FILE_FLAG_NO_BUFFERING</code>. При установленном одном только флаге <code>FILE_ATTRIBUTE_NORMAL</code> размер буфера может быть любым, но нам нужно читать именно с носителя мимо буфера.</p>
+<p>Остальное все достаточно просто. Сперва вызывается диалоговое окно выбора файла, в котором нужно выбрать <code>USERDATA.TXT</code> на носителе, имитируемом отладочной платой. Далее запускается цикл, выйти из которого можно, нажав кнопку &laquo;Escape&raquo;. В этом цикле читается буфер, размером в сектор, и сравнивается с предыдущим результатом. При изменении содержимого файла это самое измененное содержимое выводится в консоль. Вот, собственно, и все.</p>
+<p>Если подключить плату к <abbr title="Персональный компьютер">ПК</abbr>, она определится, как USB-накопитель. Запускаю программу, выбираю файл на носителе. При нажатии на одну из двух верхних кнопок в окне консоли будет появляться новая строчка с новым содержимым файла, например, &laquo;Counter = 03h&raquo;.</p>
+<p>Ах, да! Для компиляции кода (с учетом установленного на моем <abbr title="Персональный компьютер">ПК</abbr> MinGW) я использовал такой файл &laquo;cmpl.cmd&raquo;:</p>
+<div class="highlight"><pre><span class="p">@</span>PATH<span class="o">=</span>c:\MinGW\bin;<span class="nv">%PATH%</span>
+c:\MinGW\bin\g++.exe -std<span class="o">=</span>c++<span class="m">0</span>x -static-libgcc -static-libstdc++ -o test.exe test.cpp -I<span class="s2">&quot;C:\MinGW\include&quot;</span> -L<span class="s2">&quot;C:\MinGW\lib&quot;</span> -l<span class="s2">&quot;comdlg32&quot;</span>
+<span class="p">@</span><span class="k">pause</span>
+</pre></div>
+
+
+<p>Первая строчка нужна для того, чтобы при исполнении сценария компилятор мог найти необходимые для g++ DLL-библиотеки, лежащие в папке <code>c:\MinGW\bin\</code>, так как эта папка у меня не прописана в общей системной переменной <code>PATH</code>. А вставлена она в начало переменной, а не в конец, потому что некоторые библиотеки с аналогичными названиями (например, <code>libiconv-2.dll</code>) используют другие виндовские программы, портированные из линуксовой среды, например, тот же GIT, и не он один. При этом, путь к этим программам прописан в <code>PATH</code> при их установке инсталлятором, версии библиотек могут быть старше и не иметь требуемых для g++ функций. Поэтому надо, чтобы приложения из MinGW при поиске своих DLL сперва находили свою же папку.</p>
+<p>Во второй строчке подключаются статически пара библиотек, чтобы не требовать соответствующие DLL при запуске, а также указывается библиотека, где линкер сможет найти <code>GetOpenFileName()</code>. Порядок опций здесь важен: если поставить опции для линкера в начало этой строки, компиляция вывалится с ошибкой.</p>
+<p>C отладкой чтения более-менее закончено. Можно эти наработки как-то использовать. Дальше хотелось бы разобраться с записью.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.github.io/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "drafts/usb-polygon-13.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
