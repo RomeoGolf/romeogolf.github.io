@@ -883,7 +883,7 @@
 &lt;p&gt;&lt;strong&gt;UPD &lt;strong&gt;(03.07.2017)&lt;/strong&gt;:&lt;/strong&gt;
 Замечание относительно позиций по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного).&lt;/p&gt;
 &lt;p&gt;В документе  &amp;laquo;FAT32 File System Specification&amp;raquo; от Microsoft (fatgen103.pdf) первое поле &amp;mdash; номер сектора структуры FSINFO в зарезервированной зоне тома FAT32 &amp;mdash; обычно 1, а второе не просто обычно 6, но еще и значения, отличные от 6, не рекомендуются.&lt;/p&gt;
-&lt;p&gt;Я поставил рекомендуемые значения в программе для контроллера платы USB-polygon, и она замечательно работала под Windows 7 и XP. Однако в Debian 8 автоопределение флэшки для этой платы не сработало. &lt;code&gt;fdisk -l&lt;/code&gt; выдает следующее:&lt;/p&gt;
+&lt;p&gt;Я поставил рекомендуемые значения в программе для контроллера платы USB-polygon, и она замечательно работала под Windows 7 и XP. Однако в Debian 8 автоопределение флэшки для этой платы не сработало. Плата системе видна &amp;mdash; &lt;code&gt;fdisk -l&lt;/code&gt; выдает следующее:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;Disk /dev/sdg: &lt;span class="m"&gt;8&lt;/span&gt; MiB, &lt;span class="m"&gt;8388608&lt;/span&gt; bytes, &lt;span class="m"&gt;16384&lt;/span&gt; sectors
 Units: sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
 Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
@@ -902,7 +902,7 @@ Device     Boot Start   End Sectors Size Id Type
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;А ранние варианты этой программы под Linux вполне определялись в виде флэшки. Существенная разница была именно в этих полях: сначала я их занулял, а потом уже послушался умных документов и поставил рекомендуемые значения. А зря. Если ставлю значения, должен был и добавить в указанные сектора соответствующую информацию. А ее там нет. Винда это дело проглотила, а Линукс &amp;mdash; отказался.&lt;/p&gt;
+&lt;p&gt;Однако, ранние отладочные варианты этой программы под Linux вполне определялись в виде флэшки. Существенная разница была именно в этих полях: сначала я их занулял, а потом уже послушался умных документов и поставил рекомендуемые значения. А зря. Если ставлю значения, должен был и добавить в указанные сектора соответствующую информацию. А ее там нет. Винда это дело проглотила, а Линукс &amp;mdash; отказался.&lt;/p&gt;
 &lt;p&gt;Так что в моем (сильно упрощенном) случае правильнее держать в этих полях нулевое значение, тогда работает в Windows 7, XP, Debian 8, Android 4 &amp;mdash; проверено лично.&lt;/p&gt;
 &lt;h2 id="fat"&gt;Таблица &lt;abbr title="(File Allocation Table) Таблица размещения файлов"&gt;FAT&lt;/abbr&gt;&lt;/h2&gt;
 &lt;p&gt;Важная структура данных, в честь которой и называется файловая система. Ну, здесь просто: список кластеров, занятых папками и файлами.&lt;/p&gt;
