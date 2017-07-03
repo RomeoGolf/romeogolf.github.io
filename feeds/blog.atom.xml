@@ -528,8 +528,8 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;UPD &lt;strong&gt;(03.07.2017)&lt;/strong&gt;:&lt;/strong&gt;
 Замечание относительно позиций по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного).&lt;/p&gt;
-&lt;p&gt;В документе  &amp;laquo;FAT32 File System Specification&amp;raquo; от Microsoft (fatgen103.pdf) первое поле &amp;mdash; номер сектора структуры FSINFO в зарезервированной зоне тома FAT32 &amp;mdash; обычно 1, а второе не просто обычно 6, но еще и значения, отличные от 6, не рекоммендуются.&lt;/p&gt;
-&lt;p&gt;Я поставил рекомендуемые значения в программе для контроллера платы USB-polygon, и она замечательно работала под Windows 7 и XP. Однако в Devian 8 автоопределение флэшки для этой платы не сработало. &lt;code&gt;fdisk -l&lt;/code&gt; выыдает следующее:&lt;/p&gt;
+&lt;p&gt;В документе  &amp;laquo;FAT32 File System Specification&amp;raquo; от Microsoft (fatgen103.pdf) первое поле &amp;mdash; номер сектора структуры FSINFO в зарезервированной зоне тома FAT32 &amp;mdash; обычно 1, а второе не просто обычно 6, но еще и значения, отличные от 6, не рекомендуются.&lt;/p&gt;
+&lt;p&gt;Я поставил рекомендуемые значения в программе для контроллера платы USB-polygon, и она замечательно работала под Windows 7 и XP. Однако в Debian 8 автоопределение флэшки для этой платы не сработало. &lt;code&gt;fdisk -l&lt;/code&gt; выдает следующее:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;Disk /dev/sdg: &lt;span class="m"&gt;8&lt;/span&gt; MiB, &lt;span class="m"&gt;8388608&lt;/span&gt; bytes, &lt;span class="m"&gt;16384&lt;/span&gt; sectors
 Units: sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
 Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
