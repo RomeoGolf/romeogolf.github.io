@@ -411,14 +411,14 @@
 &lt;td&gt;Номер сектора структуры FSINFO (обычно 1)&lt;/td&gt;
 &lt;td align="center"&gt;2&lt;/td&gt;
 &lt;td align="center"&gt;03:00&lt;/td&gt;
-&lt;td&gt;01 00&lt;/td&gt;
+&lt;td&gt;00 00&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td align="center"&gt;32h&lt;/td&gt;
 &lt;td&gt;Номер сектора - копии загрузочного (обычно 6)&lt;/td&gt;
 &lt;td align="center"&gt;2&lt;/td&gt;
 &lt;td align="center"&gt;03:02&lt;/td&gt;
-&lt;td&gt;06 00&lt;/td&gt;
+&lt;td&gt;00 00&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td align="center"&gt;34h&lt;/td&gt;
@@ -526,6 +526,30 @@
 &lt;li&gt;Код загрузчика &amp;mdash; заполняется нулями, загрузчика нет.&lt;/li&gt;
 &lt;li&gt;Сигнатура загрузочного сектора &amp;mdash; предопределенная константа.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;UPD:&lt;/em&gt; &lt;em&gt;(03.07.2017)&lt;/em&gt;
+Замечание относительно позиций по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного).&lt;/p&gt;
+&lt;p&gt;В документе  &amp;laquo;FAT32 File System Specification&amp;raquo; от Microsoft (fatgen103.pdf) первое поле &amp;mdash; номер сектора структуры FSINFO в зарезервированной зоне тома FAT32 &amp;mdash; обычно 1, а второе не просто обычно 6, но еще и значения, отличные от 6, не рекоммендуются.&lt;/p&gt;
+&lt;p&gt;Я поставил рекомендуемые значения в программе для контроллера платы USB-polygon, и она замечательно работала под Windows 7 и XP. Однако в Devian 8 автоопределение флэшки для этой платы не сработало. &lt;code&gt;fdisk -l&lt;/code&gt; выыдает следующее:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Disk /dev/sdg: &lt;span class="m"&gt;8&lt;/span&gt; MiB, &lt;span class="m"&gt;8388608&lt;/span&gt; bytes, &lt;span class="m"&gt;16384&lt;/span&gt; sectors
+Units: sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Disklabel &lt;span class="nb"&gt;type&lt;/span&gt;: dos
+Disk identifier: 0x00000000
+
+Device     Boot Start   End Sectors Size Id Type
+/dev/sdg1          &lt;span class="m"&gt;62&lt;/span&gt;  &lt;span class="m"&gt;4157&lt;/span&gt;    &lt;span class="m"&gt;4096&lt;/span&gt;   2M  c W95 FAT32 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А при попытке монтирования вручную получаю ошибку:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;mount: wrong fs &lt;span class="nb"&gt;type&lt;/span&gt;, bad option, bad superblock on /dev/sdg1,
+       missing codepage or helper program, or other error
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А ранние варианты этой программы под Linux вполне определялись в виде флэшки. Существенная разница была именно в этих полях: сначала я их занулял, а потом уже послушался умных документов и поставил рекомендуемые значения. А зря. Если ставлю значения, должен был и добавить в указанные сектора соответствующую информацию. А ее там нет. Винда это дело проглотила, а Линукс &amp;mdash; отказался.&lt;/p&gt;
+&lt;p&gt;Так что в моем (сильно упрощенном) случае правильнее держать в этих полях нулевое значение, тогда работает в Windows 7, XP, Debian 8, Android 4 &amp;mdash; проверено лично.&lt;/p&gt;
 &lt;h2 id="fat"&gt;Таблица &lt;abbr title="(File Allocation Table) Таблица размещения файлов"&gt;FAT&lt;/abbr&gt;&lt;/h2&gt;
 &lt;p&gt;Важная структура данных, в честь которой и называется файловая система. Ну, здесь просто: список кластеров, занятых папками и файлами.&lt;/p&gt;
 &lt;p&gt;Причем, это односвязный список: каждый элемент является либо ссылкой на следующий элемент, либо признаком окончания цепочки элементов. Причем, для этого списка нет разницы между файлами и каталогами. Список состоит из 32-разрядных целых. Элемент, заполненный единицами (FFFFFFFFh), говорит о том, что он последний в цепи. Если он же и первый, значит, соответствующий ему файл (или каталог) занимает один кластер.&lt;/p&gt;

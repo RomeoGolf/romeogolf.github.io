@@ -536,14 +536,14 @@
 <td>Номер сектора структуры FSINFO (обычно 1)</td>
 <td align="center">2</td>
 <td align="center">03:00</td>
-<td>01 00</td>
+<td>00 00</td>
 </tr>
 <tr>
 <td align="center">32h</td>
 <td>Номер сектора - копии загрузочного (обычно 6)</td>
 <td align="center">2</td>
 <td align="center">03:02</td>
-<td>06 00</td>
+<td>00 00</td>
 </tr>
 <tr>
 <td align="center">34h</td>
@@ -651,6 +651,30 @@
 <li>Код загрузчика &mdash; заполняется нулями, загрузчика нет.</li>
 <li>Сигнатура загрузочного сектора &mdash; предопределенная константа.</li>
 </ul>
+<p><em>UPD:</em> <em>(03.07.2017)</em>
+Замечание относительно позиций по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного).</p>
+<p>В документе  &laquo;FAT32 File System Specification&raquo; от Microsoft (fatgen103.pdf) первое поле &mdash; номер сектора структуры FSINFO в зарезервированной зоне тома FAT32 &mdash; обычно 1, а второе не просто обычно 6, но еще и значения, отличные от 6, не рекоммендуются.</p>
+<p>Я поставил рекомендуемые значения в программе для контроллера платы USB-polygon, и она замечательно работала под Windows 7 и XP. Однако в Devian 8 автоопределение флэшки для этой платы не сработало. <code>fdisk -l</code> выыдает следующее:</p>
+<div class="highlight"><pre>Disk /dev/sdg: <span class="m">8</span> MiB, <span class="m">8388608</span> bytes, <span class="m">16384</span> sectors
+Units: sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+Disklabel <span class="nb">type</span>: dos
+Disk identifier: 0x00000000
+
+Device     Boot Start   End Sectors Size Id Type
+/dev/sdg1          <span class="m">62</span>  <span class="m">4157</span>    <span class="m">4096</span>   2M  c W95 FAT32 <span class="o">(</span>LBA<span class="o">)</span>
+</pre></div>
+
+
+<p>А при попытке монтирования вручную получаю ошибку:</p>
+<div class="highlight"><pre>mount: wrong fs <span class="nb">type</span>, bad option, bad superblock on /dev/sdg1,
+       missing codepage or helper program, or other error
+</pre></div>
+
+
+<p>А ранние варианты этой программы под Linux вполне определялись в виде флэшки. Существенная разница была именно в этих полях: сначала я их занулял, а потом уже послушался умных документов и поставил рекомендуемые значения. А зря. Если ставлю значения, должен был и добавить в указанные сектора соответствующую информацию. А ее там нет. Винда это дело проглотила, а Линукс &mdash; отказался.</p>
+<p>Так что в моем (сильно упрощенном) случае правильнее держать в этих полях нулевое значение, тогда работает в Windows 7, XP, Debian 8, Android 4 &mdash; проверено лично.</p>
 <h2 id="fat">Таблица <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr></h2>
 <p>Важная структура данных, в честь которой и называется файловая система. Ну, здесь просто: список кластеров, занятых папками и файлами.</p>
 <p>Причем, это односвязный список: каждый элемент является либо ссылкой на следующий элемент, либо признаком окончания цепочки элементов. Причем, для этого списка нет разницы между файлами и каталогами. Список состоит из 32-разрядных целых. Элемент, заполненный единицами (FFFFFFFFh), говорит о том, что он последний в цепи. Если он же и первый, значит, соответствующий ему файл (или каталог) занимает один кластер.</p>
