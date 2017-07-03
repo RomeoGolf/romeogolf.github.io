@@ -81,7 +81,7 @@
           <li class="tag-1">
             <a href="http://romeogolf.github.io/tag/usb-polygon.html">
               usb-polygon
-                <span class="badge">10</span>
+                <span class="badge">11</span>
             </a>
           </li>
           <li class="tag-3">
@@ -120,7 +120,7 @@
 
     <div class="content">
   <section class="main-section blog-section" id="blog-posts">
-    <h4 class="date">Ср 24 Май 2017</h4>
+    <h4 class="date">Пн 03 Июль 2017</h4>
     <article>
       <h1>USB-polygon-11: Начало имитации ФС</h1>
       
@@ -321,8 +321,8 @@
     <span class="n">data_buf</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x02</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">;</span>
-    <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x06</span><span class="p">;</span>
+    <span class="cm">/*data_buf[0] = 0x01;*/</span>
+    <span class="cm">/*data_buf[2] = 0x06;*/</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x80</span><span class="p">;</span>
@@ -493,7 +493,7 @@
         <div class="comments">
           <div id="disqus_thread"></div>
           <script type="text/javascript">
-            var disqus_identifier = "drafts/usb-polygon-11.html";
+            var disqus_identifier = "usb-polygon-11.html";
             (function() {
               var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                   dsq.src = 'http://romeogolf.disqus.com/embed.js';
