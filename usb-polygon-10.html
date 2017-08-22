@@ -81,7 +81,7 @@
           <li class="tag-1">
             <a href="http://romeogolf.github.io/tag/usb-polygon.html">
               usb-polygon
-                <span class="badge">11</span>
+                <span class="badge">12</span>
             </a>
           </li>
           <li class="tag-3">
@@ -651,8 +651,8 @@
 <li>Код загрузчика &mdash; заполняется нулями, загрузчика нет.</li>
 <li>Сигнатура загрузочного сектора &mdash; предопределенная константа.</li>
 </ul>
-<p><strong>UPD <strong>(03.07.2017)</strong>:</strong>
-Замечание относительно позиций по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного).</p>
+<p id="upd1"><strong>UPD <strong>(03.07.2017)</strong>:</strong></p>
+<p>Замечание относительно позиций по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного).</p>
 <p>В документе  &laquo;FAT32 File System Specification&raquo; от Microsoft (fatgen103.pdf) первое поле &mdash; номер сектора структуры FSINFO в зарезервированной зоне тома FAT32 &mdash; обычно 1, а второе не просто обычно 6, но еще и значения, отличные от 6, не рекомендуются.</p>
 <p>Я поставил рекомендуемые значения в программе для контроллера платы USB-polygon, и она замечательно работала под Windows 7 и XP. Однако в Debian 8 автоопределение флэшки для этой платы не сработало. Плата системе видна &mdash; <code>fdisk -l</code> выдает следующее:</p>
 <div class="highlight"><pre>Disk /dev/sdg: <span class="m">8</span> MiB, <span class="m">8388608</span> bytes, <span class="m">16384</span> sectors

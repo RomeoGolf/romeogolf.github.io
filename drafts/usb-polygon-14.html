@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-14: работа в Linux</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.github.io/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.github.io/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.github.io/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.github.io/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.github.io/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.github.io id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.github.io/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.github.io/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.github.io/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.github.io/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">12</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/raznoe.html">
+              разное
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Ср 05 Июль 2017</h4>
+    <article>
+      <h1>USB-polygon-14: работа в Linux</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Лирическое отступление</a></li>
+<li><a href="#_2">Написание и компиляция</a></li>
+<li><a href="#_3">Прошивка</a></li>
+<li><a href="#_4">Резюме</a></li>
+</ul>
+</div>
+<h2 id="_1">Лирическое отступление</h2>
+<p>Вопрос, описываемый в этом выпуске, не имеет прямого отношения к развитию проекта. Однако, в соответствии с <abbr title="Техническое задание">ТЗ</abbr>, приведенном в первом <a href="http://romeogolf.github.io/usb-polygon-1.html">выпуске</a>, проект должен быть по возможности кроссплатформенным. До сих пор кроссплатформенность проверялась только в разных Windows, что несерьезно.</p>
+<p>Добравшись до попытки отладки записи в устройство, имитирующее FAT32, я решил проверить отличия работы с устройством в Linux. Тут меня ждал сюрприз: автоопределение &laquo;флэшки&raquo; не сработало. Причем, флэшка в системе как бы присутствует, вот вывод <code>fdisk -l</code>:</p>
+<div class="highlight"><pre>Disk /dev/sdg: <span class="m">8</span> MiB, <span class="m">8388608</span> bytes, <span class="m">16384</span> sectors
+Units: sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+Disklabel <span class="nb">type</span>: dos
+Disk identifier: 0x00000000
+
+Device     Boot Start   End Sectors Size Id Type
+/dev/sdg1          <span class="m">62</span>  <span class="m">4157</span>    <span class="m">4096</span>   2M  c W95 FAT32 <span class="o">(</span>LBA<span class="o">)</span>
+</pre></div>
+
+
+<p>А попытка монтирования вручную выдала ошибку:</p>
+<div class="highlight"><pre>mount: wrong fs <span class="nb">type</span>, bad option, bad superblock on /dev/sdg1,
+       missing codepage or helper program, or other error
+</pre></div>
+
+
+<p>В конце концов причина обнаружилась в полях загрузочной записи раздела, по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного). Пришлось внести некоторые <a href="http://romeogolf.github.io/usb-polygon-10.html#upd1">поправки</a> в написанное ранее. Но дело не в этом.</p>
+<p>Раз есть отличия в поведении устройства (читай &mdash; программы устройства) в разных <abbr title="Операционная система">ОС</abbr>, значит, надо как-то ликвидировать эту разницу. Проверять придется в той системе, в которой работает не так, как ожидается, то есть, в Linux. При этом, до сих пор написание, компиляция и прошивка велись в Windows (преимущественно 7). Значит, следует отладить написание, компиляцию и прошивку в Linux &mdash; не перезагружаться же теперь каждый раз!</p>
+<h2 id="_2">Написание и компиляция</h2>
+<p>Про инструмент для написания кода даже писать не интересно. Это может быть абсолютно любой редактор простого текста, plain text editor. В моем случае это VIM, с идентичными настройками в обоих семействах <abbr title="Операционная система">ОС</abbr>, так что отличий практически нет. Основное отличие связано с тем, что в Windows компилировать приходится с использованием Cygwin, поэтому настраивать компиляцию прямо в VIM чуть сложнее, чем в Linux, где это сделано практически &laquo;из коробки&raquo;. Все остальное одинаково.</p>
+<p>Для компиляции в Windows, повторюсь, потребовался Cygwin (как описывал в <a href="http://romeogolf.github.io/usb-polygon-3.html">выпуске 3</a>), в Linux этот программный комплекс, разумеется, не нужен. Можно скачать с сайта Atmel сборку AVR Toolchain for Linux и прописать в <code>.bashrc</code> путь к ней в виде добавки к переменной окружения <code>$PATH</code> (как и в Cygwin). По идее, тогда команда <code>make</code> в папке проекта сделает все, что нужно.</p>
+<p>Однако, я еще при установке Debian выбрал почти все пакеты с буквосочетанием &laquo;avr&raquo; в названии, в частности, &laquo;avr-libc&raquo;, &laquo;binutils-avr&raquo;, &lt;avra&raquo; и &laquo;gcc-avr&raquo;. Теперь мне не нужен упомянутый пакет, <code>make</code> работает и так.</p>
+<h2 id="_3">Прошивка</h2>
+<p>А вот с прошивкой начались сложности. Я рассчитывал на FLIP, зная, что есть версия под Linux. </p>
+<p>Первое легкое разочарование нашел на <a href="http://www.atmel.com/ru/ru/tools/flip.aspx">странице</a> продукта на сайте Atmel. Linux-версия отстает от виндовой на две минорных (3.2 1 против 3.4.7 на момент написания данного опуса), что, как бы, намекает на прекращение сопровождения. Это само по себе не вполне понятно: программа на java, должна быть существенной частью кроссплатформенной, ну да ладно, если бы только в этом дело.</p>
+<p>Скачал, распаковал, запустил. Точнее, попытался запустить из консоли. Получил ошибку:</p>
+<div class="highlight"><pre>FLIP_HOME is not defined, please use setenv to <span class="nb">set </span>flip home
+e.g :
+setenv FLIP_HOME /home/flip.3.2.1/bin
+</pre></div>
+
+
+<p>Ну, это нормально, об этом еще README предупреждал. Вот только не <code>setenv</code> надо бы, а <code>export</code>:</p>
+<div class="highlight"><pre><span class="nb">export </span><span class="nv">FLIP_HOME</span><span class="o">=</span><span class="s2">&quot;/home/romeogolf/coding/flip_toolchain/flip.3.2.1/bin/&quot;</span>
+</pre></div>
+
+
+<p>скомандовал я в консоли и повторил запуск. Тогда мне написали так:</p>
+<div class="highlight"><pre>JAVA_HOME is not defined please use setenv to <span class="nb">set </span>java home
+e.g :
+setenv JAVA_HOME  /usr/java/jdk1.6.0_02/jre
+</pre></div>
+
+
+<p>Ладно, тоже ожидаемо. Пишу:</p>
+<div class="highlight"><pre><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/usr/lib/jvm/java-8-oracle/jre/bin/
+</pre></div>
+
+
+<p>В результате после очередной попытки запуска FLIP получаю несколько больше текста:</p>
+<div class="highlight"><pre><span class="o">=====================================================</span>
+<span class="nv">JAVA_HOME</span> <span class="o">=</span> /usr/lib/jvm/java-8-oracle/jre/
+<span class="o">=====================================================</span>
+<span class="nv">LD_LIBRARY_PATH</span> <span class="o">=</span> /home/romeogolf/coding/flip_toolchain/flip.3.2.1/bin/:
+<span class="o">=====================================================</span>
+<span class="nv">PATH</span> <span class="o">=</span> /home/romeogolf/coding/flip_toolchain/flip.3.2.1/bin/:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+<span class="o">=====================================================</span>
+<span class="o">=</span> start <span class="nv">flip</span>
+<span class="o">=====================================================</span>
+
+<span class="o">=====================================================</span>
+<span class="o">=</span> end <span class="nv">flip</span>
+<span class="o">=====================================================</span>
+</pre></div>
+
+
+<p>А заодно ошибка, с сообщением в длиннющем <a href="http://romeogolf.github.io/images/usb-polygon/14/java_error.png">окошке</a> во весь экран.</p>
+<p>Выяснил, что java-программа, которой является FLIP, 32-разрядная, а в моем Debian`е установлена 64-разрядная java-машина. Скачал 32-разрядную jre с сайта Oracle, распаковал куда попало и указал переменную JAVA_HOME с путем к 32-разрядной jre:</p>
+<div class="highlight"><pre><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span><span class="s2">&quot;/home/romeogolf/coding/jre1.8.0_131/&quot;</span>
+</pre></div>
+
+
+<p>Появилось такое окно с ошибкой:</p>
+<p><img alt="FLIP error" src="http://romeogolf.github.io/images/usb-polygon/14/flip_error.png" /></p>
+<p>Надоело, плюнул, поискал альтернативы. Первая и довольно популярная &mdash; dfu-programmer. Есть для Linux и Windows.</p>
+<p>На <a href="http://dfu-programmer.github.io/">странице проекта</a> есть ссылки на <a href="https://github.com/dfu-programmer/dfu-programmer">репозиторий</a> и <a href="https://sourceforge.net/projects/dfu-programmer/files/dfu-programmer/0.7.2/">страницу загрузки</a> win-сборки и исходников.</p>
+<p>Оказалось, есть этот пакет и в репозитории Debian. Утилита консольная, командной строки, в отличие от FLIP, но может ли это напугать рискнувшего работать в Linux? Установил через Synaptic. Запустил:</p>
+<div class="highlight"><pre>dfu-programmer --version
+</pre></div>
+
+
+<p>Получил в ответ:</p>
+<div class="highlight"><pre>dfu-programmer 0.6.1
+</pre></div>
+
+
+<p>хотя последняя версия на данный момент уже 0.7.2. Думаю, однако, что это не принципиально. Запустил:</p>
+<div class="highlight"><pre>dfu-programmer --targets
+</pre></div>
+
+
+<p>и нашел в появившемся списке целей свой at90usb162. Запустил для пробы команду сброса:</p>
+<div class="highlight"><pre>dfu-programmer at90usb162 reset
+</pre></div>
+
+
+<p>получил в ответ:</p>
+<div class="highlight"><pre>no device present
+</pre></div>
+
+
+<p>Разумеется, плата при этом была в сбросе: нажал &laquo;Reset&raquo;, нажал &laquo;HWB&raquo;, отпустил &laquo;Reset&raquo;, отпустил &laquo;HWB&raquo;. Немножко подумал, догадался запустить ту же команду через sudo &mdash; плата запустилась. Рискнул стереть:</p>
+<div class="highlight"><pre>dfu-programmer at90usb162 erase
+</pre></div>
+
+
+<p>Судя по всему, флэшка очищена, ибо не запускается, зато видна команде <code>dfu-programmer</code> без кнопки &laquo;HWB&raquo;. Ну, то есть, я перезапустил кнопкой &laquo;Reset&raquo; на плате и посмотрел, что получилось. Потом опять сбросил с &laquo;HWB&raquo; и попробовал записать имеющуюся прошивку:</p>
+<div class="highlight"><pre>dfu-programmer at90usb162 flash /<span class="o">{</span>...<span class="o">}</span>/MassStorage.hex
+</pre></div>
+
+
+<p>Пишет в ответ, зараза:</p>
+<div class="highlight"><pre>Error <span class="k">while</span> flashing
+</pre></div>
+
+
+<p>Стало грустно и непонятно. Порылся в интернетах, подумал и решил попробовать еще раз команду &laquo;flash&raquo; &mdash; заработало!!! После пары попыток обнаружил, что прошивать командой &laquo;flash&raquo; надо сразу после &laquo;erase&raquo;, без промежуточных сбросов.</p>
+<p>В общем, использовать dfu-programmer мне понравилось больше, чем FLIP. Во-первых, его проще использовать в командном режиме, стало быть, проще работать без мыши. В окне FLIP некоторые кнопки не имеют соответствующих горячих клавиш или пунктов меню, приходится хвататься за мыша. Опять же, в командах прописываются сразу все нужные параметры, типа целевого контроллера или пути к HEX-файлу, а в окне FLIP надо нажимать какие-то кнопки, искать в диалоговых окнах нужное.</p>
+<p>Скачал <a href="https://sourceforge.net/projects/dfu-programmer/files/">win-сборку</a> этой замечательной утилиты с драйверами в комплекте. Написал простенький CMD-файл в корне проекта с-программы для платы:</p>
+<div class="highlight"><pre>e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 erase
+e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 flash MassStorage.hex
+e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 reset
+@pause
+</pre></div>
+
+
+<p>Запуск этого файла дает такой результат:</p>
+<div class="highlight"><pre>e:\{...}\usb-polygon-embed\MassStorage&gt;e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 erase
+Checking memory from 0x0 to 0x2FFF...  Not blank at 0x1.
+Erasing flash...  Success
+Checking memory from 0x0 to 0x2FFF...  Empty.
+
+e:\{...}\usb-polygon-embed\MassStorage&gt;e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 flash MassStorage.hex
+Checking memory from 0x0 to 0x217F...  Empty.
+0%                            100%  Programming 0x2180 bytes...
+[&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;]  Success
+0%                            100%  Reading 0x3000 bytes...
+[&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;]  Success
+Validating...  Success
+0x2180 bytes written into 0x3000 bytes memory (69.79%).
+
+e:\{...}\usb-polygon-embed\MassStorage&gt;e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 reset
+Для продолжения нажмите любую клавишу . . .
+</pre></div>
+
+
+<p>Очень понравилось.</p>
+<h2 id="_4">Резюме</h2>
+<p>Работа с платой в Windows и в Linux стала практически идентичной, одними и теми же инструментами с одинаковыми результатами. Плата также ведет себя одинаково в обоих семействах <abbr title="Операционная система">ОС</abbr>. </p>
+<p>Софт на С++ для работы с платой, по-видимому, будет отличаться, в силу отличий API разных <abbr title="Операционная система">ОС</abbr> для работы с файлами. Но с этим позже.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.github.io/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "drafts/usb-polygon-14.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
