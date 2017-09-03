@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-17: Подключение экрана от Nokia 3410</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.github.io/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.github.io/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.github.io/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.github.io/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.github.io/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.github.io id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.github.io/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.github.io/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.github.io/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.github.io/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">13</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/raznoe.html">
+              разное
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Пт 25 Август 2017</h4>
+    <article>
+      <h1>USB-polygon-17: Подключение экрана от Nokia 3410</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Введение</a></li>
+<li><a href="#_2">Подключение экрана к устройству</a></li>
+<li><a href="#_3">Инициализация, получение изображения</a></li>
+<li><a href="#_4">Передача файла экрану</a></li>
+<li><a href="#_5">Заключение</a></li>
+</ul>
+</div>
+<h2 id="_1">Введение</h2>
+<p>К настоящему моменту описываемое в цикле статей устройство определяется операционными системами под видом флэшки с FAT32 на борту, якобы содержит некоторый набор файлов, поддерживает операции чтения и записи.</p>
+<p>При этом центральный элемент устройства &mdash; AT90USB162 &mdash; имеет аппаратные возможности передачи информации по некоторым протоколам, например, SPI. Значит, есть возможность &laquo;записать&raquo; файл на устройство таким образом, что данные уйдут на передачу по выбранному порту.</p>
+<p>В качестве приемника данных выбран экран от мобильного телефона Nokia 3410. Во-первых, потому что он есть. Во-вторых, потому что он должен принимать данные по SPI, так как укомплектован соответствующим контроллером. В третьих, потому что мне интересно попробовать вывести произвольную информацию на ЖК дисплей. В четвертых, потому что мне хочется использовать ЖК дисплей в некоей самоделке, а для этого надо отладить работу с ним.</p>
+<h2 id="_2">Подключение экрана к устройству</h2>
+<p>Надо сказать, что сперва я пытался подключить экран от Nokia 1100, но получилось только зажечь светодиоды подсветки. Телефон был взят у друзей, сломаный напрочь, поэтому, возможно, его экран и в самом деле неработоспособен, а не я накосячил. По крайней мере, при попытках его подключения ни один пиксел даже не пискнул, а при некоторых ошибках с 3410 экран хотя бы местами помигивал полосочками.</p>
+<p>Перед подключением порылся в интернетах в поисках распиновки и системы команд контроллера.И вот самое полезное, что нашел:</p>
+<p>1) Страничка <a href="http://serdisplib.sourceforge.net/ser/pcd8544.html]">pcd8544-based displays</a>, на которой я узнал, что используемый дисплеем контроллер называется pcd8544, а значит, можно найти хоть какую-то документацию на него, типа datasheet в pdf. Кроме того, там приведена распиновка экрана, смонтированного в рамке и замечательно расписаны особенности подключения, правда, с упором на подключение к LPT-порту <abbr title="Персональный компьютер">ПК</abbr>.</p>
+<p>2) <a href="http://www.aterlux.ru/article/pcd8544">Страничка на сайте Д. Погребняка</a>, на которой кроме описания подключения к контроллеру (и без того несложного) есть примеры кода для общения контроллера с экраном. Когда у меня с первого раза не получилось, я сверил свой код с приведенным на этой страничке и понял, что дело не в программе &mdash; код практически совпадал.</p>
+<p>3) Ныне недоступная <a href="http://mp3vkarmane.nm.ru/lcd.html">страничка</a>, найденная на <a href="http://www.rlocman.ru/shem/shem-cache.html?di=18881">РадиоЛоцмане</a>, где я нашел подтвержение собственным практическим изысканиям, например, несоответствию числа точек по горизонтали и вертикали ранее найденным сайтам и описанию контроллера.</p>
+<p>Стало быть, если повернуть рамку с экраном разъемом к себе, то слева направо контакты будут такие:</p>
+<p>1) VDD &mdash; питание, 2,7..3,3 В
+2) SCLK &mdash; синхронизация данных
+3) SI &mdash; вход данных
+4) D/C &mdash; данные/команда (&laquo;1&raquo; &ndash; данные)
+5) CS &mdash; разрешение приема данных (выбор чипа)
+6) GND &mdash; корпус, земля, общий
+7) Vout &mdash; контрастность, подключается к общему через конденсатор
+8) RES &mdash; сброс, активен нулем, для работы должен быть в &laquo;1&raquo;</p>
+<p>Припаял к ним провода МГТФ. С имеющимся в наличии плоским шлейфом не сложилось: очень уж легкоплавкая изоляция у него, а паяльник у меня так себе.</p>
+<p>Информационные выводы подключил к порту B, так как на этом порту есть выводы, альтернативное назначение которых &mdash; аппаратный SPI: 2 контакт подсоединил к площадке разряда 1, 3 контакт - к площадке 2, 5 контакт - к площадке 0, то есть SCLK, MOSI и SS SPI-порта соответственно (если, конечно, активировать SPI-интерфейс). 4 контакт (D/C) прицепил к площадке 5, 8 контакт (сброс) &mdash; к площадке 4.</p>
+<p>6 контакт (GND) пошел напрямую на корпус, который на устройстве занимает практически всю поверхность той стороны, где светодиоды.</p>
+<p>7 контакт (Vout) посадил на корпус через электролит, какой нашел. А нашел как раз подходящий: 4,7 мкФ, 6,3 В.</p>
+<p>1 контакт &mdash; питание &mdash; поначалу подпаял к площадке &laquo;+3,3&raquo;, но оказалось, что напрасно.</p>
+<h2 id="_3">Инициализация, получение изображения</h2>
+<h2 id="_4">Передача файла экрану</h2>
+<h2 id="_5">Заключение</h2>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.github.io/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "drafts/usb-polygon-17.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
