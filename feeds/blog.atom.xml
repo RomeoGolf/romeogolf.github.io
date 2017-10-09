@@ -1,5 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.github.io/" rel="alternate"></link><link href="http://romeogolf.github.io/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.github.io/</id><updated>2017-09-03T22:00:00+05:00</updated><entry><title>USB-polygon-13: чтение изменяющихся данных</title><link href="http://romeogolf.github.io/usb-polygon-13.html" rel="alternate"></link><updated>2017-09-03T22:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-09-03:usb-polygon-13.html</id><summary type="html">&lt;div class="toc"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>RomeoGolf</title><link href="http://romeogolf.github.io/" rel="alternate"></link><link href="http://romeogolf.github.io/feeds/blog.atom.xml" rel="self"></link><id>http://romeogolf.github.io/</id><updated>2017-09-10T22:00:00+05:00</updated><entry><title>USB-polygon-14: работа в Linux</title><link href="http://romeogolf.github.io/usb-polygon-14.html" rel="alternate"></link><updated>2017-09-10T22:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-09-10:usb-polygon-14.html</id><summary type="html">&lt;div class="toc"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#_1"&gt;Лирическое отступление&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_2"&gt;Написание и компиляция&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_3"&gt;Прошивка&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#_4"&gt;Резюме&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2 id="_1"&gt;Лирическое отступление&lt;/h2&gt;
+&lt;p&gt;Вопрос, описываемый в этом выпуске, не имеет прямого отношения к развитию проекта. Однако, в соответствии с &lt;abbr title="Техническое задание"&gt;ТЗ&lt;/abbr&gt;, приведенном в первом &lt;a href="http://romeogolf.github.io/usb-polygon-1.html"&gt;выпуске&lt;/a&gt;, проект должен быть по возможности кроссплатформенным. До сих пор кроссплатформенность проверялась только в разных Windows, что несерьезно.&lt;/p&gt;
+&lt;p&gt;Добравшись до попытки отладки записи в устройство, имитирующее FAT32, я решил проверить отличия работы с устройством в Linux. Тут меня ждал сюрприз: автоопределение &amp;laquo;флэшки&amp;raquo; не сработало. Причем, флэшка в системе как бы присутствует, вот вывод &lt;code&gt;fdisk -l&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Disk /dev/sdg: &lt;span class="m"&gt;8&lt;/span&gt; MiB, &lt;span class="m"&gt;8388608&lt;/span&gt; bytes, &lt;span class="m"&gt;16384&lt;/span&gt; sectors
+Units: sectors of &lt;span class="m"&gt;1&lt;/span&gt; * &lt;span class="nv"&gt;512&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Sector size &lt;span class="o"&gt;(&lt;/span&gt;logical/physical&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
+I/O size &lt;span class="o"&gt;(&lt;/span&gt;minimum/optimal&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;512&lt;/span&gt; bytes / &lt;span class="m"&gt;512&lt;/span&gt; bytes
+Disklabel &lt;span class="nb"&gt;type&lt;/span&gt;: dos
+Disk identifier: 0x00000000
+
+Device     Boot Start   End Sectors Size Id Type
+/dev/sdg1          &lt;span class="m"&gt;62&lt;/span&gt;  &lt;span class="m"&gt;4157&lt;/span&gt;    &lt;span class="m"&gt;4096&lt;/span&gt;   2M  c W95 FAT32 &lt;span class="o"&gt;(&lt;/span&gt;LBA&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А попытка монтирования вручную выдала ошибку:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;mount: wrong fs &lt;span class="nb"&gt;type&lt;/span&gt;, bad option, bad superblock on /dev/sdg1,
+       missing codepage or helper program, or other error
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;В конце концов причина обнаружилась в полях загрузочной записи раздела, по смещению 30h (Номер сектора структуры FSINFO) и по смещению 32h (Номер сектора - копии загрузочного). Пришлось внести некоторые &lt;a href="http://romeogolf.github.io/usb-polygon-10.html#upd1"&gt;поправки&lt;/a&gt; в написанное ранее. Но дело не в этом.&lt;/p&gt;
+&lt;p&gt;Раз есть отличия в поведении устройства (читай &amp;mdash; программы устройства) в разных &lt;abbr title="Операционная система"&gt;ОС&lt;/abbr&gt;, значит, надо как-то ликвидировать эту разницу. Проверять придется в той системе, в которой работает не так, как ожидается, то есть, в Linux. При этом, до сих пор написание, компиляция и прошивка велись в Windows (преимущественно 7). Значит, следует отладить написание, компиляцию и прошивку в Linux &amp;mdash; не перезагружаться же теперь каждый раз!&lt;/p&gt;
+&lt;h2 id="_2"&gt;Написание и компиляция&lt;/h2&gt;
+&lt;p&gt;Про инструмент для написания кода даже писать не интересно. Это может быть абсолютно любой редактор простого текста, plain text editor. В моем случае это VIM, с идентичными настройками в обоих семействах &lt;abbr title="Операционная система"&gt;ОС&lt;/abbr&gt;, так что отличий практически нет. Основное отличие связано с тем, что в Windows компилировать приходится с использованием Cygwin, поэтому настраивать компиляцию прямо в VIM чуть сложнее, чем в Linux, где это сделано практически &amp;laquo;из коробки&amp;raquo;. Все остальное одинаково.&lt;/p&gt;
+&lt;p&gt;Для компиляции в Windows, повторюсь, потребовался Cygwin (как описывал в &lt;a href="http://romeogolf.github.io/usb-polygon-3.html"&gt;выпуске 3&lt;/a&gt;), в Linux этот программный комплекс, разумеется, не нужен. Можно скачать с сайта Atmel сборку AVR Toolchain for Linux и прописать в &lt;code&gt;.bashrc&lt;/code&gt; путь к ней в виде добавки к переменной окружения &lt;code&gt;$PATH&lt;/code&gt; (как и в Cygwin). По идее, тогда команда &lt;code&gt;make&lt;/code&gt; в папке проекта сделает все, что нужно.&lt;/p&gt;
+&lt;p&gt;Однако, я еще при установке Debian выбрал почти все пакеты с буквосочетанием &amp;laquo;avr&amp;raquo; в названии, в частности, &amp;laquo;avr-libc&amp;raquo;, &amp;laquo;binutils-avr&amp;raquo;, &amp;lt;avra&amp;raquo; и &amp;laquo;gcc-avr&amp;raquo;. Теперь мне не нужен упомянутый пакет, &lt;code&gt;make&lt;/code&gt; работает и так.&lt;/p&gt;
+&lt;h2 id="_3"&gt;Прошивка&lt;/h2&gt;
+&lt;p&gt;А вот с прошивкой начались сложности. Я рассчитывал на FLIP, зная, что есть версия под Linux. &lt;/p&gt;
+&lt;p&gt;Первое легкое разочарование нашел на &lt;a href="http://www.atmel.com/ru/ru/tools/flip.aspx"&gt;странице&lt;/a&gt; продукта на сайте Atmel. Linux-версия отстает от виндовой на две минорных (3.2 1 против 3.4.7 на момент написания данного опуса), что, как бы, намекает на прекращение сопровождения. Это само по себе не вполне понятно: программа на java, должна быть существенной частью кроссплатформенной, ну да ладно, если бы только в этом дело.&lt;/p&gt;
+&lt;p&gt;Скачал, распаковал, запустил. Точнее, попытался запустить из консоли. Получил ошибку:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;FLIP_HOME is not defined, please use setenv to &lt;span class="nb"&gt;set &lt;/span&gt;flip home
+e.g :
+setenv FLIP_HOME /home/flip.3.2.1/bin
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Ну, это нормально, об этом еще README предупреждал. Вот только не &lt;code&gt;setenv&lt;/code&gt; надо бы, а &lt;code&gt;export&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;FLIP_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/home/romeogolf/coding/flip_toolchain/flip.3.2.1/bin/&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;скомандовал я в консоли и повторил запуск. Тогда мне написали так:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;JAVA_HOME is not defined please use setenv to &lt;span class="nb"&gt;set &lt;/span&gt;java home
+e.g :
+setenv JAVA_HOME  /usr/java/jdk1.6.0_02/jre
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Ладно, тоже ожидаемо. Пишу:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;JAVA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/lib/jvm/java-8-oracle/jre/bin/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;В результате после очередной попытки запуска FLIP получаю несколько больше текста:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;=====================================================&lt;/span&gt;
+&lt;span class="nv"&gt;JAVA_HOME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; /usr/lib/jvm/java-8-oracle/jre/
+&lt;span class="o"&gt;=====================================================&lt;/span&gt;
+&lt;span class="nv"&gt;LD_LIBRARY_PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; /home/romeogolf/coding/flip_toolchain/flip.3.2.1/bin/:
+&lt;span class="o"&gt;=====================================================&lt;/span&gt;
+&lt;span class="nv"&gt;PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; /home/romeogolf/coding/flip_toolchain/flip.3.2.1/bin/:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+&lt;span class="o"&gt;=====================================================&lt;/span&gt;
+&lt;span class="o"&gt;=&lt;/span&gt; start &lt;span class="nv"&gt;flip&lt;/span&gt;
+&lt;span class="o"&gt;=====================================================&lt;/span&gt;
+
+&lt;span class="o"&gt;=====================================================&lt;/span&gt;
+&lt;span class="o"&gt;=&lt;/span&gt; end &lt;span class="nv"&gt;flip&lt;/span&gt;
+&lt;span class="o"&gt;=====================================================&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А заодно ошибка, с сообщением в длиннющем &lt;a href="http://romeogolf.github.io/images/usb-polygon/14/java_error.png"&gt;окошке&lt;/a&gt; во весь экран.&lt;/p&gt;
+&lt;p&gt;Выяснил, что java-программа, которой является FLIP, 32-разрядная, а в моем Debian`е установлена 64-разрядная java-машина. Скачал 32-разрядную jre с сайта Oracle, распаковал куда попало и указал переменную JAVA_HOME с путем к 32-разрядной jre:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;JAVA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/home/romeogolf/coding/jre1.8.0_131/&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Появилось такое окно с ошибкой:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="FLIP error" src="http://romeogolf.github.io/images/usb-polygon/14/flip_error.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Надоело, плюнул, поискал альтернативы. Первая и довольно популярная &amp;mdash; dfu-programmer. Есть для Linux и Windows.&lt;/p&gt;
+&lt;p&gt;На &lt;a href="http://dfu-programmer.github.io/"&gt;странице проекта&lt;/a&gt; есть ссылки на &lt;a href="https://github.com/dfu-programmer/dfu-programmer"&gt;репозиторий&lt;/a&gt; и &lt;a href="https://sourceforge.net/projects/dfu-programmer/files/dfu-programmer/0.7.2/"&gt;страницу загрузки&lt;/a&gt; win-сборки и исходников.&lt;/p&gt;
+&lt;p&gt;Оказалось, есть этот пакет и в репозитории Debian. Утилита консольная, командной строки, в отличие от FLIP, но может ли это напугать рискнувшего работать в Linux? Установил через Synaptic. Запустил:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dfu-programmer --version
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Получил в ответ:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dfu-programmer 0.6.1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;хотя последняя версия на данный момент уже 0.7.2. Думаю, однако, что это не принципиально. Запустил:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dfu-programmer --targets
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;и нашел в появившемся списке целей свой at90usb162. Запустил для пробы команду сброса:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dfu-programmer at90usb162 reset
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;получил в ответ:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;no device present
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Разумеется, плата при этом была в сбросе: нажал &amp;laquo;Reset&amp;raquo;, нажал &amp;laquo;HWB&amp;raquo;, отпустил &amp;laquo;Reset&amp;raquo;, отпустил &amp;laquo;HWB&amp;raquo;. Немножко подумал, догадался запустить ту же команду через sudo &amp;mdash; плата запустилась. Рискнул стереть:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dfu-programmer at90usb162 erase
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Судя по всему, флэшка очищена, ибо не запускается, зато видна команде &lt;code&gt;dfu-programmer&lt;/code&gt; без кнопки &amp;laquo;HWB&amp;raquo;. Ну, то есть, я перезапустил кнопкой &amp;laquo;Reset&amp;raquo; на плате и посмотрел, что получилось. Потом опять сбросил с &amp;laquo;HWB&amp;raquo; и попробовал записать имеющуюся прошивку:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;dfu-programmer at90usb162 flash /&lt;span class="o"&gt;{&lt;/span&gt;...&lt;span class="o"&gt;}&lt;/span&gt;/MassStorage.hex
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Пишет в ответ, зараза:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Error &lt;span class="k"&gt;while&lt;/span&gt; flashing
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Стало грустно и непонятно. Порылся в интернетах, подумал и решил попробовать еще раз команду &amp;laquo;flash&amp;raquo; &amp;mdash; заработало!!! После пары попыток обнаружил, что прошивать командой &amp;laquo;flash&amp;raquo; надо сразу после &amp;laquo;erase&amp;raquo;, без промежуточных сбросов.&lt;/p&gt;
+&lt;p&gt;В общем, использовать dfu-programmer мне понравилось больше, чем FLIP. Во-первых, его проще использовать в командном режиме, стало быть, проще работать без мыши. В окне FLIP некоторые кнопки не имеют соответствующих горячих клавиш или пунктов меню, приходится хвататься за мыша. Опять же, в командах прописываются сразу все нужные параметры, типа целевого контроллера или пути к HEX-файлу, а в окне FLIP надо нажимать какие-то кнопки, искать в диалоговых окнах нужное.&lt;/p&gt;
+&lt;p&gt;Скачал &lt;a href="https://sourceforge.net/projects/dfu-programmer/files/"&gt;win-сборку&lt;/a&gt; этой замечательной утилиты с драйверами в комплекте. Написал простенький CMD-файл в корне проекта с-программы для платы:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 erase
+e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 flash MassStorage.hex
+e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 reset
+@pause
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Запуск этого файла дает такой результат:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;e:\{...}\usb-polygon-embed\MassStorage&amp;gt;e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 erase
+Checking memory from 0x0 to 0x2FFF...  Not blank at 0x1.
+Erasing flash...  Success
+Checking memory from 0x0 to 0x2FFF...  Empty.
+
+e:\{...}\usb-polygon-embed\MassStorage&amp;gt;e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 flash MassStorage.hex
+Checking memory from 0x0 to 0x217F...  Empty.
+0%                            100%  Programming 0x2180 bytes...
+[&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;]  Success
+0%                            100%  Reading 0x3000 bytes...
+[&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;]  Success
+Validating...  Success
+0x2180 bytes written into 0x3000 bytes memory (69.79%).
+
+e:\{...}\usb-polygon-embed\MassStorage&amp;gt;e:\{...}\dfu-programmer-win-0.7.2\dfu-programmer at90usb162 reset
+Для продолжения нажмите любую клавишу . . .
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Очень понравилось.&lt;/p&gt;
+&lt;h2 id="_4"&gt;Резюме&lt;/h2&gt;
+&lt;p&gt;Работа с платой в Windows и в Linux стала практически идентичной, одними и теми же инструментами с одинаковыми результатами. Плата также ведет себя одинаково в обоих семействах &lt;abbr title="Операционная система"&gt;ОС&lt;/abbr&gt;. &lt;/p&gt;
+&lt;p&gt;Софт на С++ для работы с платой, по-видимому, будет отличаться, в силу отличий API разных &lt;abbr title="Операционная система"&gt;ОС&lt;/abbr&gt; для работы с файлами. Но с этим позже.&lt;/p&gt;</summary><category term="usb-polygon"></category></entry><entry><title>USB-polygon-13: чтение изменяющихся данных</title><link href="http://romeogolf.github.io/usb-polygon-13.html" rel="alternate"></link><updated>2017-09-03T22:00:00+05:00</updated><author><name>RomeoGolf</name></author><id>tag:romeogolf.github.io,2017-09-03:usb-polygon-13.html</id><summary type="html">&lt;div class="toc"&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="#_1"&gt;Данные могут меняться&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#_2"&gt;Борьба с кэшем&lt;/a&gt;&lt;/li&gt;
