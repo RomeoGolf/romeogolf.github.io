@@ -90,6 +90,18 @@
                 <span class="badge">2</span>
             </a>
           </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/nishchebrod.html">
+              нищеброд
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/pokhodnoe.html">
+              походное
+                <span class="badge">1</span>
+            </a>
+          </li>
           <li class="tag-3">
             <a href="http://romeogolf.github.io/tag/raznoe.html">
               разное
@@ -706,12 +718,15 @@
 
 <p>При установленном флажке включенности SPI функция записывает байт в буфер SPI и ждет, когда он выдастся как-нибудь сам, а при снятом флажке работает, как раньше.</p>
 <p>Теперь после объявления переменных в функции <code>main()</code> надо включить SPI и установить флажок следующим образом:</p>
-<div class="highlight"><pre>    <span class="n">SPCR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">SPE</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">MSTR</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;&lt;</span> <span class="n">SPR1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;&lt;</span> <span class="n">SPR0</span><span class="p">);</span>
+<div class="highlight"><pre>    <span class="cm">/* Enable SPI, Master, set clock rate fck/2 (4 MHz) */</span>
+    <span class="n">SPCR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">SPE</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">MSTR</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;&lt;</span> <span class="n">SPR1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;&lt;</span> <span class="n">SPR0</span><span class="p">);</span>
+    <span class="n">SPSR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">SPI2X</span><span class="p">);</span>
     <span class="n">isSpiOn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>
 
 
-<p>и больше ничего менять не надо. Компилируется, прошивается и работает без изменений. При желании можно поиграться со скоростями SPI, задавая их при инициализации</p>
+<p>Биты <code>SPR0</code>, <code>SPR1</code>, <code>SPI2X</code> задают частоту обмена, равную половине тактовой, так как тактовая частота на используемом устройстве &mdash; 8 МГц, а максимально разрешенная для экрана &mdash; 4 МГц.</p>
+<p>Больше ничего менять не надо. Компилируется, прошивается и работает без изменений. При желании можно поиграться со скоростями SPI, задавая их при инициализации</p>
 <h2 id="_9">Передача файла экрану</h2>
 <p>Результат, конечно, радует, но ничего выдающегося в этом нет. Как нет и ничего специфичного для USB-polygon. Интересно добавить возможность отображения на экране некоторых данных, задаваемых с <abbr title="Персональный компьютер">ПК</abbr>, который при этом думает, что пересылает файлы на флэшку.</p>
 <p>Передавать данные из файла на экран скопом, как есть, пожалуй, не получится. Надо разделить их на собственно данные и команды, раз уж так реализован вывод на экран. Иначе трудно будет сделать позиционирование при выводе очередного элемента. Кроме того, можно при помощи команд с <abbr title="Персональный компьютер">ПК</abbr> попросить устройство выполнить некоторую типовую операцию (например, стирание экрана), состоящую из нескольких команд, а не передавать эти несколько команд поштучно.</p>
@@ -831,6 +846,7 @@
 <p><a href="http://romeogolf.github.io/images/usb-polygon/17/text.jpg" title="Текст"><img alt="Текст" src="http://romeogolf.github.io/images/usb-polygon/17/preview/text_small.jpg" title="Текст" /></a></p>
 <p>Замечательно! Подтверждена возможность передачи файла по линии связи, а заодно и использовать передаваемые в файле данные для управления самим устройством.</p>
 <h2 id="_10">Заключение</h2>
+<p>Проверена работа измененного проекта в <abbr title="операционная система">ОС</abbr> Linux, а конкретно в Debian 8. Все работает точно так же, как и в Windows 7, кроме небольшой детали: чтобы начальная картинка сменилась надписью, после записи файла &laquo;to_spi.bin&raquo; нужно или подождать некоторое время, или дать команду <code>sync</code>, потому что в Linux запись на флэшку по умолчанию идет не сразу, а через буфер, и данные сбрасываются на носитель в подходящий по мнению <abbr title="операционная система">ОС</abbr> момент или по команде.</p>
 <p>Теперь стоит &laquo;причесать&raquo; код. Избавиться от жестко заданных чисел, переведя их в константы. Для этого в файл <code>common.h</code> добавлю определения констант</p>
 <div class="highlight"><pre>    <span class="c1">// разряды порта B - SPI и управление экраном</span>
     <span class="cp">#define BIT_DC   (1 &lt;&lt; 5)</span>
@@ -849,6 +865,7 @@
 
 
 <p>И по тексту файлов <code>MassStorage.c</code> и <code>fake_fs.c</code> заменю <code>PORTB &amp;= ~(1 &lt;&lt; 5);</code> на <code>PORTB &amp;= ~BIT_DC;</code> (аналогично остальные разряды порта С), а <code>if ((bt_now &amp; 0x30) == 0) {</code> на <code>if ((bt_now &amp; (BT_1 | BT_2)) == 0) {</code> (аналогично остальные кнопки).</p>
+<p>Для интересу перед перекомпиляцией сохранил файлы .hex и .bin, после команды <code>make</code> сравнил новые со старыми. Как и ожидалось, изменений нет.</p>
 <p>Хорошо бы еще немного оптимизировать, удалить лишнее. И попробовать использовать устройство для связи с еще какими-нибудь штучками. На очереди SD-карта памяти (по SPI-интерфейсу, хочется попробовать совместить на одной шине дисплей и память) и энкодер, с которым все теоретически несложно, но практически еще не сделано.</p>
       <br/>	
       <footer>
