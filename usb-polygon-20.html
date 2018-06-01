@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-polygon-20: Мышиный энкодер</title>
+  <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="http://romeogolf.github.io/theme/css/styles.css" type="text/css" />
+  <link rel="stylesheet" type="text/css"  href="http://romeogolf.github.io/theme/css/pygments.css"/>
+  <link rel="shortcut icon" type="image/png" href="http://romeogolf.github.io/images/RG32.ico" />
+  <script language="JavaScript" src="http://romeogolf.github.io/theme/js/protector.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div>
+      <img src="http://romeogolf.github.io/images/72.png" style="margin-left: 34px; margin-top: 30px;"> <a id="name" href=http://romeogolf.github.io id="home-link">RomeoGolf</a>
+    </div>
+  </header>
+    <nav class="nav_base">
+      <ul class="main-nav">
+          <li class="active"><a href="http://romeogolf.github.io/category/blog.html">Блог</a></li>
+          <li><a href="http://romeogolf.github.io/category/tvorchestvo.html">Творчество</a></li>
+
+
+          <li>
+            <a href="http://romeogolf.github.io/pages/triangulum-soft.html">Triangulum Soft</a>
+          </li>
+          <li>
+            <a href="http://romeogolf.github.io/pages/o-saite.html">О сайте</a>
+          </li>
+      </ul>
+    </nav>
+  <div class="layout">
+
+    <div class="sidebar">
+      <div class="tagcloud">
+        Теги:
+        <ul class="tagcloud">
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/batcmd.html">
+              bat/cmd
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/linux.html">
+              linux
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/markdown.html">
+              markdown
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/pelican.html">
+              pelican
+                <span class="badge">6</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/rfquiz.html">
+              rfquiz
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/tar.html">
+              tar
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/triangulum.html">
+              triangulum
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-1">
+            <a href="http://romeogolf.github.io/tag/usb-polygon.html">
+              usb-polygon
+                <span class="badge">20</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/windows.html">
+              windows
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/nishchebrod.html">
+              нищеброд
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/pokhodnoe.html">
+              походное
+                <span class="badge">3</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/raznoe.html">
+              разное
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/remont.html">
+              ремонт
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-4">
+            <a href="http://romeogolf.github.io/tag/samodelki.html">
+              самоделки
+                <span class="badge">1</span>
+            </a>
+          </li>
+          <li class="tag-3">
+            <a href="http://romeogolf.github.io/tag/svoimi-rukami.html">
+              своими руками
+                <span class="badge">2</span>
+            </a>
+          </li>
+          <li class="tag-2">
+            <a href="http://romeogolf.github.io/tag/stikhi.html">
+              стихи
+                <span class="badge">3</span>
+            </a>
+          </li>
+        </ul>
+      </div> <!-- tagcloud -->
+    </div> <!-- sidebar -->
+
+    <div class="content">
+  <section class="main-section blog-section" id="blog-posts">
+    <h4 class="date">Вт 01 Май 2018</h4>
+    <article>
+      <h1>USB-polygon-20: Мышиный энкодер</h1>
+      
+      <div class="toc">
+<ul>
+<li><a href="#_1">Исправление ошибки</a></li>
+<li><a href="#_2">Энкодер мыши</a></li>
+<li><a href="#_3">Подключение энкодера</a></li>
+<li><a href="#_4">Обработка событий энкодера</a></li>
+<li><a href="#_5">Эпилог</a></li>
+</ul>
+</div>
+<h2 id="_1">Исправление ошибки</h2>
+<p>Перед тем, как перейти к теме выпуска, хочу упомянуть об исправлении, которое пришлось внести в код, а заодно о проявлении ошибки и поиске причин.</p>
+<p>В одном из предыдущих опусов я заметил, что почему-то устройство перестало запускаться после перепрошивки. Возникла необходимость перезапускать питание. А с учетом того, что отдельной кнопки или тумблера для перезапуска питания нету, надо каждый раз выдергивать и вставлять обратно разъем USB-кабеля. Это само по себе неудобно, да и подход неправильный: если есть проблема, надо в ней разобраться, и после прояснения ситуации либо решить, либо плюнуть, но уже хотя бы зная в чем дело.</p>
+<p>В общем, нашел ошибку в коде.</p>
+<p>В <a href="http://romeogolf.github.io/usb-polygon-3.html#dog">третьем опусе</a> цикла я уже описывал, что сталкивался с подобной проблемой в самом начале работы над проектом, и виноват был сторожевой таймер &mdash; &laquo;собака&raquo;. Однако в коде с использованием библиотеки LUFA это вроде бы предусмотрено. В функции <code>SetupHardware()</code> в самом начале есть такой код, отключающий &laquo;собаку&raquo;:</p>
+<div class="highlight"><pre><span class="cp">#if (ARCH == ARCH_AVR8)</span>
+    <span class="cm">/* Disable watchdog if enabled by bootloader/fuses */</span>
+    <span class="n">MCUSR</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">WDRF</span><span class="p">);</span>
+    <span class="n">wdt_disable</span><span class="p">();</span>
+</pre></div>
+
+
+<p>Сперва предположил, что этот участок не выполняется, потому что макроопределение <code>ARCH</code> не установлено.</p>
+<p>Кстати сказать, в <code>makefile</code> переменная <code>ARCH = AVR8</code> &mdash; это совсем другое, она действует только в <code>makefile</code>, и к коду программы отношения не имеет, хотя должна соответствовать одноименному макроопределению в коде, этого требует документация библиотеки LUFA. И в принципе можно бы определить макрос при помощи переменной <code>CC_FLAGS</code> в <code>makefile</code>, прибавив к ней <code>-DARCH=0</code> (<code>ARCH_AVR8</code> определено как <code>0</code>), но это не обязательно. <code>MassStorage.c</code> содержит строчку <code>#include "MassStorage.h"</code>, в данном файле есть <code>#include &lt;LUFA/Drivers/USB/USB.h&gt;</code>, который в свою очередь содержит <code>#include "../../Common/Common.h"</code>, где записано <code>#include "Architectures.h"</code>, а там, наконец, есть такой код:</p>
+<div class="highlight"><pre>            <span class="cm">/** Selects the Atmel 8-bit AVR (AT90USB* and ATMEGA*U* chips) architecture. */</span>
+            <span class="cp">#define ARCH_AVR8           0</span>
+
+            <span class="cm">/** Selects the Atmel 32-bit UC3 AVR (AT32UC3* chips) architecture. */</span>
+            <span class="cp">#define ARCH_UC3            1</span>
+
+            <span class="cm">/** Selects the Atmel XMEGA AVR (ATXMEGA* chips) architecture. */</span>
+            <span class="cp">#define ARCH_XMEGA          2</span>
+
+            <span class="cp">#if !defined(__DOXYGEN__)</span>
+                <span class="cp">#define ARCH_           ARCH_AVR8</span>
+
+                <span class="cp">#if !defined(ARCH)</span>
+                    <span class="cp">#define ARCH        ARCH_AVR8</span>
+                <span class="cp">#endif</span>
+            <span class="cp">#endif</span>
+</pre></div>
+
+
+<p>А так как <code>__DOXYGEN__</code> у меня нигде не определен, <code>ARCH</code> по умолчанию будет определен как <code>ARCH_AVR8</code>.</p>
+<p>Кстати, анализ файла <code>MassStorage.lss</code> показывает, что таки да, код после условия <code>#if (ARCH == ARCH_AVR8)</code> компилируется. Тогда в чем дело?</p>
+<p>А дело банально в том, что перед вызовом <code>SetupHardware()</code> я навставлял кучу кода, связанного с инициализацией экрана от мобильника. И к тому времени, как доходит дело до остановки &laquo;собаки&raquo;, она уже успевает &laquo;гавкнуть&raquo;. И надо всего-навсего поднять вызов <code>SetupHardware()</code> на самый верх функции <code>main()</code>.</p>
+<p>Теперь программа запускается после перепрошивки устройства без дополнительных телодвижений кабелем или кнопками. Можно продолжать далее по теме.</p>
+<h2 id="_2">Энкодер мыши</h2>
+<p>Оказалась под рукой неисправная беспроводная оптическая мышь. Не то, чтобы совсем напрочь дохлая, но пользоваться ею уже очень некомфортно: левая кнопка требует усиленного, а порой и неоднократного нажатия, ролик (точнее, резиновая &laquo;шина&raquo; на нем) проскальзывает. В принципе, это все восстановимо, но мышь не моя, зато я купил в подарок на замену новую, а эту забрал, иначе ей бы путь на мусорку.</p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/20/mouse.jpg" title="Мышь"><img alt="mouse" src="http://romeogolf.github.io/images/usb-polygon/20/preview/mouse-pre.jpg" title="Мышь" /></a></p>
+<p>Можно будет попробовать починить, можно разобрать на детали и использовать корпус, но это все потом. Сначала хочу побаловаться с энкодером.</p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/20/encoder-all.jpg" title="Энкодер"><img alt="Энкодер" src="http://romeogolf.github.io/images/usb-polygon/20/preview/encoder-all-pre.jpg" title="Энкодер" /></a></p>
+<p>Ролик (или колесико) мыши &mdash; съемный узел. В его состав входят:</p>
+<ul>
+<li>&laquo;Качелька&raquo;, которая служит для крепления собственно энкодера, а также давит на кнопки. В моем случае таких кнопок три, так как на ролик можно не только нажимать, но и качать вправо &ndash; влево;</li>
+<li>Энкодер с шестигранным отверстием для оси ролика и тремя проводами, которые через разъем подключаются к плате мыши;</li>
+<li>Пластиковый ролик на оси. Так сказать, колесный диск. Ось с краев круглого сечения для нормального вращения в точках крепления &laquo;качельки&raquo;, а по центру шестигранная для зацепа в энкодере;</li>
+<li>Резиновая шина (ну, или покрышка, как хотите).</li>
+</ul>
+<p>Из мыши этот узел извлекается необычайно просто: отключается от платы разъем и выщелкивается из единственной точки крепления &laquo;качелька&raquo;. Далее узел также легко разбирается на составные детали.</p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/20/encoder-parts.jpg" title="Энкодер разобранный"><img alt="Энкодер разобранный" src="http://romeogolf.github.io/images/usb-polygon/20/preview/encoder-parts-pre.jpg" title="Энкодер разобранный" /></a></p>
+<p>Энкодер сам по себе (без &laquo;качельки&raquo; и ролика) использовать неудобно. Поэтому буду применять его в сборе, только резинку сниму, ибо проскальзывает. За &laquo;качельку&raquo; удобно держать, а за ролик удобно крутить.</p>
+<p>Итак, у энкодера имеются три провода: белый, желтый и черный. Можно не сомневаться, что белый и желтый &mdash; это фазы A и B (не обязательно именно в этом соответствии), а замыкаются они при вращении на черный. Тестер в режиме омметра подтверждает это предположение. Заодно определяем, что при вращении энкодера тактильно ощущаются 18 щелчков, причем, на каждый щелчок приходится две смены общего состояния выводов: по одному перепаду на каждом выводе.</p>
+<p>Хотелось применить энкодер вместо кнопок для изменения картинки на подключенном экране мобильника, как в <a href="http://romeogolf.github.io/usb-polygon-18.html#dial">опусе 18</a>. Там было подготовлено 20 кадров в расчете на энкодер KY-040, который предполагалось заказать на Aliexpress. Но побаловаться с запчастями от полудохлой мыши интереснее, особенно в рамках нищебродского проекта с минимальным бюджетом.</p>
+<p>Значит, надо переписать файл для SD-карты на 18 кадров, изменив &laquo;стрелочки&raquo; на каждом кадре для равномерности. Кроме того, в коде программы заменить <code>cnt20</code> на <code>cnt18</code>, <code>cnt20old</code> на <code>cnt18old</code>, и проверку переполнения счетчика делать сравнением не с 19, а с 17.</p>
+<h2 id="_3">Подключение энкодера</h2>
+<p>Энкодер следует подготовить к подключению. Порты контроллера ожидают логические уровни, а энкодер пока что может только замыкать два провода на третий. Стало быть, подключим черный провод к &laquo;корпусу&raquo;, а белые через подтягивающие резисторы &mdash; к +3,3 В. Таким образом, разомкнутый белый провод, подключенный к выводу порта, будет показывать логическую единицу, а замкнутый &mdash; логический ноль. При вращении энкодера состояние выводов будет последовательно изменяться.</p>
+<p>Теперь о том, куда подключать. На порту B остался всего один свободный вывод, а для энкодера нужно два. Можно задействовать порт C, на котором &laquo;сидят&raquo; кнопки. Нижние две из них используются для переключения &laquo;спецрежима&raquo;, а точнее, флаговой переменной <code>canDo</code>.</p>
+<p>Отныне буду для этой цели использовать одну среднюю кнопку. В блоке, отвечающем за опрос кнопок я заменяю код, который четвертой кнопкой включал <code>canDo</code>, а пятой &mdash; выключал:</p>
+<div class="highlight"><pre>                               <span class="k">if</span> <span class="p">((</span><span class="n">bt_now</span> <span class="o">&amp;</span> <span class="n">BT_4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                                       <span class="n">canDo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                                       <span class="n">PORTB</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span><span class="p">);</span>
+                               <span class="p">}</span>
+                               <span class="k">if</span> <span class="p">((</span><span class="n">bt_now</span> <span class="o">&amp;</span> <span class="n">BT_5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                                       <span class="n">canDo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                                       <span class="n">PORTB</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span><span class="p">);</span>
+</pre></div>
+
+
+<p>на код, который третьей кнопкой переключает этот флаг:</p>
+<div class="highlight"><pre>                               <span class="k">if</span> <span class="p">((</span><span class="n">bt_now</span> <span class="o">&amp;</span> <span class="n">BT_3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                                       <span class="n">canDo</span> <span class="o">=</span> <span class="n">canDo</span> <span class="o">^</span> <span class="mi">1</span><span class="p">;</span>
+                                       <span class="n">PORTB</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span><span class="p">);</span>
+                               <span class="p">}</span>
+</pre></div>
+
+
+<p>А вот измененный фрагмент схемы:</p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/20/polygon-encoder.png" title="Схема включения"><img alt="Схема включения" src="http://romeogolf.github.io/images/usb-polygon/20/preview/polygon-encoder-pre.png" title="Схема включения" /></a></p>
+<p>Раз уж эта механическая деталь занимается тем, что замыкает-размыкает два контакта на третий, не буду заморачиваться с поиском специализированного обозначения, а нарисую в виде перемычечного выключателя на три контакта.</p>
+<p>Перемычки JP3 и JP5, соответствующие портам 6 и 7, снимаю, таким образом, порты нижних кнопок освободились, и к их контактным площадкам можно подпаять выводы энкодера. Но не просто так, а с джамперными пинами, которые воткну в разъемчик энкодера. Добавлю кошмара к устройству. Сплошной навесной монтаж, куча проводов. &laquo;Пудель&raquo;, одним словом. Но это ненадолго, скоро все разберу, а для отладочной времянки допустимо. На фото виднеются емкости, о которых расскажу несколько ниже.</p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/20/avers1.jpg" title="Аверс"><img alt="Аверс" src="http://romeogolf.github.io/images/usb-polygon/20/preview/avers1-pre.jpg" title="Аверс" /></a>
+<a href="http://romeogolf.github.io/images/usb-polygon/20/revers2.jpg" title="Реверс"><img alt="Реверс" src="http://romeogolf.github.io/images/usb-polygon/20/preview/revers2-pre.jpg" title="Реверс" /></a></p>
+<h2 id="_4">Обработка событий энкодера</h2>
+<p>В таком варианте подключения энкодер при вращении выдает последовательность импульсов. Причем, импульсы на белом проводе смещены относительно импульсов на желтом проводе. А направление смещения зависит от направления вращения.</p>
+<p>Допустим, изначально на обоих проводах &laquo;0&raquo;. При вращении сначала изменится состояние одного провода, будет &laquo;1&raquo; и &laquo;0&raquo;. Потом изменится состояние второго провода, получим &laquo;1&raquo; и &laquo;1&raquo;. Затем снова будет изменение на первом: &laquo;0&raquo; и &laquo;1&raquo;. И, наконец, все вернется в исходное: два нолика.</p>
+<p>Если рассматривать два провода, как двухразрядное число, получается такое изменение: 0 -&gt; 2 -&gt; 3 -&gt; 1 -&gt; 0 -&gt; &hellip; при вращении в одну сторону, или 0 -&gt; 1 -&gt; 3 -&gt; 2 -&gt; 0 -&gt; &hellip; в другую.</p>
+<p>При обсуждении этого дела на форумах в этом месте обязательно кто-нибудь начинает кричать: &laquo;Это же код Грея!&raquo; Ну да, код Грея. По определению и исходя из принципа действия энкодера. Это код, в котором последовательно расположенные числа отличаются друг от друга на один разряд. Ну и что? Да, код Грея легко привести к последовательности натуральных чисел. Буквально в пару операций. Но зачем? Совершенно спокойно можно его использовать в прямом виде.</p>
+<p>Можно реагировать на событие изменения состояния энкодера по прерываниям. Но я желаю опрашивать энкодер по таймеру. У меня в программе устройства уже есть опрос нажатия кнопок, туда и вставлю. Не вижу смысла задействовать лишние прерывания. Тем более, что энкодер механический, а значит &mdash; дребезг, а значит &mdash; ложные срабатывания и все такое&hellip;</p>
+<p>Итак, в произвольный момент времени можно опросить энкодер и узнать состояние его проводов. Но само по себе состояние не интересно, потому что вращение &mdash; это процесс, протекающий во времени. Состояние важно в сравнении с предыдущим состоянием. Если оно не изменилось, то скорее всего и вращения не было (хотя, есть возможность, что было ровно на два щелчка, но это вряд ли). А если изменилось, то можно определить не только факт поворота, но и направление.</p>
+<p>Составлю табличку зависимости текущего состояния от предыдущего:</p>
+<div class="colortable mini"></div>
+<table>
+<thead>
+<tr>
+<th align="center">&nbsp;&nbsp;\</th>
+<th align="center">0</th>
+<th align="center">2</th>
+<th align="center">3</th>
+<th align="center">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">+</td>
+<td align="center">x</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">-</td>
+<td align="center">0</td>
+<td align="center">+</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">x</td>
+<td align="center">-</td>
+<td align="center">0</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">+</td>
+<td align="center">x</td>
+<td align="center">-</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<p>Таблица симметричная, так что можно текущим состоянием считать хоть первую строку, хоть первый столбец, это индифферентно.</p>
+<p>&laquo;0&raquo; означает, что вращения не было. Оно и понятно: если текущее состояние равно предыдущему&hellip; &laquo;+&raquo; означает вращение в прямом направлении, &laquo;-&raquo; &mdash; в обратном. Понятия &laquo;прямой&raquo; и &laquo;обратный&raquo; довольно-таки относительны и еще зависят от того, какой провод мы выберем фазой А, а какой &mdash; Б. &laquo;x&raquo; соответствует ошибке: такой переход в нормальной ситуации возникнуть не может, значит, ошибка вызвана либо дребезгом контактов, либо слишком быстрым поворотом вала энкодера, либо сбоем программы (например,вызвавшим аномальную задержку между последовательными опросами), либо метафизическими причинами.</p>
+<p>Итого имеется 16 вариантов сочетания последовательно считанных состояний и три варианта действий: бездействие, инкремент счетчика поворота и декремент счетчика. Ошибку можно обрабатывать как-то дополнительно, но я не вижу в этом особого смысла и необходимости.</p>
+<div class="colortable mini"></div>
+<table>
+<thead>
+<tr>
+<th align="center">старое<br>состояние</th>
+<th align="center">новое<br>состояние</th>
+<th align="center">код<br>(hex)</th>
+<th align="center">действие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">8</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">A</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">B</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">9</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">C</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">E</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">F</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">D</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">4</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">6</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">7</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">5</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<p>Добавляю в код обработку энкодера. Сперва перед основным циклом программы добавляю пару переменных:</p>
+<div class="highlight"><pre>       <span class="kt">uint8_t</span> <span class="n">encoderState</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+       <span class="kt">int8_t</span> <span class="n">encoderCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</pre></div>
+
+
+<p>В первой младшие 4 разряда будут содержать текущее и предыдущее состояние энкодера, а вторая будет реагировать на изменения. Соответственно, первая &mdash; беззнаковая, а вторая &mdash; знаковая, чтобы нормально реагировать на вращение вперед, назад и в другие стороны.</p>
+<p>Далее, сразу после обработки нажатия на третью кнопку (упомянутого чуть выше) добавляю такой код:</p>
+<div class="highlight"><pre>                               <span class="cm">/* for encoder */</span>
+                               <span class="kt">uint8_t</span> <span class="n">nowEnc</span> <span class="o">=</span> <span class="p">(</span><span class="n">bt_now</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x03</span><span class="p">;</span>  <span class="cm">/* выделяю энкодерные биты порта С со сдвигом в начало */</span>
+                               <span class="n">encoderState</span> <span class="o">&lt;&lt;=</span> <span class="mi">2</span><span class="p">;</span>                  <span class="cm">/* бывшее текущее состояние делаю предыдущим */</span>
+                               <span class="n">encoderState</span> <span class="o">|=</span> <span class="n">nowEnc</span><span class="p">;</span>              <span class="cm">/* добавляю текущее состояние */</span>
+                               <span class="n">encoderState</span> <span class="o">&amp;=</span> <span class="mh">0x0F</span><span class="p">;</span>                <span class="cm">/* отрезаю лишнее */</span>
+
+                               <span class="cm">/* действие по состоянию: */</span>
+                               <span class="k">switch</span> <span class="p">(</span><span class="n">encoderState</span><span class="p">)</span> <span class="p">{</span>
+                                       <span class="k">case</span> <span class="mh">0x00</span><span class="o">:</span> <span class="cm">/* 0 */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x02</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">++</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x03</span><span class="o">:</span> <span class="cm">/* err */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x01</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">--</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x08</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">--</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x0a</span><span class="o">:</span> <span class="cm">/* 0 */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x0b</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">++</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x09</span><span class="o">:</span> <span class="cm">/* err */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x0c</span><span class="o">:</span> <span class="cm">/* err */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x0e</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">--</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x0f</span><span class="o">:</span> <span class="cm">/* 0 */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x0d</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">++</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x04</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">++</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x06</span><span class="o">:</span> <span class="cm">/* err */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x07</span><span class="o">:</span>
+                                               <span class="n">encoderCounter</span><span class="o">--</span><span class="p">;</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                                       <span class="k">case</span> <span class="mh">0x05</span><span class="o">:</span> <span class="cm">/* 0 */</span>
+                                               <span class="k">break</span><span class="p">;</span>
+                               <span class="p">}</span>
+                               <span class="cm">/* обработка переполнения счетчика */</span>
+                               <span class="k">if</span> <span class="p">(</span><span class="n">encoderCounter</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">18</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="p">{</span><span class="n">encoderCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;}</span>
+                               <span class="k">if</span> <span class="p">(</span><span class="n">encoderCounter</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="n">encoderCounter</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);}</span>
+                               <span class="n">cnt18</span> <span class="o">=</span> <span class="n">encoderCounter</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="cm">/* с учетом двух изменений на одмн щелчок */</span>
+</pre></div>
+
+
+<p>Два замечания помимо комментариев в коде: во-первых, код избыточен, достаточно восьми <code>case</code> (четыре плюса и четыре минуса), но так нагляднее; во-вторых, счетчик энкодера переписывается в счетчик <code>cnt18</code>, вывод которого на экран мобильника в виде &laquo;циферблата&raquo; уже реализован.</p>
+<p>Компилирую, прошиваю, запускаю. На экране мобильника появляется логотип, на светодиодах &mdash; счетчик. Нажимаю третью кнопку. Счетчик на светодиодах пропадает, на экране появляется &laquo;циферблат&raquo; с нулями и &laquo;стрелкой&raquo; вверху. </p>
+<p>Медленно проворачиваю ролик энкодера &mdash; &laquo;циферблат&raquo; изменяется, циферки увеличиваются или уменьшаются, &laquo;стрелочка&raquo; поворачивается в соответствии с направлением, как в <a href="http://romeogolf.github.io/usb-polygon-18.html#dial">опусе 18</a>. Но есть небольшие сбои: часть щелчков энкодера пропускается, а иногда &laquo;стрелочка&raquo; дергается назад. На быстрое вращение реакция вообще странная: то &laquo;циферблат&raquo; не изменяется, то сразу прыгает на несколько значений в произвольном направлении.</p>
+<p>Некоторое время думал над кодом. Попробовал увеличить время опроса, перепрограммировав таймер, сначала в 256 раз, потом еще в 8 &mdash; не помогло. Попробовал сделать проверку состояния по прерываниям, несколько изменив логику защиты от дребезга &mdash; тоже нисколько не улучшилось. Я догадывался, что дело в дребезге, но осциллографа дома нету, а до ближайшего прибора тащить далеко и неудобно. Но все-таки добрался я до средств измерения и малость ужаснулся.</p>
+<p>При медленном повороте порой все почти в порядке:</p>
+<p><img alt="Осциллограмма" src="http://romeogolf.github.io/images/usb-polygon/20/oscill/slow2.png" title="Медленный поворот" /></p>
+<p>Однако чаще всего даже при медленном вращении есть заметный дребезг, который хорошо отсеивается программой:</p>
+<p><img alt="Осциллограмма" src="http://romeogolf.github.io/images/usb-polygon/20/oscill/slow1.png" title="Медленный поворот" /></p>
+<p>А вот при быстрой прокрутке вообще кошмар:</p>
+<p><img alt="Осциллограмма" src="http://romeogolf.github.io/images/usb-polygon/20/oscill/fast-4.png" title="Быстрый поворот" /></p>
+<p>Короткие импульсы сплошняком заполнены дребезгом! Это невозможно обработать программно никаким автоматом. И наверхосытку такая одиночная прокрутка:</p>
+<p><img alt="Осциллограмма" src="http://romeogolf.github.io/images/usb-polygon/20/oscill/slow-extreme.png" title="Экстремальный поворот" /></p>
+<p>И укрупненно отдельный срез:</p>
+<p><img alt="Осциллограмма" src="http://romeogolf.github.io/images/usb-polygon/20/oscill/slow-edge-1.png" title="Экстремальный поворот" /></p>
+<p>В общем, только программными методами это победить нереально. Надо ставить фильтр. Резистор стоит и так &mdash; подтягивающий, на 12 килоом, &mdash; добавлю емкость, и получится RC-цепочка, &laquo;сливающая&raquo; короткие импульсы на корпус. Вот измененный фрагмент схемы с добавкой конденсаторов:</p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/20/polygon-encoder-c.png" title="Схема включения"><img alt="Схема включения" src="http://romeogolf.github.io/images/usb-polygon/20/preview/polygon-encoder-c-pre.png" title="Схема включения" /></a></p>
+<p>Вот только какую емкость поставить? Правильный подход &mdash; выяснить длительность самого длинного всплеска дребезга и самого короткого импульса при быстрой прокрутке вала, и рассчитать емкость для такой постоянной времени RC-цепочки, чтобы фильтр как можно меньше портил импульсы и как можно больше портил дребезг.</p>
+<p>Но суровая реальность ограничивает мой выбор пары конденсаторов тремя вариантами (если отбросить то, что меньше единиц нанофарад и больше десятков микрофарад, которые не подойдут даже по беглой прикидке). Есть 2,2 мкФ, 10 нФ и 100 нФ. Как настоящий радиолюбитель, буду сначала паять, потом считать.</p>
+<p>Начну с номинала побольше и припаяю (на проводах, конечно же) пару электролитических, минусом на землю. Ну что ж, у дребезга нет никаких шансов. При медленной прокрутке вала фронты импульсов дико завалены по красивой экспоненте. При быстрой прокрутке фронты тоже завалены, естественно, поэтому они не успевают вырасти до уровня логической единицы. Так что &laquo;циферблат&raquo; реагирует только на медленный проворот, зато без сбоев.</p>
+<p>Ну, теперь можно и посчитать. <code>12 kilo * 2.2 micro = 0.0264</code> За это время (в секундах) фронт импульса достигнет <code>1 - 1/e</code> от единицы, это около 63%. А в три раза позже, через 0,0792 с, фронт достигнет 95%. То есть, импульсы длительностью 80 мс до напряжения питания дойдут, хоть и некрасивые, а то, что покороче &mdash; под вопросом. А при быстрой прокрутке импульсы имеют длительность около 10 мс.</p>
+<p>Возьмем самый маленький номинал из трех. <code>12 kilo * 10 nano * 3 = 0.00036</code>. Импульсы длительностью 360 мкс будут пропускаться. Да и 100 мкс могут быть замечены выше уровня логической единицы. Практика показала, что дребезг почти весь остается.</p>
+<p>Ставлю 100 нФ, постоянная времени 1,2 мс. Картинка на медленном вращении такая:</p>
+<p><img alt="Осциллограмма" src="http://romeogolf.github.io/images/usb-polygon/20/oscill/slow-c-1.png" title="Медленный поворот" /></p>
+<p>Дребезг на фронтах отсеен совсем, а на срезе либо подавлен, либо доведен до такого состояния, что программный автомат легко с ним справляется. А вот быстрый проворот:</p>
+<p><img alt="Осциллограмма" src="http://romeogolf.github.io/images/usb-polygon/20/oscill/fast-c-3.png" title="Медленный поворот" /></p>
+<p>Картина примерно такая же, дребезг в рамках допустимого, работе не мешает.</p>
+<h2 id="_5">Эпилог</h2>
+<p>Подключить энкодер получилось более-менее успешно. Ни одно животное при этом не пострадало: мышь была восстановлена. Энкодер вернул на место, предварительно вымыв колесный диск и шину с мылом и капнув немного суперклея. Теперь ролик не проскальзывает. И заменил дохлую кнопку на исправную, снятую с каких-то мышиных обломков. В качестве бонуса оказалось, что &laquo;новая&raquo; кнопка еще и тихая. Короче, мышь снова в строю. И при проверке оказалось, что ее ролик в составе мыши работает даже хуже, чем в составе моего устройства: медленная прокуртка длинных страниц иногда отпрыгивает на шаг назад, а быстрая не работает. Так что не вполне качественная работа энкодера &mdash; это не кривой код и не кривые руки. Иногда так бывает &mdash; и вправду деталь виновата.</p>
+      <br/>	
+      <footer>
+          <div>
+            <div>Теги:</div>
+            <div class="taglist">
+              <ul class="tags">
+                <li><a href="http://romeogolf.github.io/tag/usb-polygon.html" class="tag">usb-polygon</a></li>
+              </ul>
+            </div>
+          </div>
+        <br/>
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_identifier = "usb-polygon-20.html";
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                  dsq.src = 'http://romeogolf.disqus.com/embed.js';
+                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+          </script>
+          <noscript>
+            <div>Для чтения и написания комментариев требуется включить JavaScript.</div>
+	  </noscript>
+        </div>
+      </footer>
+    </article>
+  </section>
+    </div> <!-- content -->
+    
+  </div> <!-- layout -->
+
+  <div class="footer">
+    &copy; 2016 RomeoGolf
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72333148-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!--    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-72333148-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script> -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter35090040 = new Ya.Metrika({
+                    id:35090040,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/35090040" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </div> <!-- footer -->
+
+</body>
+</html>
