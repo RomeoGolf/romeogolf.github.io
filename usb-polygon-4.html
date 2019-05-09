@@ -185,12 +185,12 @@
 <p>На упомянутой чуть выше страничке LUFA скачал саму библиотеку и документацию к ней. В архиве с библиотекой есть папка <code>LUFA</code> &mdash; собственно, библиотека, и папка <code>DEMOS</code> &mdash; это не &laquo;народ&raquo; по-гречески, это примеры применения. Примеры замечательные и на самые разные случаи жизни, для устройств, хостов и приборов, которые способны и на то, и на другое. В папке <code>lufa-LUFA-151115\Demos\Device\LowLevel\</code> можно найти и аудиоустройство, и мышь с клавиатурой, и HID, но, самое главное, там есть MassStorage. </p>
 <p>Делаю отдельную папку для проекта, скажем, <code>lufa-test</code>, и копирую в нее упомянутые <code>LUFA</code> и <code>MassStorage</code>. Разумеется, библиотеку можно не копировать, на то она и библиотека, но мало ли&hellip; Вдруг захочется поковыряться немного в ее исходниках, так чтоб не запороть оригинал. А уж в <code>MassStorage</code> буду ковыряться по полной программе, для того и копирую. Это будет основная папка проекта для макета.</p>
 <p>Там уже лежит Makefile, значит, можно попробовать запустить <code>make</code>, но не просто так, а в предварительно настроенном cygwin (о выборе и настройке компилятора &mdash; в предыдущем <a href="http://romeogolf.github.io/usb-polygon-3.html">выпуске</a> цикла). Сперва захожу в соответствующую папку:</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> /cygdrive/k/radio/asm/lufa-test/MassStorage/
+<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /cygdrive/k/radio/asm/lufa-test/MassStorage/
 </pre></div>
 
 
 <p>и командую <code>make</code>. Получаю ответ:</p>
-<div class="highlight"><pre>makefile:38: ../../../../LUFA/Build/lufa_atprogram.mk: No such file or directory
+<div class="highlight"><pre><span></span>makefile:38: ../../../../LUFA/Build/lufa_atprogram.mk: No such file or directory
 make: *** Нет правила для сборки цели «../../../../LUFA/Build/lufa_atprogram.mk».  Останов.
 </pre></div>
 
@@ -199,11 +199,11 @@ make: *** Нет правила для сборки цели «../../../../LUFA/
 <p>Вот теперь <code>make</code> замечательно запускается, проект компилируется, в папке проекта создаются всякого рода файлы, которых не было. Даже появился MassStorage.hex, который можно прошить в устройство посредством FLIP. Вот только не стоит пока этого делать &mdash; бесполезно. </p>
 <p>Первая же переменная в Makefile &mdash; <code>MCU</code> &mdash; указывает на контроллер at90usb1287, а у меня at90usb162.
 Третья переменная &mdash; <code>BOARD</code> &mdash; указывает на какую-то отладочную плату. Не важно, какую, важно, что у меня &mdash; никакая, в списках не значится. </p>
-<p>Однако, начало положено, есть какая-то заготовка.</p>
+<p>Однако начало положено, есть какая-то заготовка.</p>
 <h2 id="_4">&laquo;&hellip; доработать напильником&raquo;</h2>
 <p>Начинаю подгонять заготовку под то, что имеется.</p>
 <p>Для начала заменяю в Makefile значение <code>MCU</code> с <code>at90usb1287</code> на <code>at90usb162</code>, а значение <code>BOARD</code> &mdash; на <code>NONE</code>, чищу результаты компиляции при помощи <code>make clean</code> и снова запускаю <code>make</code>. Компиляция сваливается с ошибкой. Да не с одной, а с целой кучей:</p>
-<div class="highlight"><pre>... до сих пор более-менее нормально ...
+<div class="highlight"><pre><span></span>... до сих пор более-менее нормально ...
 
 Lib/DataflashManager.c: In <span class="k">function</span> <span class="s1">&#39;DataflashManager_WriteBlocks&#39;</span>:
 Lib/DataflashManager.c:52:77: warning: division by zero <span class="o">[</span>-Wdiv-by-zero<span class="o">]</span>
@@ -237,24 +237,24 @@ In file included from ../LUFA/../LUFA/Drivers/USB/USB.h:382:0,
                  from Lib/DataflashManager.c:40:
 ../LUFA/../LUFA/Drivers/Board/Dataflash.h:141:60: error: <span class="s1">&#39;DATAFLASH_CHIP0&#39;</span> undec
 lared <span class="o">(</span>first use in this <span class="k">function</span><span class="o">)</span>
-    <span class="c">#define DATAFLASH_CHIP_MASK(index)      CONCAT_EXPANDED(DATAFLASH_CHIP, inde</span>
+    <span class="c1">#define DATAFLASH_CHIP_MASK(index)      CONCAT_EXPANDED(DATAFLASH_CHIP, inde</span>
 x<span class="o">)</span>
                                                             ^
 ../LUFA/../LUFA/Drivers/USB/../../Common/Common.h:210:37: note: in definition of
  macro <span class="s1">&#39;CONCAT&#39;</span>
-     <span class="c">#define CONCAT(x, y)            x ## y</span>
+     <span class="c1">#define CONCAT(x, y)            x ## y</span>
                                      ^
 ... и тому подобное ...
 </pre></div>
 
 
 <p>И при беглом просмотре похоже на то, что все ошибки связаны с DataflashManager, модулем, расположенным тут же в папке <code>Lib</code>. Модуль явно отвечает за управление флэш-памятью, это видно даже из названия, но написано и внутри в Doxygen-комментарии. А у меня на плате флэш нету и в ближайшем будущем не ожидается. Попробую тупо вырезать это дело: убираю в Makefile из значения переменной <code>SRC</code> запись &laquo;<code>Lib/DataflashManager.c</code>&raquo;, в h-файлах закрываю &laquo;<code>include "DataflashManager.h"</code>&raquo;, в MassStorage.c и SCSI.c нахожу и закрываю (символами комментария) все строки с функциями, начинающимися с <code>Dataflash</code>. Причем, естественно, не только сами строки, но всю содержащую конструкцию, типа <code>if</code>, скажем.</p>
-<div class="highlight"><pre><span class="nv">$ </span>make
+<div class="highlight"><pre><span></span>$ make
  <span class="o">[</span>INFO<span class="o">]</span>    : Begin compilation of project <span class="s2">&quot;MassStorage&quot;</span>...
 
-avr-gcc.exe <span class="o">(</span>AVR_8_bit_GNU_Toolchain_3.5.2_1680<span class="o">)</span> 4.9.2
+avr-gcc.exe <span class="o">(</span>AVR_8_bit_GNU_Toolchain_3.5.2_1680<span class="o">)</span> <span class="m">4</span>.9.2
 Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2014</span> Free Software Foundation, Inc.
-This is free software<span class="p">;</span> see the <span class="nb">source </span><span class="k">for</span> copying conditions.  There is NO
+This is free software<span class="p">;</span> see the <span class="nb">source</span> <span class="k">for</span> copying conditions.  There is NO
 warranty<span class="p">;</span> not even <span class="k">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  <span class="o">[</span>GCC<span class="o">]</span>     : Compiling C file <span class="s2">&quot;SCSI.c&quot;</span>
@@ -267,7 +267,7 @@ d Lib/SCSI.c -o Lib/SCSI.o
 Lib/SCSI.c: In <span class="k">function</span> <span class="s1">&#39;SCSI_Command_Read_Capacity_10&#39;</span>:
 Lib/SCSI.c:216:23: error: <span class="s1">&#39;LUN_MEDIA_BLOCKS&#39;</span> undeclared <span class="o">(</span>first use in this funct
 ion<span class="o">)</span>
-  Endpoint_Write_32_BE<span class="o">(</span>LUN_MEDIA_BLOCKS - 1<span class="o">)</span><span class="p">;</span>
+  Endpoint_Write_32_BE<span class="o">(</span>LUN_MEDIA_BLOCKS - <span class="m">1</span><span class="o">)</span><span class="p">;</span>
                        ^
 Lib/SCSI.c:216:23: note: each undeclared identifier is reported only once <span class="k">for</span> ea
 ch <span class="k">function</span> it appears in
@@ -285,23 +285,23 @@ his <span class="k">function</span><span class="o">)</span>
   CommandBlock.DataTransferLength -<span class="o">=</span> <span class="o">((</span>uint32_t<span class="o">)</span>TotalBlocks * VIRTUAL_MEMORY_BLO
 CK_SIZE<span class="o">)</span><span class="p">;</span>
                                                               ^
-make: *** <span class="o">[</span>../LUFA/Build/lufa_build.mk:295: Lib/SCSI.o<span class="o">]</span> Ошибка 1
+make: *** <span class="o">[</span>../LUFA/Build/lufa_build.mk:295: Lib/SCSI.o<span class="o">]</span> Ошибка <span class="m">1</span>
 </pre></div>
 
 
 <p>После компиляции стало чуть получше, то есть, ошибок поменьше, но &laquo;чуть&raquo; не считается, потому что все равно не компилируется. А это потому, что теперь неизвестны константы, объявленные в DataflashManager. Ладно, <code>include</code> возвращаю. Функции из этого модуля закрыты, компиляции модуль тоже не подлежит, но нужное из него возьмем.</p>
 <p>Чищу результаты неудачной компиляции, запускаю <code>make</code> &mdash; Ура! Откомпилировано!</p>
-<div class="highlight"><pre>... много-премного букв ...
+<div class="highlight"><pre><span></span>... много-премного букв ...
 
 avr-size --mcu<span class="o">=</span>at90usb162 --format<span class="o">=</span>avr MassStorage.elf
 AVR Memory Usage
 ----------------
 Device: at90usb162
 
-Program:    <span class="m">4054</span> bytes <span class="o">(</span>24.7% Full<span class="o">)</span>
+Program:    <span class="m">4054</span> bytes <span class="o">(</span><span class="m">24</span>.7% Full<span class="o">)</span>
 <span class="o">(</span>.text + .data + .bootloader<span class="o">)</span>
 
-Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full<span class="o">)</span>
+Data:        <span class="m">113</span> bytes <span class="o">(</span><span class="m">22</span>.1% Full<span class="o">)</span>
 <span class="o">(</span>.data + .bss + .noinit<span class="o">)</span>
 
 
@@ -311,17 +311,17 @@ Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full
 
 <p>Запускаю FLIP. Не забываю на подключенной плате нажать Reset, не отпуская, нажать HWB, отпустить Reset, отпустить HWB. После чего в окне FLIP подключаюсь к плате, загружаю hex-файл и жму Run. Прошивка загружается. </p>
 <p>Теперь плата отображается в Windows XP и в семерке в виде флэшки &laquo;LUFA Dataflash Disk USB Device&raquo;, ему выделяется буква диска, можно посмотреть свойства. Он пустой, без файловой системы, и Windows 7 все порывается при подключении его отформатировать.</p>
-<p><img alt="new-dew-lufa" src="http://romeogolf.github.io/images/usb-polygon/04/new-dev-lufa.png" title="New device LUFA" /> 
-<a href="http://romeogolf.github.io/images/usb-polygon/04/lufa-pref.png" title="LUFA preference"><img alt="lufa-pref" src="http://romeogolf.github.io/images/usb-polygon/04/preview/lufa-pref-small.png" title="LUFA preference" /></a> </p>
+<p><img alt="new-dew-lufa" src="http://romeogolf.github.io/images/usb-polygon/04/new-dev-lufa.png" title="New device LUFA"> 
+<a href="http://romeogolf.github.io/images/usb-polygon/04/lufa-pref.png" title="LUFA preference"><img alt="lufa-pref" src="http://romeogolf.github.io/images/usb-polygon/04/preview/lufa-pref-small.png" title="LUFA preference"></a> </p>
 <p>И в диспетчере устройств плата прописалась аж в трех местах (на примере Windows XP): &laquo;Дисковые устройства&raquo;, &laquo;Контроллеры универсальной последовательной шины USB&raquo; и &laquo;Тома запоминающих устройств&raquo;.</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/04/dev-man-lufa.png" title="LUFA preference"><img alt="dev-man-lufa" src="http://romeogolf.github.io/images/usb-polygon/04/preview/dev-man-lufa-small.png" title="LUFA preference" /></a> </p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/04/dev-man-lufa.png" title="LUFA preference"><img alt="dev-man-lufa" src="http://romeogolf.github.io/images/usb-polygon/04/preview/dev-man-lufa-small.png" title="LUFA preference"></a> </p>
 <h2 id="_5">Маленькое расширение программы</h2>
 <p>Теперь компьютер думает, что моя плата пусть хреновенькая, но все-таки флэшка. Однако, кроме как создавать видимость флэшки, плата больше ничего пока не может. А у нее ведь есть светодиодики и кнопки! Зря, что ли?</p>
 <p>И вообще смешно получается &mdash; взял готовый пример и только выкидывал из него лишнее. Надо же что-то и добавить!</p>
 <p>Открываю основной файл проекта &mdash; MassStorage.c. Ага, а в нем еще есть что убрать. Закрываю все строки с функциями, начинающимися на &laquo;LEDs&raquo;, потому что у меня хоть и есть светодиоды, но совсем не такие и не там. Кстати, заодно в MassStorage.h закрываю &laquo;<code>include &lt;LUFA/Drivers/Board/LEDs.h&gt;</code>&raquo;, &laquo;<code>include &lt;LUFA/Drivers/Board/Dataflash.h&gt;</code>&raquo; и &laquo;<code>include &lt;LUFA/Platform/Platform.h&gt;</code>&raquo;, потому что у меня несколько не тот BOARD, что предполагался в демонстрационном примере.</p>
 <p>Но вернмся к основному сишному файлу. Главная функция, как очевидно следует из названия, <code>main</code>. В ней все, что идет перед началом бесконечного цикла &mdash; инициализация всякого рода сущностей, от программных переменных до аппаратных регистров. В самом цикле <code>for (;;)</code> будет крутиться то, что нам собственно и надо. Сейчас там вертится обработка событий USB, не требующая вот-прям-щаз-реакции, то, что не надо делать в прерываниях.</p>
 <p>Инициализирую порты: порт D, на котором у меня светодиоды, и порт C, на котором кнопки. После имеющейся в заготовке строчки <code>GlobalInterruptEnable();</code> пишу:</p>
-<div class="highlight"><pre>    <span class="n">PORTD</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>    <span class="c1">// начальное значение - все нули</span>
+<div class="highlight"><pre><span></span>    <span class="n">PORTD</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>    <span class="c1">// начальное значение - все нули</span>
     <span class="n">DDRD</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>     <span class="c1">// все линии порта на вывод</span>
     <span class="n">PORTC</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>    <span class="c1">// без &quot;подтяжки&quot; (есть внешняя)</span>
     <span class="n">DDRC</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>     <span class="c1">// все линии порта на ввод</span>
@@ -329,7 +329,7 @@ Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full
 
 
 <p>И объявляю переменные:</p>
-<div class="highlight"><pre>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>        <span class="c1">// тупо счетчик</span>
+<div class="highlight"><pre><span></span>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>        <span class="c1">// тупо счетчик</span>
     <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt_bt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>     <span class="c1">// счетчик нажатий на кнопки</span>
     <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">mode_out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   <span class="c1">// режим вывода</span>
     <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">bt_now</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>     <span class="c1">// состояние кнопок</span>
@@ -338,7 +338,7 @@ Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full
 
 
 <p>Дальше в цикле <code>for (;;)</code> после строчки <code>USB_USBTask();</code> можно писать всякую отсебятину:</p>
-<div class="highlight"><pre>        <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>                              <span class="c1">// инкремент счетчика - чтобы что-то изменялось</span>
+<div class="highlight"><pre><span></span>        <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>                              <span class="c1">// инкремент счетчика - чтобы что-то изменялось</span>
         <span class="n">bt_now</span> <span class="o">=</span> <span class="n">PINC</span><span class="p">;</span>                      <span class="c1">// считывание порта с кнопками</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">bt_now</span> <span class="o">!=</span> <span class="n">bt_old</span><span class="p">)</span> <span class="p">{</span>             <span class="c1">// если состояние порта изменилось</span>
             <span class="k">if</span> <span class="p">((</span><span class="n">bt_now</span> <span class="o">&amp;</span> <span class="mh">0x30</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>     <span class="c1">// если нажаты сразу две верхние кнопки на разрядах 3 и 4</span>
@@ -354,7 +354,7 @@ Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full
 
 
 <p>А дальше вывожу в порт D, то есть, на светодиоды, некоторые данные в зависимости от режима:</p>
-<div class="highlight"><pre>        <span class="k">switch</span> <span class="p">(</span><span class="n">mode_out</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span>        <span class="k">switch</span> <span class="p">(</span><span class="n">mode_out</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">case</span> <span class="mi">0</span> <span class="o">:</span> 
             <span class="n">PORTD</span> <span class="o">=</span> <span class="n">cnt</span><span class="p">;</span>     <span class="c1">// просто счетчик</span>
             <span class="k">break</span><span class="p">;</span>
@@ -381,7 +381,7 @@ Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full
 <p>Самое простое, что можно здесь сделать &mdash; это добавить задержку после конструкции <code>switch</code>, например, вставить библиотечную функцию <code>_delay_ms(100);</code>. Для того, чтобы оно заработала, надо не забыть добавить <code>include &lt;util/delay.h&gt;</code> после <code>#include "MassStorage.h"</code>. Теперь после компиляции и светодиоды в режиме счетчика перемигиваются с частотой 0,1 с, и на кнопки реакция более-менее нормальная, даже немного заторможенная: если нажимать быстро, некоторые нажатия могут пропуститься. </p>
 <p>Но некрасиво это. И главный цикл тормозить так грубо &mdash; очень плохо, и функция-задержка реализована так себе&hellip; В общем, пришло время попробовать таймеры.</p>
 <p>Убираю <code>_delay_ms()</code>. Закрываю <code>cnt++;</code>. После объявления переменных вставляю запуск таймеров:</p>
-<div class="highlight"><pre>    <span class="cm">/* запуск таймера 0 на период ~0.01 с */</span>
+<div class="highlight"><pre><span></span>    <span class="cm">/* запуск таймера 0 на период ~0.01 с */</span>
     <span class="n">TCCR0B</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>           <span class="cm">/* 1 тик = 0.000032 с */</span>
     <span class="n">TCNT0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>            <span class="cm">/* 256 раз ~ 0.008192 с */</span>
 
@@ -392,7 +392,7 @@ Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full
 
 
 <p>После <code>USB_USBTask();</code> проверяю таймер 1, и если он сработал &mdash; увеличиваю счетчик:</p>
-<div class="highlight"><pre>        <span class="cm">/* проверка срабатывания таймера без прерываний */</span>
+<div class="highlight"><pre><span></span>        <span class="cm">/* проверка срабатывания таймера без прерываний */</span>
         <span class="k">if</span> <span class="p">((</span><span class="n">TIFR1</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">TCNT1</span> <span class="o">=</span> <span class="mi">65536</span> <span class="o">-</span> <span class="mi">15625</span><span class="p">;</span>
             <span class="n">TIFR1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
@@ -402,7 +402,7 @@ Data:        <span class="m">113</span> bytes <span class="o">(</span>22.1% Full
 
 
 <p>А всю остальную конструкцию &mdash; от считывания порта с кнопками до отображения &mdash; выполняем после проверки срабатывания таймера 0, для чего сразу после проверки таймера 1 вставляю следующее:</p>
-<div class="highlight"><pre>        <span class="k">if</span> <span class="p">((</span><span class="n">TIFR0</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span>        <span class="k">if</span> <span class="p">((</span><span class="n">TIFR0</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                 <span class="n">TCNT0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
             <span class="n">TIFR0</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>

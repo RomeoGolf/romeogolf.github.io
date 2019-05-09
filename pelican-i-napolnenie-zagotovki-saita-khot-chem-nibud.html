@@ -171,7 +171,7 @@
 <p>Добавление плагинов отложим на попозже.</p>
 <h2 id="_2">Заготовка для контента</h2>
 <p>Начнем, пожалуй, с текстового наполнения. Дальнейшие эксперименты с внешним видом и поведением надо все-таки на чем-то проверять. Сделаем файл <code>first.md</code> (непременно UTF-8) следующего содержания: </p>
-<div class="highlight"><pre>Title: Заголовок первой статьи
+<div class="highlight"><pre><span></span>Title: Заголовок первой статьи
 Date: 2016-01-20 10:00
 Modified: 2016-01-20 11:00
 Category: Рыба
@@ -186,20 +186,20 @@ Summary: Сильно сокращенное описание, из которо
 
 Собственно, статья. Некоторый пост, не несущий на самом деле никакой смысловой
 нагрузки, предназначенный исключительно для заполнения отведенного ему
-пространства в области отображения контента. На жаргончике <span class="ss">&amp;mdash;</span> <span class="ss">&amp;laquo;</span>рыба<span class="ss">&amp;raquo;</span>.
+пространства в области отображения контента. На жаргончике &amp;mdash; &amp;laquo;рыба&amp;raquo;.
 
-Может делиться на абзацы[^1]. Может <span class="k">**</span><span class="gs">усиливать</span><span class="k">**</span> и <span class="k">*</span><span class="ge">выделять</span><span class="k">*</span>. Может
+Может делиться на абзацы[^1]. Может <span class="gs">**усиливать**</span> и <span class="ge">*выделять*</span>. Может
 использовать &lt;abbr title=&quot;HyperText Markup Languige&quot;&gt;HTML&lt;/abbr&gt;-теги напрямую.
 
-[^1]: И это далеко не все возможности<span class="ss">&amp;hellip;</span>
+[^1]: И это далеко не все возможности&amp;hellip;
 
-<span class="k">## </span><span class="gh">Может включать заголовки и подзаголовки</span>
+<span class="gu">##</span> Может включать заголовки и подзаголовки
 
-<span class="k">* </span>может содержать списки
-<span class="k">* </span>из нескольких пунктов,
-<span class="k">* </span>например, ненумерованных.
+<span class="k">*</span> может содержать списки
+<span class="k">*</span> из нескольких пунктов,
+<span class="k">*</span> например, ненумерованных.
 
-Может [ссылаться](http://example.link.com) на какую-нибудь несуществующую фигню, 
+Может [<span class="nt">ссылаться</span>](<span class="na">http://example.link.com</span>) на какую-нибудь несуществующую фигню, 
 или даже проще: &lt;http://example.link.com&gt;
 </pre></div>
 
@@ -242,12 +242,12 @@ Summary: Сильно сокращенное описание, из которо
 </li>
 </ul>
 <p>Как видно, не все метаданные являются настоятельно необходимыми, можно использовать лишь часть. Верно и обратное &mdash; если вдруг понадобится какая-то хитрая переменная, не предусмотренная разработчиками Pelican, можно ее добавить в заголовок, а потом в шаблоне использовать, типа того:</p>
-<div class="highlight"><pre>Danger: red
+<div class="highlight"><pre><span></span>Danger: red
 </pre></div>
 
 
 <p>А потом где-нибудь в шаблоне статьи (придется немного править тему), рядом с заголовком, вставить такое:</p>
-<div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">article.danger</span> <span class="cp">%}</span><span class="x"></span>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">article.danger</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">Класс опасности: </span><span class="cp">{{</span> <span class="nv">article.danger</span> <span class="cp">}}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 </pre></div>
@@ -256,26 +256,26 @@ Summary: Сильно сокращенное описание, из которо
 <p>И тогда в месте, определенном шаблоном, для статей с этой метаинформацией появится &laquo;Класс опасности: red&raquo;. А для прочих статей не появится ничего.</p>
 <h2 id="_4">Переплавка заготовок</h2>
 <p>Стоит для массовости сделать еще одну заготовку-рыбу, с учетом необязательности тегов, файл <code>second.md</code>:</p>
-<div class="highlight"><pre>Title: Заголовок второй статьи
+<div class="highlight"><pre><span></span>Title: Заголовок второй статьи
 Date: 2016-01-20 15:00
 Category: Разное
 Tags: блог, разное, тест
 Summary: Еще одна рыба, просто для массовости.
 
 Снова рыба, снова заготовка текста, просто так, для заполнения места. Ну, в 
-самом деле, не цитировать же снова Цицерона <span class="ss">&amp;laquo;</span>О пределах добра и 
-зла<span class="ss">&amp;raquo;</span>, да еще и в этом ужасном, хотя и общепринятом, подрезанном и 
+самом деле, не цитировать же снова Цицерона &amp;laquo;О пределах добра и 
+зла&amp;raquo;, да еще и в этом ужасном, хотя и общепринятом, подрезанном и 
 искаженном виде.
 </pre></div>
 
 
 <p>Теперь надо сделать вручную папку &laquo;articles&raquo; в папке &laquo;content&raquo; и перенести туда оба файла. Даем команду в консоли</p>
-<div class="highlight"><pre>c:\python<span class="m">33</span>\Scripts\pelican.exe content
+<div class="highlight"><pre><span></span>c<span class="p">:</span><span class="nl">\python33\Scripts\pelican.exe</span><span class="c1"> content</span>
 </pre></div>
 
 
 <p>Получаем в ответ</p>
-<div class="highlight"><pre>Done: Processed <span class="m">2</span> articles<span class="p">,</span> <span class="m">0</span> drafts<span class="p">,</span> <span class="m">0</span> pages and <span class="m">0</span> hidden pages in <span class="m">4</span>.<span class="m">30</span> seconds.
+<div class="highlight"><pre><span></span>Done: Processed 2 articles, 0 drafts, 0 pages and 0 hidden pages in 4.30 seconds.
 </pre></div>
 
 

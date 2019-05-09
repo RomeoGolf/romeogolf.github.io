@@ -160,12 +160,12 @@
 <h2 id="_2">&laquo;Лампочки и кнопки&raquo;</h2>
 <p>Теперь надо добавить код, который будет выдавать что-то интересное на светодиоды и реагировать на кнопки.</p>
 <p>Перед главной функцией (<code>main</code>) добавляю объявление переменной &mdash; контрольного счетчика, который можно будет увеличивать разными способами: в основном цикле безусловно или при обнаружении изменения флага, в прерываниях, еще как-нибудь:</p>
-<div class="highlight"><pre><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// просто счетчик</span>
+<div class="highlight"><pre><span></span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// просто счетчик</span>
 </pre></div>
 
 
 <p>В главной функции после <code>GlobalInterruptEnable();</code> добавляю инициализацию портов, объявление переменных и запуск таймеров:</p>
-<div class="highlight"><pre>    <span class="n">PORTD</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>    <span class="c1">// начальное значение - все нули</span>
+<div class="highlight"><pre><span></span>    <span class="n">PORTD</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>    <span class="c1">// начальное значение - все нули</span>
     <span class="n">DDRD</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>     <span class="c1">// все линии порта на вывод</span>
     <span class="n">PORTC</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>    <span class="c1">// без &quot;подтяжки&quot; (есть внешняя)</span>
     <span class="n">DDRC</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>     <span class="c1">// все линии порта на ввод</span>
@@ -190,7 +190,7 @@
 
 
 <p>В главном цикле <code>for</code> после <code>USB_USBTask();</code> добавляю код:</p>
-<div class="highlight"><pre>        <span class="cm">/* проверка срабатывания таймера без прерываний по флагу */</span>
+<div class="highlight"><pre><span></span>        <span class="cm">/* проверка срабатывания таймера без прерываний по флагу */</span>
         <span class="k">if</span> <span class="p">((</span><span class="n">TIFR1</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">TCNT1</span> <span class="o">=</span> <span class="mi">65536</span> <span class="o">-</span> <span class="mi">15625</span><span class="p">;</span>  <span class="cm">/* перезапуск таймера 1 */</span>
             <span class="n">TIFR1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>              <span class="cm">/* сброс флага таймера 1 */</span>
@@ -233,7 +233,7 @@
 
 
 <p>После главного цикла добавлю на всякий случай незадействованный обработчик прерывания таймера 1:</p>
-<div class="highlight"><pre><span class="cm">/* обработчик прерывания таймера, если разрешено, для проверки */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* обработчик прерывания таймера, если разрешено, для проверки */</span>
 <span class="n">ISR</span> <span class="p">(</span><span class="n">TIMER1_OVF_vect</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">TCNT1</span> <span class="o">=</span> <span class="mi">65536</span><span class="o">-</span><span class="mi">15625</span><span class="p">;</span>    <span class="c1">// перезапуск таймера</span>
@@ -246,26 +246,26 @@
 <h2 id="_3">Проверка связи</h2>
 <p>Для начала хочу сделать так, чтобы плата посредством светодиодов показала, что видит обращение к себе со стороны компьютера.</p>
 <p>Под объявлением счетчика cnt добавляю объявление еще одного:</p>
-<div class="highlight"><pre><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt_usb</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </pre></div>
 
 
 <p>В переключателе <code>switch (mode_out)</code> вместо вывода константы делаю вывод этого счетчика:</p>
-<div class="highlight"><pre>                <span class="k">default</span><span class="o">:</span>
+<div class="highlight"><pre><span></span>                <span class="k">default</span><span class="o">:</span>
                     <span class="n">PORTD</span> <span class="o">=</span> <span class="n">cnt_usb</span><span class="p">;</span>
 </pre></div>
 
 
 <p>И <code>mode_out</code> при объявлении присваиваю значение 3, чтобы показывало, что там творится при подаче питания с порта. Ну и надо наконец найти подходящее место, в которое вставить инкремент этого счетчика.</p>
 <p>Нахожу функцию <code>void MassStorage_Task(void)</code>, в которой обрабатываются SCSI-команды, подаваемые устройству. Вот сразу после выяснения статуса команды проверяю этот статус и, если команда выполнена успешно, увеличиваю значение счетчика: после</p>
-<div class="highlight"><pre>        <span class="cm">/* Decode the received SCSI command, set returned status code */</span>
+<div class="highlight"><pre><span></span>        <span class="cm">/* Decode the received SCSI command, set returned status code */</span>
         <span class="n">CommandStatus</span><span class="p">.</span><span class="n">Status</span> <span class="o">=</span> <span class="n">SCSI_DecodeSCSICommand</span><span class="p">()</span> <span class="o">?</span> <span class="nl">MS_SCSI_COMMAND_Pass</span> <span class="p">:</span> <span class="n">MS_SCSI_COMMAND_Fail</span><span class="p">;</span>
 </pre></div>
 
 
 <p>вставляю</p>
-<div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="n">CommandStatus</span><span class="p">.</span><span class="n">Status</span> <span class="o">==</span> <span class="n">MS_SCSI_COMMAND_Pass</span><span class="p">){</span>
+<div class="highlight"><pre><span></span>        <span class="k">if</span> <span class="p">(</span><span class="n">CommandStatus</span><span class="p">.</span><span class="n">Status</span> <span class="o">==</span> <span class="n">MS_SCSI_COMMAND_Pass</span><span class="p">){</span>
             <span class="n">cnt_usb</span><span class="o">++</span><span class="p">;</span>
         <span class="p">}</span>
 </pre></div>
@@ -276,23 +276,23 @@
 <p>Кстати, если сравнивать статус не с <code>MS_SCSI_COMMAND_Pass</code>, а с <code>MS_SCSI_COMMAND_Fail</code>, счетчик ведет себя похоже, только не тикает, пока к устройству нет обращения. По-видимому, это связано с нереализованными в устройстве операциями записи и чтения. Точнее, с испорченными &mdash; там же были закрыты функции Dataflash.</p>
 <p>Сделаю из этого в git отдельную ветку, скажем, test_usb.</p>
 <p>Продолжу проверку связи. Условие с приращением счетчика <code>cnt_usb</code> в <code>MassStorage.c</code> я закрою, зато добавлю строчку <code>cnt_usb++</code> в модуле <code>SCSI.c</code> в функции <code>bool SCSI_DecodeSCSICommand(void)</code>, в переключателе <code>CommandBlock.SCSICommandData[0]</code> при выборе <code>SCSI_CMD_INQUIRY'. Ну и добавлю объявление переменной</code>cnt_usb<code>в</code>SCSI.h<code>, где-нибудь в самом конце перед</code>#endif`:</p>
-<div class="highlight"><pre>        <span class="k">extern</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt_usb</span><span class="p">;</span>
+<div class="highlight"><pre><span></span>        <span class="k">extern</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">cnt_usb</span><span class="p">;</span>
 </pre></div>
 
 
 <p>Такая модификация позволяет узнать, когда и сколько раз система выдает устройству запрос <code>INQUIRY</code>. Оказывается, пять раз после подключения, а потом по разику после запуска программы на С++ из предыдущего <a href="http://romeogolf.github.io/usb-polygon-6.html">выпуска</a>, потому что там есть явная подача этой команды при помощи <code>DeviceIoControl</code>.</p>
 <p>Аналогичным образом &mdash; переставляя инкремент счетчика в разные пункты данного <code>switch</code> &mdash; можно исследовать количество и интенсивность подачи разных SCSI-команд системой устройству при подключении или при программном обращении. Это тема забавная, но не очень интересная, потому что такую информацию можно найти не обязательно методами реверс-инжиниринга, достаточно почитать документацию. Но сохраню коммит с подсчетом <code>INQUIRY</code> в той же ветке и вернусь в ветку <code>master</code> к тегу &laquo;v0.1&raquo;.</p>
 <h2 id="-">Пиши-читай (заготовка)</h2>
-<p>На следующем этапе пробую реализовать запись и чтение данных по USB. Понятно, что в прототипе функции чтения и записи реализованы так, чтобы читать и писать в микросхему флэш-памяти, то есть, сделано это все в модуле DataflashManager. Но у меня флэшки нет, и данный модуль мне не нужен. Однако, убрать его совсем я пока не могу, потому что в нем есть важные макроопределения, без которых не компилируется проект. Значит, нужно эти самые <code>#define</code> перенести в нужный модуль (лучше, пожалуй, сделать для этого отдельный, но это попозже, пока для проверки &mdash; так) и переписать функции чтения-записи без участия флэш.</p>
+<p>На следующем этапе пробую реализовать запись и чтение данных по USB. Понятно, что в прототипе функции чтения и записи реализованы так, чтобы читать и писать в микросхему флэш-памяти, то есть, сделано это все в модуле DataflashManager. Но у меня флэшки нет, и данный модуль мне не нужен. Однако убрать его совсем я пока не могу, потому что в нем есть важные макроопределения, без которых не компилируется проект. Значит, нужно эти самые <code>#define</code> перенести в нужный модуль (лучше, пожалуй, сделать для этого отдельный, но это попозже, пока для проверки &mdash; так) и переписать функции чтения-записи без участия флэш.</p>
 <p>Для начала в заголовочном файле SCSI.h, где-нибудь в самом конце перед <code>#endif</code>, вставляю</p>
-<div class="highlight"><pre><span class="cm">/* ----- instead DataflashManager ----- */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* ----- instead DataflashManager ----- */</span>
 
 <span class="cm">/* ------------------------------------ */</span>
 </pre></div>
 
 
 <p>для строк, которые должны заменить <code>DataflashManager.h</code>, и начинаю заполнять этот пробел. Сначала надо вставить то, что в <code>DataflashManager.h</code> отсутствует, но подключается через <code>#include</code>. Подключается хитро, с проверкой переменной <code>BOARD</code>, определенной в makefile, поэтому возьму этот кусок из <code>LUFA\CodeTemplates\DriverStubs\Dataflash.h</code>:</p>
-<div class="highlight"><pre><span class="cm">/* from ..\..\LUFA\CodeTemplates\DriverStubs\Dataflash.h */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* from ..\..\LUFA\CodeTemplates\DriverStubs\Dataflash.h */</span>
     <span class="cm">/* Public Interface - May be used in end-application: */</span>
         <span class="cm">/* Macros: */</span>
             <span class="cm">/** Constant indicating the total number of dataflash ICs mounted on the selected board. */</span>
@@ -311,7 +311,7 @@
 
 
 <p>Недостающие значения заполнил чем-то интуитивно похожим на правду, не разбираясь пока в тонкостях использования. Дальше переписываю уже из <code>DataflashManager.h</code>:</p>
-<div class="highlight"><pre><span class="cm">/* from DataflashManager.h */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* from DataflashManager.h */</span>
     <span class="cm">/* Preprocessor Checks: */</span>
         <span class="cp">#if (DATAFLASH_PAGE_SIZE % 16)</span>
             <span class="cp">#error Dataflash page size must be a multiple of 16 bytes.</span>
@@ -340,7 +340,7 @@
 
 
 <p>При этом укорачиваю названия функций чтения и записи. В <code>SCSI.c</code> вставляю пока пустые определения объявленных в заголовочнике функций:</p>
-<div class="highlight"><pre><span class="kt">void</span> <span class="nf">WriteBlocks</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">WriteBlocks</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span>
                                           <span class="kt">uint16_t</span> <span class="n">TotalBlocks</span><span class="p">)</span>
 <span class="p">{</span>
 
@@ -355,7 +355,7 @@
 
 
 <p>После этого в функции <code>SCSI_Command_ReadWrite_10</code> раскомментирую блок <code>if (IsDataRead == DATA_READ)</code> и в нем тоже укорачиваю названия функций чтения и записи, чтобы соответствовали. Теперь можно закрыть пока что комментариями</p>
-<div class="highlight"><pre><span class="c1">//      #include &quot;DataflashManager.h&quot;</span>
+<div class="highlight"><pre><span></span><span class="c1">//      #include &quot;DataflashManager.h&quot;</span>
 </pre></div>
 
 
@@ -363,7 +363,7 @@
 <p>Правда, совсем стирать этот модуль рано, ведь функции чтения и записи еще пустые, а для их реализации надо опираться на имеющиеся.</p>
 <h2 id="flash-">Чтение и запись мимо flash-памяти</h2>
 <p>Из модуля <code>DataflashManager</code> беру тела функций <code>DataflashManager_ReadBlocks</code> и <code>DataflashManager_WriteBlocks</code> для <code>ReadBlocks</code> и <code>WriteBlocks</code> соответственно, стираю оттуда все, связанное с flash-памятью, добавляю по паре собственных переменных и модифицирую получение данных из буфера конечной точки. Получается следующее:</p>
-<div class="highlight"><pre><span class="cm">/** Writes blocks (OS blocks, not Dataflash pages) to the storage medium, the board Dataflash IC(s), from</span>
+<div class="highlight"><pre><span></span><span class="cm">/** Writes blocks (OS blocks, not Dataflash pages) to the storage medium, the board Dataflash IC(s), from</span>
 <span class="cm"> *  the pre-selected data OUT endpoint. This routine reads in OS sized blocks from the endpoint and writes</span>
 <span class="cm"> *  them to the Dataflash in Dataflash page sized blocks.</span>
 <span class="cm"> *</span>
@@ -540,14 +540,14 @@
 
 
 <p><code>data_8</code> &mdash; это массив для обмена данными с буфером конечной точки, <code>data_PC</code> и <code>data_device</code> будут контрольными переменными для их отображения на светодиодах и в консоли ПК соответственно, а <code>first</code> нужна для того, чтобы в контрольную переменную попал первый байт передаваемого из ПК массива и не перезатерся при дальнейшей передаче 16-байтных кусков. Контрольные переменные надо не забыть объявить в <code>SCSI.h</code>:</p>
-<div class="highlight"><pre>    <span class="cm">/* variables */</span>
+<div class="highlight"><pre><span></span>    <span class="cm">/* variables */</span>
         <span class="k">extern</span> <span class="kt">uint8_t</span> <span class="n">data_PC</span><span class="p">;</span>
         <span class="k">extern</span> <span class="kt">uint8_t</span> <span class="n">data_device</span><span class="p">;</span>
 </pre></div>
 
 
 <p>А также их надо определить и использовать в <code>MassStorage.c</code>:</p>
-<div class="highlight"><pre>:cpp
+<div class="highlight"><pre><span></span>:cpp
 uint8_t data_PC;
 uint8_t data_device;
 </pre></div>
@@ -560,7 +560,7 @@ uint8_t data_device;
 <h2 id="_4">Еще немного о взаимодействии с ПК</h2>
 <p>Вернусь к коду на С++, написанному для ПК. В операциях чтения и записи, реализованных через <code>DeviceIoControl</code>, размер передаваемых данных указывается дважды: в поле <code>myspti.t_spti.DataTransferLength</code> и в 7&ndash;8 байтах <code>myspti.t_spti.Cdb</code>, причем, в первом случае &mdash; в байтах, а во втором &mdash; в логических блоках. Насколько я разобрался, размер логического блока соответствует <code>VIRTUAL_MEMORY_BLOCK_SIZE</code> на устройстве, то есть 512 байтов. Так вот, эти два размера в <code>myspti</code> должны соответствовать друг другу, иначе могут быть ошибки. Например, можно поставить <code>q1 = 512</code> и <code>myspti.t_spti.Cdb[8] = 0x01</code> и будет работать, а <code>q1 = 1024</code> и <code>myspti.t_spti.Cdb[8] = 0x01</code> вызовет ошибку.</p>
 <p>А теперь я закрою эти две сложные конструкции чтения и записи с заполнением структур <code>myspti</code> и вызовом <code>DeviceIoControl</code> блочным комментарием, а вмето них, чуть выше их, напишу следующее:</p>
-<div class="highlight"><pre>                    <span class="n">result</span> <span class="o">=</span> <span class="n">WriteFile</span><span class="p">(</span><span class="n">hDevice</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">q2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<div class="highlight"><pre><span></span>                    <span class="n">result</span> <span class="o">=</span> <span class="n">WriteFile</span><span class="p">(</span><span class="n">hDevice</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">q2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
                         <span class="n">OutFormatMsg</span><span class="p">(</span><span class="s">&quot;ReadFile Error&quot;</span><span class="p">);</span>
                     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>

@@ -148,7 +148,7 @@
 <dd>Подобная задача хорошо знакома тем, кто регулярно выполняет резервное копирование, но малознакома большинству средних пользователей, в том числе и мне. Однако ж бывают случаи и для нас, не-админов. Во-первых, я пользуюсь расширением ScrapBook для браузера Mozilla FireFox и регулярно переношу накопленную полезную информацию из сети на те компьютеры, которыми пользуюсь при отсутствии сети. Это ноутбук, который со мной обычно там, где интернетов нет в принципе, а раньше и комп на работе, где интернету нету по велению свыше, впрочем, теперь туда с флэшками нельзя. Во-вторых, это кэш замечательной программы SAS Планета, для тех же условий, например, на ноутбуке в путешествиях.</dd>
 </dl>
 <p>Для такой цели (с учетом некритичности сжатия данных) трудно придумать что-нибудь лучше инструмента, специально для этого дела разработанного &mdash; tar. На больших наборах мелких файлов он уверенно обгоняет предпочитаемый мной в виндах 7zip без сжатия. Только что загнал в два архива &mdash; tar и 7z &mdash; папку с кучей мелочи 1,2 Гб: 6:29 против 15:49 (минут:секунд).  Причем в подборке gnuwin32 имеется реализация tar под винду, помимо кучи других вкусностей, которые в Linux есть &laquo;из коробки&raquo;.</p>
-<p>Однако, tar имеет одну неприятную особенность. Ежели, к примеру, запаковать в 7zip кучку файлов с кириллическими именами в винде, они нормально, по-русски, распакуются в Linux. И, что характерно, наоборот. А то, что упаковано в tar, будет распаковано в другой системе с непонятным набором символов вместо имен. По крайней мере, если винда все еще XP.</p>
+<p>Однако tar имеет одну неприятную особенность. Ежели, к примеру, запаковать в 7zip кучку файлов с кириллическими именами в винде, они нормально, по-русски, распакуются в Linux. И, что характерно, наоборот. А то, что упаковано в tar, будет распаковано в другой системе с непонятным набором символов вместо имен. По крайней мере, если винда все еще XP.</p>
 <p>Более того, если загнать в tar упомянутую кучку в XP, то она и в XP распакуется с неправильными именами.</p>
 <dl>
 <dt>Лирическое отступление</dt>
@@ -158,21 +158,21 @@
 <p>Решение требует Python, он у меня есть, третий. Точнее, 3.3, потому что на одном из компьютеров, которыми я пользуюсь, стоит WinXP, а там версия 3.3 &mdash; последнее, что можно установить. На домашней семерке то же самое, чтобы не было путаницы при переносе кода. </p>
 <p>Сперва я попробовал запустить предложенный скрипт не думая, просто скопировал код в py-файл и запустил. Ну, конечно, не получилось. Сперва была ошибка, связанная с тем, что в третьем питоне функция print &mdash; именно функция и требует скобочек, а потом мне в консоли сказали, что не знают такую фигню, как unicode().</p>
 <p>Давненько я не общался с питонами, полез в справку. Что делать с unicode(), я так и не нашел, зато нашел справку по tarfile и обнаружил, что среди аргументов он принимает еще и encoding. И скрипт сразу упростился:</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/python3</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
 
 <span class="kn">import</span> <span class="nn">tarfile</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;usage: </span><span class="si">%s</span><span class="s"> &lt;tar archive&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;usage: </span><span class="si">%s</span><span class="s2"> &lt;tar archive&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">arhive_name</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="n">archive_encoding</span> <span class="o">=</span> <span class="s">&#39;cp1251&#39;</span>
-<span class="c">#archive_encoding = &#39;utf-8&#39;</span>
+<span class="n">archive_encoding</span> <span class="o">=</span> <span class="s1">&#39;cp1251&#39;</span>
+<span class="c1">#archive_encoding = &#39;utf-8&#39;</span>
 
-<span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">arhive_name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=</span><span class="mi">16</span><span class="o">*</span><span class="mi">1024</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">archive_encoding</span><span class="p">)</span>
+<span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">arhive_name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=</span><span class="mi">16</span><span class="o">*</span><span class="mi">1024</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">archive_encoding</span><span class="p">)</span>
 <span class="n">tar</span><span class="o">.</span><span class="n">extractall</span><span class="p">()</span>
 <span class="n">tar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>

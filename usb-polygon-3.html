@@ -157,18 +157,18 @@
 </div>
 <h2 id="_1">Включение и опознание</h2>
 <p>Плата смонтирована и проверена &laquo;на дым&raquo;. Дым при включении не пошел, компьютер тоже не сгорел. Плата работает, правда, определяется как неизвестное устройство. </p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/03/unknown-device.png" title="Неизвестное устройство"><img alt="unknown-device" src="http://romeogolf.github.io/images/usb-polygon/03/preview/unknown-device-small.png" title="Неизвестное устройство" /></a> 
-<img alt="fault-device" src="http://romeogolf.github.io/images/usb-polygon/03/fault-device.png" title="Найдено новое оборудование" /> </p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/03/unknown-device.png" title="Неизвестное устройство"><img alt="unknown-device" src="http://romeogolf.github.io/images/usb-polygon/03/preview/unknown-device-small.png" title="Неизвестное устройство"></a> 
+<img alt="fault-device" src="http://romeogolf.github.io/images/usb-polygon/03/fault-device.png" title="Найдено новое оборудование"> </p>
 <p>Контроллер для платы выбирался специально с таким расчетом, чтобы программировать без программатора, непосредственно через USB-порт. Пришло время проверить, как устройство готово к этой процедуре. С сайта Atmel скачиваю программу <a href="http://www.atmel.com/ru/ru/tools/flip.aspx">FLIP</a>, устанавливаю ее. Для скачивания, правда, придется зарегистрироваться, но регистрация очень простая, никаких особенных данных не просят. Есть варианты для Windows (работает и в 7, и в ХР) и Linux (проверил в Debian). </p>
 <p>Если на компьютере с Windows не установлена виртуальная машина Java, то надо выбрать дистрибутив FLIP, в который включена JRE.</p>
 <p>После установки FLIP в Windows на запрос драйвера после подключения платы нужно указать его местоположение в районе C:\Program Files\Atmel\Flip 3.4.7\usb (для Windows XP):</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/03/driver.png" title="Выбор драйвера"><img alt="driver" src="http://romeogolf.github.io/images/usb-polygon/03/preview/driver-small.png" title="Выбор драйвера" /></a> </p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/03/driver.png" title="Выбор драйвера"><img alt="driver" src="http://romeogolf.github.io/images/usb-polygon/03/preview/driver-small.png" title="Выбор драйвера"></a> </p>
 <p>Теперь устройство (чистое и непрошитое) будет определяться системой:</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/03/device-manager.png" title="Диспетчер устройств"><img alt="device-manager" src="http://romeogolf.github.io/images/usb-polygon/03/preview/device-manager-small.png" title="Диспетчер устройств" /></a> </p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/03/device-manager.png" title="Диспетчер устройств"><img alt="device-manager" src="http://romeogolf.github.io/images/usb-polygon/03/preview/device-manager-small.png" title="Диспетчер устройств"></a> </p>
 <p>И открываться в FLIP даже без нажатий на кнопку HWB на плате.</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/03/flip-not-active.png" title="FLIP неактивный"><img alt="flip-grey" src="http://romeogolf.github.io/images/usb-polygon/03/preview/flip-not-active-small.png" title="FLIP неактивный" /></a> 
-<img alt="flip-select" src="http://romeogolf.github.io/images/usb-polygon/03/flip-device-sel.png" title="FLIP - выбор устройства" /> 
-<a href="http://romeogolf.github.io/images/usb-polygon/03/flip-active.png" title="FLIP активный"><img alt="flip-active" src="http://romeogolf.github.io/images/usb-polygon/03/preview/flip-active-small.png" title="FLIP активный" /></a> </p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/03/flip-not-active.png" title="FLIP неактивный"><img alt="flip-grey" src="http://romeogolf.github.io/images/usb-polygon/03/preview/flip-not-active-small.png" title="FLIP неактивный"></a> 
+<img alt="flip-select" src="http://romeogolf.github.io/images/usb-polygon/03/flip-device-sel.png" title="FLIP - выбор устройства"> 
+<a href="http://romeogolf.github.io/images/usb-polygon/03/flip-active.png" title="FLIP активный"><img alt="flip-active" src="http://romeogolf.github.io/images/usb-polygon/03/preview/flip-active-small.png" title="FLIP активный"></a> </p>
 <p>И вот FLIP запущен, устройство подключено, обнаружено и открыто, хотелось бы что-то туда прошить. Но что?!</p>
 <h2 id="_2">Проверка работоспособности платы</h2>
 <h3 id="_3">Компилятор для начала</h3>
@@ -192,8 +192,8 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;avr/io.h&gt;</span>
-<span class="cp">#include &lt;util/delay.h&gt;</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;avr/io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;util/delay.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
@@ -216,20 +216,20 @@
 <h3 id="_5">Компиляция и первые вопросы</h3>
 <p>Поправил Makefile под свои цели, то есть, MCU присвоил значение at90usb162, F_CPU = 8000000, TARGET = test. Запустил make, получил hex-файл. Ну, не только hex, там много чего появилось, но для FLIP мне нужен hex.</p>
 <p>Make запускал не заморачиваясь из файлового менеджера Unreal commander. Логичнее было бы использовать консольный, типа FAR, но этот был уже открыт. Для того, чтобы консольное окно не закрылось, отработав, команду make запускал с зажатой клавишей Shift. Получилось так:</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/03/winavr-make.png" title="Первая компиляция"><img alt="winavr-make" src="http://romeogolf.github.io/images/usb-polygon/03/preview/winavr-make-small.png" title="Первая компиляция" /></a> </p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/03/winavr-make.png" title="Первая компиляция"><img alt="winavr-make" src="http://romeogolf.github.io/images/usb-polygon/03/preview/winavr-make-small.png" title="Первая компиляция"></a> </p>
 <p>Выдача результата весьма информативна в плане человекочитаемости &mdash; за это спасибо Makefile. Можно также запустить make clean, эта команда сотрет все, что наделал make:</p>
-<p><img alt="winavr-make-clean" src="http://romeogolf.github.io/images/usb-polygon/03/winavr-make-clean.png" title="Make clean" /> </p>
+<p><img alt="winavr-make-clean" src="http://romeogolf.github.io/images/usb-polygon/03/winavr-make-clean.png" title="Make clean"> </p>
 <p>А если запустить make вторично без clean, то получим такой вывод:</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/03/winavr-make-2.png" title="Вторая компиляция"><img alt="winavr-make-2" src="http://romeogolf.github.io/images/usb-polygon/03/preview/winavr-make-2-small.png" title="Вторая компиляция" /></a> </p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/03/winavr-make-2.png" title="Вторая компиляция"><img alt="winavr-make-2" src="http://romeogolf.github.io/images/usb-polygon/03/preview/winavr-make-2-small.png" title="Вторая компиляция"></a> </p>
 <p>Здесь видно, что компиляции никакой не делалось, потому что незачем, зато есть размер программы до компиляции и после, что позволит сравнить, скажем, занимаемую в кристалле память при внесении изменений в код программы.</p>
 <p id="dog">В программе FLIP открыл полученный hex, запустил прошивку кнопкой RUN. Кнопкой Start Application запустил выполнение. Получилась ерунда какая-то: светодиод PD0 моргает, остальные &mdash; не горят. Нажал кнопку Reset, не помогло. Отключил плату от USB, включил снова &mdash; ура, заработало! Пока не понял, в чем дело, может, по каким-то причинам контроллер сбрасывается. Предположил, что из-за сторожевого таймера.</p>
 <p>Про наличие сторожевого таймера в контроллере я в курсе, а как с ним работать &mdash; пока нет. Думал, что он по умолчанию отключен, но пока не буду читать описание на эту тему, сделаю проще. Нашел готовый проект на основе такого контроллера и посмотрел, как этот таймер обездвижить, не вдаваясь в подробности. Добавил в программу </p>
-<div class="highlight"><pre><span class="cp">#include &lt;avr/wdt.h&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;avr/wdt.h&gt;</span><span class="cp"></span>
 </pre></div>
 
 
 <p>и в самое начало функции main() еще три строчки:</p>
-<div class="highlight"><pre>    <span class="cm">/* Disable watchdog if enabled by bootloader/fuses */</span>
+<div class="highlight"><pre><span></span>    <span class="cm">/* Disable watchdog if enabled by bootloader/fuses */</span>
     <span class="n">MCUSR</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">WDRF</span><span class="p">);</span>
     <span class="n">wdt_disable</span><span class="p">();</span>
 </pre></div>
@@ -252,13 +252,13 @@
 <p>Наверняка можно переделать Makefile таким образом, чтобы компиляция запускалась с использованием командной оболочки Windows. Однако так получилось, что cygwin у меня уже имеется, было нужно раньше по другим причинам. Опять же, Makefile пришлось бы делать разные для разных типов операционных систем.</p>
 <p>Cygwin, повторюсь, у меня установлен, причем, в довольно таки полной комплектации &mdash; довольно много выбрано пунктов в основном разделе, разделах разработки и отладки, практически все системные утилиты и, конечно, vim. В подробности установки вдаваться не буду, это отдельная тема.</p>
 <p>Запустил терминал, добавил в настройках bash добавку к системной переменной PATH &mdash; путь к Atmel AVR Toolchain:</p>
-<p><img alt="vim" src="http://romeogolf.github.io/images/usb-polygon/03/vim.png" title="vim ./.bashrc" /> 
-<img alt="bashrc" src="http://romeogolf.github.io/images/usb-polygon/03/bashrc.png" title="bashrc" /> </p>
+<p><img alt="vim" src="http://romeogolf.github.io/images/usb-polygon/03/vim.png" title="vim ./.bashrc"> 
+<img alt="bashrc" src="http://romeogolf.github.io/images/usb-polygon/03/bashrc.png" title="bashrc"> </p>
 <p>Заодно добавил HISTCONTROL для удобства. Запустил для пробы make clean:</p>
-<p><img alt="cygwin-make-clean" src="http://romeogolf.github.io/images/usb-polygon/03/cygwin-make-clean.png" title="make clean in cygwin" /> </p>
+<p><img alt="cygwin-make-clean" src="http://romeogolf.github.io/images/usb-polygon/03/cygwin-make-clean.png" title="make clean in cygwin"> </p>
 <p>Ну, и для гарании &mdash; make:</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/03/cygwin-make.png" title="make clean in cygwin"><img alt="cygwin-make" src="http://romeogolf.github.io/images/usb-polygon/03/preview/cygwin-make-small.png" title="make clean in cygwin" /></a> </p>
-<p>Как видно, результаты идентичные с WinAVR. При этом, не пришлось трогать Makefile, и проект работоспособен в разных вариантах Windows (при установленном cygwin) и в Linux. WinAVR можно удалять. Atmel AVR Toolchain при желании можно позднее прикрутить к какой-нибудь среде, или к Atmel Studio, или (для пущей кроссплатформенности) к Eclipse, но пока вполне достаточно консоли. Для навигации по файлам проекта &mdash; любой файловый менеджер (у меня Unreal Commander), для написания/редактирования текста программ &mdash; любой текстовый редактор (у меня GVIM for Windows) и для компиляции &mdash; make в консоли cygwin. Пока что достаточно, а там видно будет.</p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/03/cygwin-make.png" title="make clean in cygwin"><img alt="cygwin-make" src="http://romeogolf.github.io/images/usb-polygon/03/preview/cygwin-make-small.png" title="make clean in cygwin"></a> </p>
+<p>Как видно, результаты идентичные с WinAVR. При этом не пришлось трогать Makefile, и проект работоспособен в разных вариантах Windows (при установленном cygwin) и в Linux. WinAVR можно удалять. Atmel AVR Toolchain при желании можно позднее прикрутить к какой-нибудь среде, или к Atmel Studio, или (для пущей кроссплатформенности) к Eclipse, но пока вполне достаточно консоли. Для навигации по файлам проекта &mdash; любой файловый менеджер (у меня Unreal Commander), для написания/редактирования текста программ &mdash; любой текстовый редактор (у меня GVIM for Windows) и для компиляции &mdash; make в консоли cygwin. Пока что достаточно, а там видно будет.</p>
 <h2 id="_7">Итог</h2>
 <p>Устройство работоспособно, определяется, прошивается, запускается и сбрасывается. Инструмент выбран и худо-бедно настроен.</p>
 <p>В общем, все заработало, и можно приступать к чему-то более интересному, чем моргание светодиодиком. По крайней мере, хотя бы управляемое моргание. А уж больше всего хочется связаться с компьютером по USB и передавать туда-сюда какие-нибудь пакеты каких-нибудь данных. Но это уже другая история.</p>

@@ -154,23 +154,23 @@
 <p>В продолжение предыдущего <a href="http://romeogolf.github.io/usb-polygon-15.html">выпуска</a>: для использования операций записи в целях передачи информации от <abbr title="Персональный компьютер">ПК</abbr> в устройство предполагаю поступить следующим образом. Для выбора способа обработки передаваемой информации необходимо предварительно прочитать специально для этой цели созданный файл. Сам факт чтения файла должен переключить выбор обработчика данных.</p>
 <p>Для записи предполагаю создать специальный файл. Дело в том, что Linux записывает измененный файл в начале свободной области. Если использовать для записи тот же файл, что используется для &laquo;командного&raquo; чтения, <abbr title="Операционная система">ОС</abbr> может запомнить, что он уже в другом месте, и в следующий раз обращаться к нему по другому адресу. Не исключено, что это не так, но поступая предложенным образом, я ничем не рискую.</p>
 <p>Стало быть, нужно в файловой таблице добавить файлы для чтения по числу способов обработки операций записи. Потом файл для записи. И еще файл, чтение которого прекратит обработку указанным способом, либо обрабатывать в качестве команды &laquo;стоп&raquo; чтение любого непредусмотренного файла. Но лучше для остановки обработки выделить специальный файл, потому что запись данных может быть командой на их передачу по линии связи, соответственно, нужно будет читать принятые данные, оформленные в виде какого-либо файла, а такое чтение может остановить передачу.</p>
-<p>При этом, способ обработки можно переключать в функции чтения, указанной в таблице файлов, а можно при помощи номера читаемого файла в функции <code>read_data()</code> еще перед вызовом специфичной для файла функции чтения. Предпочтительнее первый вариант, он логичнее (обработка привязывается к файлу-команде напрямую, через таблицу) и удобнее в реализации.</p>
+<p>При этом способ обработки можно переключать в функции чтения, указанной в таблице файлов, а можно при помощи номера читаемого файла в функции <code>read_data()</code> еще перед вызовом специфичной для файла функции чтения. Предпочтительнее первый вариант, он логичнее (обработка привязывается к файлу-команде напрямую, через таблицу) и удобнее в реализации.</p>
 <p>Сам способ обработки можно либо выбирать чем-то вроде оператора <code>switch</code> в функции <code>process_data()</code>, либо вызывать в ней по номеру файла специальную функцию, которую следует добавить в файловую таблицу по образцу функции чтения. Пожалуй, тоже логичнее будет первый вариант, поскольку странно привязывать функцию обработки записи в один файл к другому файлу в таблице.</p>
 <h2 id="_2">Изменения в программе</h2>
 <p>Все изменения будут сделаны в файле <code>Lib/fake_fs.c</code>. Для начала добавлю константу, определяющую сектор, с которого начинается область файлов в адресном пространстве имитируемой файловой системы, для использования вместо прямого указания <code>0x57</code>:</p>
-<div class="highlight"><pre><span class="cp">#define FILES_AREA      (ROOT_SECTOR + SECTORS_PER_CLUSTER)</span>
+<div class="highlight"><pre><span></span><span class="cp">#define FILES_AREA      (ROOT_SECTOR + SECTORS_PER_CLUSTER)</span>
 </pre></div>
 
 
 <p>Далее введу перечисление с разными вариантами обработки записываемых данных (которое при необходимости можно будет расширять) и соответствующую переменную:</p>
-<div class="highlight"><pre><span class="k">enum</span> <span class="n">WriteType</span> <span class="p">{</span><span class="n">None</span><span class="p">,</span> <span class="n">ToFile</span><span class="p">,</span> <span class="n">ToLed</span><span class="p">};</span>
+<div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">WriteType</span> <span class="p">{</span><span class="n">None</span><span class="p">,</span> <span class="n">ToFile</span><span class="p">,</span> <span class="n">ToLed</span><span class="p">};</span>
 
 <span class="k">static</span> <span class="k">enum</span> <span class="n">WriteType</span> <span class="n">writeType</span> <span class="o">=</span> <span class="n">None</span><span class="p">;</span>
 </pre></div>
 
 
 <p>Еще добавлю объявления функций для командных файлов, их нужно для демонстрации штуки три: команду выдавать данные в файл (хотя бы кусочек), команду выдавать данные на светодиодную линейку и команду прекратить обработку записываемых данных. А так как это все-таки файлы, пусть они при открытии выдают какие-то строки, тут же эти строки и определю. И длины они будут одинаковой, равной длине куска за один раз обрабатываемых данных:</p>
-<div class="highlight"><pre><span class="cp">#define SIZE_OF_COMMAND 16</span>
+<div class="highlight"><pre><span></span><span class="cp">#define SIZE_OF_COMMAND 16</span>
 <span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">strToFile</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span> <span class="s">&quot;Write to file   &quot;</span><span class="p">;</span>
 <span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">strToLED</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span> <span class="s">&quot;Write to LED    &quot;</span><span class="p">;</span>
 <span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">strStop</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span> <span class="s">&quot;Stop writing    &quot;</span><span class="p">;</span>
@@ -181,7 +181,7 @@
 
 
 <p>В конце программы надо написать определение функций, отвечающих за чтение файлов-команд:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readToFile</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readToFile</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">writeType</span> <span class="o">=</span> <span class="n">ToFile</span><span class="p">;</span>
     <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">strToFile</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">offset</span><span class="p">),</span> <span class="mi">16</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
@@ -202,7 +202,7 @@
 
 
 <p>Теперь можно добавить файлы-команды в файловую таблицу. После добавления она станет выглядеть так:</p>
-<div class="highlight"><pre><span class="k">static</span> <span class="k">const</span> <span class="n">FileEntry</span> <span class="n">fileTable</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span>
+<div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="n">FileEntry</span> <span class="n">fileTable</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span>
 <span class="p">{</span>
     <span class="p">{</span><span class="s">&quot;KEY_FILETXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_KEY</span><span class="p">,</span> <span class="n">readKey</span><span class="p">},</span>
     <span class="p">{</span><span class="s">&quot;README  TXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_README</span><span class="p">,</span> <span class="n">readMe</span><span class="p">},</span>
@@ -218,7 +218,7 @@
 
 
 <p>Ну и, наконец, надо изменить функцию <code>process_data()</code> таким образом, чтобы записываемые данные пошли по нужному пути:</p>
-<div class="highlight"><pre><span class="kt">void</span> <span class="nf">process_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">process_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
     <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
     <span class="k">switch</span> <span class="p">(</span><span class="n">writeType</span><span class="p">){</span>
@@ -250,7 +250,7 @@
 <p>Компилирую, прошиваю, запускаю.</p>
 <p>Устройство определяется в Windows в виде флэшки, и на ней появились дополнительные файлы. Трижды нажимаю одновременно две верхние кнопки &mdash; переключаюсь в режим выдачи переменной <code>data_PC</code>. Открываю файл <code>TESTFILE.TXT</code> блокнотом, сохраняю через меню. На светодиодах ничего, все погашены. Открываю <code>DATA.BIN</code> hex-редактором &mdash; в нем одни нули. Первый этап испытаний прошел с ожидаемым результатом.</p>
 <p>Сбрасываю устройство кнопкой &laquo;Reset&raquo;. Снова переключаюсь в режим выдачи <code>data_PC</code> на светодиоды. Снова открываю блокнотом <code>TESTFILE.TXT</code>. Открываю блокнотом же файл <code>TO_FILE.TXT</code> и сразу закрываю его. На светодиодах по-прежнему ничего, не горят. Открываю <code>DATA.BIN</code> и вижу следующее:</p>
-<div class="highlight"><pre>00000000: 30 30 30 30 30 30 20 20 30 30 30 30 30 31 20 20  000000  000001
+<div class="highlight"><pre><span></span>00000000: 30 30 30 30 30 30 20 20 30 30 30 30 30 31 20 20  000000  000001
 00000010: 30 30 30 30 30 32 20 20 30 30 30 30 30 33 20 20  000002  000003
 00000020: 30 30 30 30 30 34 20 20 30 30 30 30 30 35 20 20  000004  000005
 00000030: 30 30 30 30 30 36 20 20 30 30 30 30 30 37 20 20  000006  000007

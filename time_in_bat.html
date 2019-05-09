@@ -144,142 +144,142 @@
       
       <p>При всех моих стараниях уйти от Windows везде и навсегда не получается. Есть компьютер на работе, компьютеры друзей, собственный нетбук, с которым неохота возиться настолько кардинально. При этом, ряд задач в принципе выполняется из командной строки проще и удобнее, чем &laquo;оконно-мышевым&raquo; способом. Особенно если это задачи из тех, что имеют прямое отношение к Linux, например, работа с утилитами из комплекта <a href="http://gnuwin32.sourceforge.net/">gnuwin32</a>.</p>
 <p>Запуская <a href="http://romeogolf.github.io/tar-and-encoding.html">однажды уже упомянутую</a> упаковку/распаковку при помощи windows-реализации tar, я захотел однажды засечь время. Ну, не секундомером же это делать&hellip; Сделал командный файл, в котором вывожу время, запускаю архиватор, снова вывожу время.</p>
-<div class="highlight"><pre><span class="p">@</span>time \t
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">time</span> \t
 <span class="p">@</span>tar -cf foo.tar foo
-<span class="p">@</span>time \t
+<span class="p">@</span><span class="k">time</span> \t
 </pre></div>
 
 
 <p>Получается ерунда. Команда <code>time \t</code> выдает время с точностью до минуты. Ладно, можно использовать переменную среды <code>%time%</code>:</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">echo</span> <span class="nv">%time%</span>
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">echo</span> <span class="nv">%time%</span>
 <span class="p">@</span>tar -cf foo.tar foo
 <span class="p">@</span><span class="k">echo</span> <span class="nv">%time%</span>
 </pre></div>
 
 
 <p>Чуть получше, но все равно очень плохо. Во-первых, если архиватору добавить ключ -v, и он начнет выдавать в консоль имена архивируемых объектов, то время начала стремительно унесется за пределы экрана. Во-вторых, чтобы понять, сколько процесс занял времени, все равно придется считать, а компьютер на что?</p>
-<p>Однако, переменная <code>%time%</code> хитроформатированная, скорее текст, чем число, и ее в лоб не получится использовать для вычитания времени начала из времени окончания. Тем более, командный интерпретатор cmd.exe работает с целочисленными значениями, а время идет с точностью до сотых секунды (ну, или до десятков миллисекунд, как хотите).</p>
+<p>Однако переменная <code>%time%</code> хитроформатированная, скорее текст, чем число, и ее в лоб не получится использовать для вычитания времени начала из времени окончания. Тем более, командный интерпретатор cmd.exe работает с целочисленными значениями, а время идет с точностью до сотых секунды (ну, или до десятков миллисекунд, как хотите).</p>
 <p>Ладно, разберем время на составляющие. При помощи конструкции <code>set t1_m=%t1:~3,2%</code> которая присваивает переменной t1_m два знака из t1, пропустив первые три, получим часы, минуты, секунды и сотые доли секунды: </p>
-<div class="highlight"><pre><span class="k">set</span> <span class="nv">t1_h</span><span class="o">=</span><span class="nv">%t1:~0</span><span class="p">,</span><span class="m">2</span>%
-<span class="k">set</span> <span class="nv">t1_m</span><span class="o">=</span><span class="nv">%t1:~3</span><span class="p">,</span><span class="m">2</span>%
-<span class="k">set</span> <span class="nv">t1_s</span><span class="o">=</span><span class="nv">%t1:~6</span><span class="p">,</span><span class="m">2</span>%
-<span class="k">set</span> <span class="nv">t1_ms</span><span class="o">=</span><span class="nv">%t1:~9%</span>
-<span class="k">set</span> <span class="n">/a</span> s<span class="m">1</span><span class="o">=</span> t<span class="m">1</span>_h * <span class="m">60</span> * <span class="m">60</span> * <span class="m">100</span> + t<span class="m">1</span>_m * <span class="m">60</span> * <span class="m">100</span> + t<span class="m">1</span>_s * <span class="m">100</span> + t<span class="m">1</span>_ms
+<div class="highlight"><pre><span></span><span class="k">set</span> <span class="nv">t1_h</span><span class="p">=</span><span class="nv">%t1:~0,2%</span>
+<span class="k">set</span> <span class="nv">t1_m</span><span class="p">=</span><span class="nv">%t1:~3,2%</span>
+<span class="k">set</span> <span class="nv">t1_s</span><span class="p">=</span><span class="nv">%t1:~6,2%</span>
+<span class="k">set</span> <span class="nv">t1_ms</span><span class="p">=</span><span class="nv">%t1:~9%</span>
+<span class="k">set</span> <span class="k">/a</span> <span class="nv">s1</span><span class="o">=</span> <span class="nv">t1_h</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_m</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_s</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_ms</span>
 </pre></div>
 
 
 <p>Напоминаю, что ключик <code>/a</code> позволяет оператору <code>set</code> не только присваивать значение переменной, но и выполнять некоторые операции (подробнее &mdash; <code>set /?</code>).</p>
 <p>В результате получили в s1 время в сотнях миллисекунд, допустим, из времени начала операции. Можно сделать аналогичным образом s2 из времени окончания. Эти две переменные целочисленные и прекрасно складываются, вычитаются и все такое. Нам надо разность, и, чтобы избежать неожиданностей со знаками, можно сразу определить, что из них больше, и потом вычитать:</p>
-<div class="highlight"><pre><span class="k">if</span> <span class="n">/I</span> <span class="nv">%s1%</span> <span class="o">geq</span> <span class="nv">%s2%</span> (<span class="k">set</span> <span class="n">/a</span> s<span class="m">3</span><span class="o">=</span> s<span class="m">1</span> - s<span class="m">2</span>) <span class="k">else</span> (<span class="k">set</span> <span class="n">/a</span> s<span class="m">3</span><span class="o">=</span> s<span class="m">2</span> - s<span class="m">1</span>)
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="k">/I</span> <span class="nv">%s1%</span> <span class="ow">geq</span> <span class="nv">%s2%</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s1</span> <span class="o">-</span> <span class="nv">s2</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s2</span> <span class="o">-</span> <span class="nv">s1</span><span class="p">)</span>
 </pre></div>
 
 
 <p>Ключик <code>/i</code> расширяет возможности оператора сравнения, позволяя ему не только выполнять сравнение строк на тождественность (чем он занимался изначально), но и сравнивать числа на больше/меньше/равно (<code>if /?</code>)</p>
 <p>Получили s3 &mdash; разность времени в десятках миллисекунд. Надо разобрать на составляющие, а потом склеить обратно в удобочитаемом виде. Все несложно, используем остаток от деления, чтобы избавиться, например, от часов при извлечении минут, и деление (целочисленное, другого тут нет), чтобы избавиться от секунд, примерно так:</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_h<span class="o">=</span> s<span class="m">3</span> / <span class="m">100</span> / <span class="m">60</span> / <span class="m">60</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_m<span class="o">=</span> s<span class="m">3</span> %% (<span class="m">100</span> * <span class="m">60</span> * <span class="m">60</span>) / <span class="m">100</span> / <span class="m">60</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_s<span class="o">=</span> s<span class="m">3</span> %% (<span class="m">100</span> * <span class="m">60</span>) / <span class="m">100</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_ms<span class="o">=</span> s<span class="m">3</span> %% <span class="m">100</span>
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_h</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_m</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_s</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_ms</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="mi">100</span>
 </pre></div>
 
 
 <p>Тут надо не забыть забавную тонкость: в командном интерпретаторе символ процента &mdash; подводный камень. Иногда он ставится по обе стороны от переменной, и тогда при выполнении интерпретатор отбрасывает эту пару, а имя переменной заменяет значением. Иногда он стоит перед переменной цикла. Иногда он используется в виде оператора получения остатка от целочисленного деления. Так вот, там, где процент непарный, его надо не забывать удваивать, а то его отбросят и будут безуспешно искать пару.</p>
 <p>Получили часы, минуты, секунды и десятки миллисекунд в отдельных переменных. Можно их использовать, как числа, а можно &mdash; как строки, поэтому их легко склеить в одно значение времени и выдать его в стандартный поток ввода-вывода, &laquo;на консоль&raquo;:</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t3</span><span class="o">=</span><span class="nv">%t3_h%</span>:<span class="nv">%t3_m%</span>:<span class="nv">%t3_s%</span><span class="p">,</span><span class="nv">%t3_ms%</span>
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">set</span> <span class="nv">t3</span><span class="p">=</span><span class="nv">%t3_h%</span>:<span class="nv">%t3_m%</span>:<span class="nv">%t3_s%</span>,<span class="nv">%t3_ms%</span>
 <span class="p">@</span><span class="k">echo</span> <span class="nv">%t3%</span>
 </pre></div>
 
 
 <p>Все это можно засунуть в отдельный файл, чтобы использовать в разных местах. Тогда время надо будет передавать файлу в виде параметров. Тут есть  два варианта: либо </p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="o">=</span><span class="nv">%~1</span>
-<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="o">=</span><span class="nv">%~2</span>
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="p">=</span><span class="nv">%~1</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="p">=</span><span class="nv">%~2</span>
 </pre></div>
 
 
 <p>и передавать параметры в двойных кавычках (а тильда раскроет кавычки), либо</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="o">=</span><span class="nv">%1%</span><span class="m">2</span>
-<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="o">=</span><span class="nv">%3%</span><span class="m">4</span>
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="p">=</span><span class="nv">%1%2</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="p">=</span><span class="nv">%3%4</span>
 </pre></div>
 
 
 <p>и передавать без кавычек, потому что в символьном представлении времени , по крайней мере, с русской локалью (в другой не проверял), десятки миллисекунд отделяются от секунд запятой, а запятая вместе с пробелом разделяет и параметры командной строки, так что сотые доли секунды будут уже другим параметром.</p>
 <p>Итого, получился такой командный файл, скажем, timecalc.bat:</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="o">=</span><span class="nv">%~1</span>
-<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="o">=</span><span class="nv">%~2</span>
-<span class="p">@</span>rem параметры должны быть в кавычках
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">set</span> <span class="nv">t1</span><span class="p">=</span><span class="nv">%~1</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2</span><span class="p">=</span><span class="nv">%~2</span>
+<span class="p">@</span><span class="c1">rem параметры должны быть в кавычках</span>
 
-<span class="p">@</span>rem <span class="k">echo</span> t<span class="m">1</span> <span class="o">=</span> <span class="nv">%t1%</span>
-<span class="p">@</span>rem <span class="k">set</span> <span class="nv">t1</span><span class="o">=</span><span class="m">03</span><span class="nl">:02:20</span><span class="p">,</span><span class="m">45</span>
-<span class="p">@</span><span class="k">set</span> <span class="nv">t1_h</span><span class="o">=</span><span class="nv">%t1:~0</span><span class="p">,</span><span class="m">2</span>%
-<span class="p">@</span><span class="k">set</span> <span class="nv">t1_m</span><span class="o">=</span><span class="nv">%t1:~3</span><span class="p">,</span><span class="m">2</span>%
-<span class="p">@</span><span class="k">set</span> <span class="nv">t1_s</span><span class="o">=</span><span class="nv">%t1:~6</span><span class="p">,</span><span class="m">2</span>%
-<span class="p">@</span><span class="k">set</span> <span class="nv">t1_ms</span><span class="o">=</span><span class="nv">%t1:~9%</span>
-<span class="p">@</span>rem <span class="k">echo</span> <span class="nv">%t1%</span> <span class="o">=</span> <span class="nv">%t1_h%</span> - <span class="nv">%t1_m%</span> - <span class="nv">%t1_s%</span> - <span class="nv">%t1_ms%</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> s<span class="m">1</span><span class="o">=</span> t<span class="m">1</span>_h * <span class="m">60</span> * <span class="m">60</span> * <span class="m">100</span> + t<span class="m">1</span>_m * <span class="m">60</span> * <span class="m">100</span> + t<span class="m">1</span>_s * <span class="m">100</span> + t<span class="m">1</span>_ms
-<span class="p">@</span>rem <span class="k">echo</span> s<span class="m">1</span> <span class="o">=</span> <span class="nv">%s1%</span>
+<span class="p">@</span><span class="c1">rem echo t1 = %t1%</span>
+<span class="p">@</span><span class="c1">rem set t1=03:02:20,45</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_h</span><span class="p">=</span><span class="nv">%t1:~0,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_m</span><span class="p">=</span><span class="nv">%t1:~3,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_s</span><span class="p">=</span><span class="nv">%t1:~6,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t1_ms</span><span class="p">=</span><span class="nv">%t1:~9%</span>
+<span class="p">@</span><span class="c1">rem echo %t1% = %t1_h% - %t1_m% - %t1_s% - %t1_ms%</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s1</span><span class="o">=</span> <span class="nv">t1_h</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_m</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_s</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t1_ms</span>
+<span class="p">@</span><span class="c1">rem echo s1 = %s1%</span>
 
-<span class="p">@</span>rem <span class="k">set</span> <span class="nv">t2</span><span class="o">=</span><span class="m">01</span><span class="nl">:01:10</span><span class="p">,</span><span class="m">05</span>
-<span class="p">@</span>rem <span class="k">echo</span> t<span class="m">2</span> <span class="o">=</span> <span class="nv">%t2%</span>
-<span class="p">@</span><span class="k">set</span> <span class="nv">t2_h</span><span class="o">=</span><span class="nv">%t2:~0</span><span class="p">,</span><span class="m">2</span>%
-<span class="p">@</span><span class="k">set</span> <span class="nv">t2_m</span><span class="o">=</span><span class="nv">%t2:~3</span><span class="p">,</span><span class="m">2</span>%
-<span class="p">@</span><span class="k">set</span> <span class="nv">t2_s</span><span class="o">=</span><span class="nv">%t2:~6</span><span class="p">,</span><span class="m">2</span>%
-<span class="p">@</span><span class="k">set</span> <span class="nv">t2_ms</span><span class="o">=</span><span class="nv">%t2:~9%</span>
-<span class="p">@</span>rem <span class="k">echo</span> <span class="nv">%t2%</span> <span class="o">=</span> <span class="nv">%t2_h%</span> - <span class="nv">%t2_m%</span> - <span class="nv">%t2_s%</span> - <span class="nv">%t2_ms%</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> s<span class="m">2</span><span class="o">=</span> t<span class="m">2</span>_h * <span class="m">60</span> * <span class="m">60</span> * <span class="m">100</span> + t<span class="m">2</span>_m * <span class="m">60</span> * <span class="m">100</span> + t<span class="m">2</span>_s * <span class="m">100</span> + t<span class="m">2</span>_ms
-<span class="p">@</span>rem <span class="k">echo</span> s<span class="m">2</span> <span class="o">=</span> <span class="nv">%s2%</span>
+<span class="p">@</span><span class="c1">rem set t2=01:01:10,05</span>
+<span class="p">@</span><span class="c1">rem echo t2 = %t2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_h</span><span class="p">=</span><span class="nv">%t2:~0,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_m</span><span class="p">=</span><span class="nv">%t2:~3,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_s</span><span class="p">=</span><span class="nv">%t2:~6,2%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t2_ms</span><span class="p">=</span><span class="nv">%t2:~9%</span>
+<span class="p">@</span><span class="c1">rem echo %t2% = %t2_h% - %t2_m% - %t2_s% - %t2_ms%</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s2</span><span class="o">=</span> <span class="nv">t2_h</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t2_m</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t2_s</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="nv">t2_ms</span>
+<span class="p">@</span><span class="c1">rem echo s2 = %s2%</span>
 
-<span class="p">@</span><span class="k">if</span> <span class="n">/I</span> <span class="nv">%s1%</span> <span class="o">geq</span> <span class="nv">%s2%</span> (<span class="k">set</span> <span class="n">/a</span> s<span class="m">3</span><span class="o">=</span> s<span class="m">1</span> - s<span class="m">2</span>) <span class="k">else</span> (<span class="k">set</span> <span class="n">/a</span> s<span class="m">3</span><span class="o">=</span> s<span class="m">2</span> - s<span class="m">1</span>)
-<span class="p">@</span>rem <span class="k">set</span> <span class="n">/a</span> s<span class="m">3</span><span class="o">=</span> s<span class="m">2</span> - s<span class="m">1</span>
-<span class="p">@</span>rem <span class="k">echo</span> s<span class="m">3</span> <span class="o">=</span> <span class="nv">%s3%</span>
+<span class="p">@</span><span class="k">if</span> <span class="k">/I</span> <span class="nv">%s1%</span> <span class="ow">geq</span> <span class="nv">%s2%</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s1</span> <span class="o">-</span> <span class="nv">s2</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">s3</span><span class="o">=</span> <span class="nv">s2</span> <span class="o">-</span> <span class="nv">s1</span><span class="p">)</span>
+<span class="p">@</span><span class="c1">rem set /a s3= s2 - s1</span>
+<span class="p">@</span><span class="c1">rem echo s3 = %s3%</span>
 
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_h<span class="o">=</span> s<span class="m">3</span> / <span class="m">100</span> / <span class="m">60</span> / <span class="m">60</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_m<span class="o">=</span> s<span class="m">3</span> %% (<span class="m">100</span> * <span class="m">60</span> * <span class="m">60</span>) / <span class="m">100</span> / <span class="m">60</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_s<span class="o">=</span> s<span class="m">3</span> %% (<span class="m">100</span> * <span class="m">60</span>) / <span class="m">100</span>
-<span class="p">@</span><span class="k">set</span> <span class="n">/a</span> t<span class="m">3</span>_ms<span class="o">=</span> s<span class="m">3</span> %% <span class="m">100</span>
-<span class="p">@</span>rem <span class="k">echo</span> <span class="o">=</span> <span class="nv">%t3_h%</span> - <span class="nv">%t3_m%</span> - <span class="nv">%t3_s%</span> - <span class="nv">%t3_ms%</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_h</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_m</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_s</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="p">@</span><span class="k">set</span> <span class="k">/a</span> <span class="nv">t3_ms</span><span class="o">=</span> <span class="nv">s3</span> <span class="o">%%</span> <span class="mi">100</span>
+<span class="p">@</span><span class="c1">rem echo = %t3_h% - %t3_m% - %t3_s% - %t3_ms%</span>
 
-<span class="p">@</span><span class="k">set</span> <span class="nv">t3</span><span class="o">=</span><span class="nv">%t3_h%</span>:<span class="nv">%t3_m%</span>:<span class="nv">%t3_s%</span><span class="p">,</span><span class="nv">%t3_ms%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">t3</span><span class="p">=</span><span class="nv">%t3_h%</span>:<span class="nv">%t3_m%</span>:<span class="nv">%t3_s%</span>,<span class="nv">%t3_ms%</span>
 <span class="p">@</span><span class="k">echo</span> <span class="nv">%t3%</span>
 </pre></div>
 
 
 <p>Теперь об использовании. Допустим, есть такой батничек, запускающий архивацию с засечкой времени:</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">set</span> <span class="nv">a</span><span class="o">=</span><span class="nv">%time%</span>
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">set</span> <span class="nv">a</span><span class="p">=</span><span class="nv">%time%</span>
 <span class="p">@</span><span class="k">echo</span> start <span class="nv">%a%</span>
 <span class="p">@</span>tar -cf <span class="nv">%1</span>.tar <span class="nv">%1</span>
-<span class="p">@</span><span class="k">set</span> <span class="nv">b</span><span class="o">=</span><span class="nv">%time%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">b</span><span class="p">=</span><span class="nv">%time%</span>
 <span class="p">@</span><span class="k">echo</span> stop <span class="nv">%b%</span>
 </pre></div>
 
 
 <p>В переменных a и b имеем время начала и окончания операции соответственно. Можно передать их нашему скрипту, непременно валяющемуся тут же рядом, в этой же папке:</p>
-<div class="highlight"><pre><span class="k">call</span> .\timecalc.cmd <span class="s2">&quot;%b%&quot;</span> <span class="s2">&quot;%a%&quot;</span>
+<div class="highlight"><pre><span></span><span class="k">call</span> .\timecalc.cmd <span class="s2">&quot;</span><span class="nv">%b%</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">%a%</span><span class="s2">&quot;</span>
 </pre></div>
 
 
 <p>И он выведет в консоль затраченное время третьей строчкой, после &laquo;start &lt;время начала>&raquo; и &laquo;stop &lt;время окончания>&raquo;. Но хотелось бы добавить, допустим, &laquo;упаковано за &raquo; или &laquo;распаковано за &raquo;, так что ввести соответствующие строки в файл &laquo;подпрограммы&raquo; не получится. Передавать этот строковый &laquo;довесок&raquo; в виде еще одного параметра и не особо красиво, и при желании дописать текст после времени (а не перед) опять потребует лезть в вызываемый файл. А как перехватить вывод вызываемого файла для использования в вызывающем? </p>
 <p>Я просто обалдел, когда узнал. Внезапно, при помощи оператора цикла!!! О, сколько нам открытий чудных готовит <code>for /?</code>&hellip;</p>
 <p>Расширение синтаксиса <code>/F</code> позволяет выковыривать переменную цикла из разного рода наборов: файлов, символьных строк, команд. Чтобы понять, что используется для цикла, применяются (или не применяются) кавычки. Без кавычек в скобках пишем файл или набор файлов. А применение кавычек зависит от того, установлена или нет опция usebackq: при установленной  в двойных кавычках пишем строку, в простых &mdash; команду. При снятой опции  строку пишем в простых кавычках, а команду &mdash; в обратных (которые обычно на клавише с буквой Ё). При этом, команда вполне может быть одна, и проход цикла тоже один, и в теле цикла получаем нужный нам вывод команды, который засунем в переменную для дальнейшего использования (хотя можно и использовать сразу):</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">for</span> <span class="n">/F</span> <span class="s2">&quot;usebackq&quot;</span> <span class="nv">%%s</span> in (<span class="sb">`call .\timecalc.cmd &quot;%b%&quot; &quot;%a%&quot;`</span>) <span class="k">do</span> @<span class="k">set</span> <span class="nv">delta</span><span class="o">=</span><span class="nv">%%s</span>
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;usebackq&quot;</span> <span class="se">%%</span>s <span class="k">in</span> <span class="p">(</span><span class="sb">`call .\timecalc.cmd &quot;</span><span class="nv">%b%</span><span class="sb">&quot; &quot;</span><span class="nv">%a%</span><span class="sb">&quot;`</span><span class="p">)</span> <span class="k">do</span> <span class="p">@</span><span class="k">set</span> <span class="nv">delta</span><span class="p">=</span><span class="se">%%</span>s
 </pre></div>
 
 
 <p>И, кстати, не забываем, что переменная цикла должна быть односимвольной. Нигде этого не прочитал, вывел экспериментально путем ошибок и проб. Может, читал невнимательно, а может, не знал где&hellip;</p>
 <p>Итого получаем такой командный файл, скажем, tar_time.cmd, который принимает в качестве параметра пакуемую папку, засекает время и пишет его в консоль и в лог-файл:</p>
-<div class="highlight"><pre><span class="p">@</span><span class="k">echo</span> <span class="nv">%1</span> &gt;<span class="p">&gt;</span> <span class="n">tar_log</span>.txt
+<div class="highlight"><pre><span></span><span class="p">@</span><span class="k">echo</span> <span class="nv">%1</span> <span class="p">&gt;&gt;</span> tar_log.txt
 
-<span class="p">@</span><span class="k">set</span> <span class="nv">a</span><span class="o">=</span><span class="nv">%time%</span>
+<span class="p">@</span><span class="k">set</span> <span class="nv">a</span><span class="p">=</span><span class="nv">%time%</span>
 <span class="p">@</span><span class="k">echo</span> start <span class="nv">%a%</span>
-<span class="p">@</span><span class="k">echo</span>    start <span class="nv">%a%</span> &gt;<span class="p">&gt;</span> <span class="n">tar_log</span>.txt
+<span class="p">@</span><span class="k">echo</span>    start <span class="nv">%a%</span> <span class="p">&gt;&gt;</span> tar_log.txt
 <span class="p">@</span>tar -cf <span class="nv">%1</span>.tar <span class="nv">%1</span>
-<span class="p">@</span><span class="k">set</span> <span class="nv">b</span><span class="o">=</span><span class="nv">%time%</span>
-<span class="p">@</span><span class="k">echo</span>    stop <span class="nv">%b%</span> &gt;<span class="p">&gt;</span> <span class="n">tar_log</span>.txt
+<span class="p">@</span><span class="k">set</span> <span class="nv">b</span><span class="p">=</span><span class="nv">%time%</span>
+<span class="p">@</span><span class="k">echo</span>    stop <span class="nv">%b%</span> <span class="p">&gt;&gt;</span> tar_log.txt
 <span class="p">@</span><span class="k">echo</span> stop <span class="nv">%b%</span>
 
-<span class="p">@</span><span class="k">for</span> <span class="n">/F</span> <span class="s2">&quot;usebackq&quot;</span> <span class="nv">%%s</span> in (<span class="sb">`call .\timecalc.cmd &quot;%b%&quot; &quot;%a%&quot;`</span>) <span class="k">do</span> @<span class="k">set</span> <span class="nv">delta</span><span class="o">=</span><span class="nv">%%s</span>
+<span class="p">@</span><span class="k">for</span> <span class="k">/F</span> <span class="s2">&quot;usebackq&quot;</span> <span class="se">%%</span>s <span class="k">in</span> <span class="p">(</span><span class="sb">`call .\timecalc.cmd &quot;</span><span class="nv">%b%</span><span class="sb">&quot; &quot;</span><span class="nv">%a%</span><span class="sb">&quot;`</span><span class="p">)</span> <span class="k">do</span> <span class="p">@</span><span class="k">set</span> <span class="nv">delta</span><span class="p">=</span><span class="se">%%</span>s
 
-<span class="p">@</span><span class="k">echo</span>    <span class="nv">%delta%</span> &gt;<span class="p">&gt;</span> <span class="n">tar_log</span>.txt
-<span class="p">@</span><span class="k">echo</span> packed <span class="k">for</span> <span class="nv">%delta%</span>
+<span class="p">@</span><span class="k">echo</span>    <span class="nv">%delta%</span> <span class="p">&gt;&gt;</span> tar_log.txt
+<span class="p">@</span><span class="k">echo</span> packed for <span class="nv">%delta%</span>
 </pre></div>
 
 

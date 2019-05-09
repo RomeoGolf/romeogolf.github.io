@@ -157,7 +157,7 @@
 <p>Для этого сперва надо подготовить инструмент. Придется писать некоторый код для компьютера. Остановлюсь пока на Windows по ряду причин. Основная причина среди них &mdash; у меня уже есть под рукой кое-какая заготовка, в которой можно подглядеть идеи. Эта заготовка мне не очень нравится, но работает, и на нее можно опираться.</p>
 <p>Упомянутая заготовка написана на С++. Опять же, придется использовать API-функции операционной системы, что проще всего делать также на С++: в MSDN расписаны параметры функций и есть примеры, и ориентировано все на С++, а для, скажем, Delphi (или Lazarus) придется переписывать. Полагаю, и примеры на всякого рода форумах тоже проще будет найти на том же С++. А я уже давно на нем ничего приличного не писал, и версию от Microsoft ставить не желаю.</p>
 <p>Зато у меня уже есть Eclipse, который используется для Java (в том числе, под Android) и таких проектов на Python, которые сложнее пары скриптовых файлов. Буду в качестве среды разработки использовать его же.</p>
-<p>Однако, Eclipse &mdash; это только среда, сам по себе он не будет ничего компилировать. А в качестве компилятора традиционно (хотя и не обязательно) в связке с ним используется GCC. Для Windows этот компилятор (строго говоря &mdash; семейство компиляторов) сам по себе (по крайней мере, пока что) не бывает, а появляется в составе линуксообразного окружения, MinGW или Cygwin. Причем, Cygwin у меня уже имеется, и используется в том числе при работе с этой самоделкой &mdash; выбор и настройка инструментария описана в одном из предыдущих <a href="http://romeogolf.github.io/usb-polygon-3.html">выпусков</a>.</p>
+<p>Однако Eclipse &mdash; это только среда, сам по себе он не будет ничего компилировать. А в качестве компилятора традиционно (хотя и не обязательно) в связке с ним используется GCC. Для Windows этот компилятор (строго говоря &mdash; семейство компиляторов) сам по себе (по крайней мере, пока что) не бывает, а появляется в составе линуксообразного окружения, MinGW или Cygwin. Причем, Cygwin у меня уже имеется, и используется в том числе при работе с этой самоделкой &mdash; выбор и настройка инструментария описана в одном из предыдущих <a href="http://romeogolf.github.io/usb-polygon-3.html">выпусков</a>.</p>
 <p>Сделал пробный проектик под С++ и начал как-то с ним упражняться. Угрохал на это дело изрядно времени. Эх, стоило пошагово описывать все подводные камни на этом пути, нехилая лоция бы могла получиться&hellip; Короче, при всем моем уважении к этим продуктам (Eclipse и GCC), настройка их (особенно под Windows) &mdash; это замечательный способ провести долгие зимние вечера, если больше нечем их занять.</p>
 <p>Темная тема оформления редактора кода не влияет на тему оформления остальных окон и панелей Eclipse, за них отвечает оконный менеджер, либо надо менять руками отдельно множество строк в конфигурации в разных местах и записывать при этом, что на что менял. Подтянуть настройки, сделанные в рабочем пространстве Java, для рабочего пространства С++ у меня так и не получилось. В настройках проекта надо не забывать добавлять опцию статической линковки некоторых библиотек, иначе не заработает на другой машине. Да и на этой же, впрочем, тоже. Надо не забывать указывать про с++11, чтобы иметь возможность использовать современные фишки языка. И все это и тому подобное вылезало достаточно внезапно и с недостаточно очевидными причинами, просто не знаю, что бы я делал без <a href="http://stackoverflow.com/">StackOverflow</a>.</p>
 <p>Наконец, что-то как-то заработало, стали получаться простые консольные приложения. В процессе выяснилось, что GCC в Cygwin и в MinGW имеют заметные отличия &mdash; бинарники библиотек отличаются, заголовочные файлы к этим библиотекам тоже. При попытке компиляции примеров, слизанных с форумов и сделанных в MS Visual Studio, компилятор из MinGW вызывал меньше проблем, так что пришлось устанавливать еще и этот набор софта.</p>
@@ -173,20 +173,20 @@
 </ul>
 <h2 id="_2">Заготовка проекта</h2>
 <p>Запускаю Eclipse, создаю новый проект: <code>File -&gt; New -&gt; C++ Project</code>, получаю заготовку исходного кода, выдающего в консоли сакраментальное &laquo;Hello, World!&raquo;. </p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/05/new-prj-cpp.png" title="New Project"><img alt="new-prj" src="http://romeogolf.github.io/images/usb-polygon/05/preview/new-prj-cpp-small.png" title="New Project" /></a></p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/05/new-prj-cpp.png" title="New Project"><img alt="new-prj" src="http://romeogolf.github.io/images/usb-polygon/05/preview/new-prj-cpp-small.png" title="New Project"></a></p>
 <p>Сразу лезу в настройки проекта, потому что уже в курсе, что собранный код не запустится. <code>Project -&gt; Properties</code>, и в окне <code>Properties for usb-polygon</code> в правой панели выбираю <code>C/C++ Build -&gt; Settings</code>, на вкладке <code>Tool Settings</code> выбираю <code>MinGW C++ Linker -&gt; Miscellaneous</code> и в поле <code>Linker flags</code> вписываю <code>-static-libgcc -static-libstdc++</code>, иначе придется соответствующие библиотеки таскать вместе с проектом. Предпочитаю прилинковать статически.</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/05/linker-flag.png" title="Подключение библиотек"><img alt="linker-flag" src="http://romeogolf.github.io/images/usb-polygon/05/preview/linker-flag-small.png" title="Подключение библиотек" /></a></p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/05/linker-flag.png" title="Подключение библиотек"><img alt="linker-flag" src="http://romeogolf.github.io/images/usb-polygon/05/preview/linker-flag-small.png" title="Подключение библиотек"></a></p>
 <p>Заодно на этой же вкладке выбираю <code>GCC C++ Compiler -&gt; Dialect</code>, и в поле <code>Language standard</code> ставлю <code>ISO C++11 (-srd=c++0x)</code>, пригодится.</p>
-<p><a href="http://romeogolf.github.io/images/usb-polygon/05/dialect.png"><img alt="dialect" src="http://romeogolf.github.io/images/usb-polygon/05/preview/dialect-small.png" /></a></p>
+<p><a href="http://romeogolf.github.io/images/usb-polygon/05/dialect.png"><img alt="dialect" src="http://romeogolf.github.io/images/usb-polygon/05/preview/dialect-small.png"></a></p>
 <p>Теперь можно и <code>Project -&gt; Build Project</code>, и <code>Run As -&gt; Local C/C++ Application</code>, и в консоли, представленной одним из окошек среды Eclipse, появится то, что просили в тринадцатой строчке автоматически сгенерированного кода, то есть, &laquo;!!!Hello, word!!!&raquo;.</p>
 <p>Создаю в папке проекта git-репозиторий и сохраняю это все в виде начального коммита.</p>
 <h2 id="_3">Начинаем искать</h2>
 <p>Перед тем, как искать устройства USB, подключенные к компьютеру, стоит поискать в интернете, как это делают другие. Вариантов довольно много. Я порылся в форумах, нашел несколько работоспособных решений, остановился на одном, на фундаменте которого начал строить дальше. Код и небольшое обсуждение было обнаружено здесь: <a href="http://programmersforum.ru/showthread.php?t=151603">CyberForum.ru</a></p>
 <p>И вот код, который я взял за основу:</p>
-<div class="highlight"><pre><span class="cp">#include &lt;windows.h&gt;</span>
-<span class="cp">#include &lt;Setupapi.h&gt;</span>
-<span class="cp">#include &lt;tchar.h&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;Setupapi.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;tchar.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">OutFormatMsg</span><span class="p">(</span><span class="k">const</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">Msg</span><span class="p">){</span>
     <span class="n">LPVOID</span> <span class="n">lpMsgBuf</span><span class="p">;</span>
@@ -306,13 +306,13 @@
 <p>В файле <code>usb-polygon.cpp</code> убираю автоматически созданный код и вставляю код из форума. Куча красных подчеркиваний. Сохраняю файл. Куча красного исчезает, но Eclipse начинает показывать свой норов: подчеркивает красным <code>_tprintf</code> (&laquo;Function &lsquo;printf&rsquo; could not be resolved&raquo;), хотя <code>tchar.h</code> подключен. Подключаю дополнительно <code>#include &lt;stdio.h&gt;</code>, и Eclipse перестает считать, что это &laquo;not resolved&raquo;. Убираю это подключение &mdash; <code>_tprintf</code> не подчеркивается. Чудеса&hellip; Ладно, оставляю на всякий случай.</p>
 <p>Теперь надо разобраться с функциями SetupDi&hellip;, которые считаются неопределенными. Дело в библиотеке SetupAPI, точнее, в ее отсутствии в проекте. Надо добавить в свойства проекта: <code>Project -&gt; Properties</code>, в окне свойств в левой панели выбрать <code>C/C++ Build -&gt; Settings</code>, и на вкладке <code>Tool Settings</code> выбрать <code>MinGW C++ Linker -&gt; Libraries</code>, для <code>Library search path (-L)</code> выбрать в файловой системе <code>C:\MinGW\lib</code>,  а для <code>Libraries (-l)</code> ввести руками <code>setupapi</code>.</p>
 <p>Пересобираю проект. Компиляция проходит успешно. Запускаю &mdash; в консоли чисто. Вставляю флэшку, запускаю проект еще раз, получаю (в Windows XP) что-то типа</p>
-<div class="highlight"><pre>\\?\usbstor#disk&amp;ven_kingston&amp;prod_dt_101_ii&amp;rev_1.00#001cc05fe930f961715b0183&amp;0#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+<div class="highlight"><pre><span></span>\\?\usbstor#disk&amp;ven_kingston&amp;prod_dt_101_ii&amp;rev_1.00#001cc05fe930f961715b0183&amp;0#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
 Kingston DT 101 II USB Device
 </pre></div>
 
 
 <p>Пробую воткнуть свою плату и снова запустить программу, в консоли вижу следующее:</p>
-<div class="highlight"><pre>\\?\usbstor#disk&amp;ven_lufa&amp;prod_dataflash_disk&amp;rev_0.00#955373038393518170f0&amp;0#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+<div class="highlight"><pre><span></span>\\?\usbstor#disk&amp;ven_lufa&amp;prod_dataflash_disk&amp;rev_0.00#955373038393518170f0&amp;0#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
 LUFA Dataflash Disk USB Device
 </pre></div>
 

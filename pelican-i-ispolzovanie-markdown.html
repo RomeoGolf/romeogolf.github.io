@@ -169,50 +169,48 @@
 <h2 id="2">Простые примеры</h2>
 <p>Как я уже упоминал в другой статье, описания и примеров этого дела в интернете немало. Но добавлю все же и здесь, в формате &laquo;код &mdash; вид&raquo;. Основные синтаксические штучки, доступные в пеликане &laquo;из коробки&raquo;, что надо написать, и как это будет выглядеть:</p>
 <h3 id="2_1">Заголовки</h3>
-<p>Статья начинается с заголовка, так что и здесь начнем с них же &mdash; заголовки (количество символов <code>#</code> соответствует числу в теге <code>&lt;h &gt;</code>):</p>
-<div class="equi_height">
-<div markdown="1">
+<p>Статья начинается с заголовка, так что и здесь начнем с них же &mdash; заголовки (количество символов <code>#</code> соответствует числу <code>n</code> в теге <code>&lt;hn&gt;</code>). Если код заголовков такой:</p>
+<div class="highlight"><pre><span></span><span class="gh">#</span> Заголовок 1
 
-<div class="highlight"><pre><span class="k"># </span><span class="gh">Заголовок 1</span>
-<span class="k">## </span><span class="gh">Заголовок 2 с id {#id_header2}</span>
-<span class="k">###### </span><span class="gh">Заголовок 6</span>
-####### Заголовок 7
+<span class="gu">##</span> Заголовок 2 с id {#id_header2}
 
-<span class="gh">заголовок</span>
-<span class="k">=========</span>
+<span class="gu">######</span> Заголовок 6
 
-<span class="gh">заголовок</span>
-<span class="k">---------</span>
+<span class="gu">######</span># Заголовок 7
+
+заголовок
+=========
+
+заголовок
+---------
 </pre></div>
 
 
-</div>
-<div>
+<p>то результат будет такой:</p>
+<hr>
 <h1 id="1_1">Заголовок 1</h1>
 <h2 id="id_header2">Заголовок 2 с id</h2>
 <h6 id="6">Заголовок 6</h6>
 <h6 id="7"># Заголовок 7</h6>
 <h1 id="_1">заголовок</h1>
 <h2 id="_2">заголовок</h2>
-</div>
-</div>
-
+<hr>
 <p>Забавно, что если поставить больше 6 знаков <code>#</code>, то 6 из них воспримутся в качестве уровня заголовка, а остальные войдут в текст заголовка. Остальные будут отображаться в соответствии с таблицами стилей, как задано для <code>&lt;h1&gt;</code> &ndash; <code>&lt;h6&gt;</code>. А еще заголовок можно отчеркнуть минусами или знаком равенства, получится второй и первый уровни соответственно, при этом, надо такой заголовок отделить с обеих сторон пустыми строками, как абзац.</p>
 <h3 id="2_2">Горизонтальные линии</h3>
-<p>Линии отчеркивания можно нарисовать звездочками, минусами или символом подчеркивания, слитно или через пробелы. Только надо следить, чтобы у них тоже сверху и снизу были пустые строки, а то при обработке их могут принять за часть заголовка или маркированного списка. А вот линия из знаков равенства ничего особенного не делает и рисуется, как есть:
-<div markdown="1" class="equi_height">
-<div markdown="1"></p>
-<div class="highlight"><pre><span class="k">**</span><span class="gs">*</span><span class="k">**</span>*
+<p>Линии отчеркивания можно нарисовать звездочками, минусами или символом подчеркивания, слитно или через пробелы. Только надо следить, чтобы у них тоже сверху и снизу были пустые строки, а то при обработке их могут принять за часть заголовка или маркированного списка. А вот линия из знаков равенства ничего особенного не делает и рисуется, как есть. Вот код линий и результат:</p>
+<div class="equi_height">
+<div>
+<div class="highlight"><pre><span></span>******
 
-<span class="k">* * * *</span>
+<span class="k">*</span> * <span class="ge">* *</span>
 
-<span class="k">-------</span>
+-------
 
-<span class="k">- - - -</span>
+<span class="k">-</span> - - -
 
-<span class="k">_______</span>
+<span class="gs">_______</span>
 
-<span class="k">_ _ _ _</span>
+<span class="ge">_ _</span> _ _
 
 
 =====================
@@ -220,23 +218,19 @@
 
 
 </div>
-
 <div>
-<hr />
-<hr />
-<hr />
-<hr />
-<hr />
-<hr />
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
 <p>=====================</p>
 </div>
 </div>
-
 <h3 id="2_3">Таблицы</h3>
-<p>Таблицы можно разметить псевдографикой. Границы по умолчанию не прорисовываются, заголовки по умолчанию центрируются (поведение корректируется при помощи CSS), а выравнивание строк в столбце можно отрегулировать двоеточием в разделительной линии ниже заголовка, как в примере:
-<div markdown="1" class="equi_height">
-<div markdown="1"></p>
-<div class="highlight"><pre>| 1 | 2 (правый) | 3 (центр) |
+<p>Таблицы можно разметить псевдографикой. Границы по умолчанию не прорисовываются, заголовки по умолчанию центрируются (поведение корректируется при помощи CSS), а выравнивание строк в столбце можно отрегулировать двоеточием в разделительной линии ниже заголовка. Вот код таблицы:</p>
+<div class="highlight"><pre><span></span>| 1 | 2 (правый) | 3 (центр) |
 |---|-----------:|:---------:|
 | ячейка 1.1 | ячейка 2.1 | ячейка 3.1 
 | 1.2 | 2.2 | 3.2 так
@@ -244,9 +238,8 @@
 </pre></div>
 
 
-</div>
-
-<div>
+<p>И вот что из этого получается:</p>
+<hr>
 <table>
 <thead>
 <tr>
@@ -273,52 +266,48 @@
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-
+<hr>
 <h3 id="2_4">Абзацы и внутристрочные элементы</h3>
-<div class="equi_height">
-<div markdown="1">
-
-<div class="highlight"><pre><span class="k">&lt;!--</span><span class="c-MultiLine"> Можно использовать комментарии</span>
-<span class="c-MultiLine">в стиле HTML, чтобы не показывать </span>
-<span class="c-MultiLine">часть текста в обработанной странице </span><span class="k">--&gt;</span>
+<p>Вот код всякого рода внутристрочных элементов:</p>
+<div class="highlight"><pre><span></span>&lt;!-- Можно использовать комментарии
+в стиле HTML, чтобы не показывать 
+часть текста в обработанной странице --&gt;
 
 Пример Footnote[^1] в тексте. Будет
 вынесена вниз страницы.
-<span class="k">&lt;!--</span><span class="c-MultiLine"> Такие штуки надо размещать сразу же: </span><span class="k">--&gt;</span>
-[^1]: Footnote по-русски <span class="ss">&amp;mdash;</span> сноска
+&lt;!-- Такие штуки надо размещать сразу же: --&gt;
+[^1]: Footnote по-русски &amp;mdash; сноска
 
 Словарь
 : книга, содержащая перечень слов
 с пояснениями и толкованиями
 
 пример аббревиатуры: ИМХО
-<span class="k">&lt;!--</span><span class="c-MultiLine"> Такие штуки тоже надо размещать сразу же: </span><span class="k">--&gt;</span>
-*[ИМХО]: Имею Мнение <span class="ss">&amp;mdash;</span> Хрен Оспоришь
+&lt;!-- Такие штуки тоже надо размещать сразу же: --&gt;
+<span class="ge">*[ИМХО]: Имею Мнение &amp;mdash; Хрен Оспоришь</span>
 
-Абзац создается разделением
-пустыми строками, 
-даже если строки абзаца
-имеют простые переносы.
+<span class="ge">Абзац создается разделением</span>
+<span class="ge">пустыми строками, </span>
+<span class="ge">даже если строки абзаца</span>
+<span class="ge">имеют простые переносы.</span>
 
-Однако, по два пробела  
-на концах строк делают  
-перенос строки без абзаца:  
-<span class="k">**</span><span class="gs">выделение</span><span class="k">**</span> тегом <span class="k">__</span><span class="gs">strong</span><span class="k">__</span>  
-<span class="k">*</span><span class="ge">выделение</span><span class="k">*</span> тегом <span class="k">_</span><span class="ge">emphasize</span><span class="k">_</span>  
-<span class="k">**</span><span class="gs">*можно</span><span class="k">**</span>* оба <span class="k">__</span><span class="gs">*сразу*</span><span class="k">__</span>  
-внутристрочный <span class="k">`</span><span class="sb">&lt;h1&gt;блок кода&lt;/h1&gt;</span><span class="k">`</span>  
+<span class="ge">Однако, по два пробела  </span>
+<span class="ge">на концах строк делают  </span>
+<span class="ge">перенос строки без абзаца:  </span>
+<span class="ge">*</span>*выделение** тегом <span class="gs">__strong__</span>  
+<span class="ge">*выделение*</span> тегом <span class="ge">_emphasize_</span>  
+<span class="gs">***можно***</span> оба <span class="gs">__*сразу*__</span>  
+внутристрочный <span class="sb">`&lt;h1&gt;блок кода&lt;/h1&gt;`</span>  
 </pre></div>
 
 
-</div>
-<div style="max-width:350px">
+<p>А вот результат:</p>
+<hr>
 <!-- Можно использовать комментарии
 в стиле HTML, чтобы не показывать 
 часть текста в обработанной странице -->
 
-<p>Пример Footnote<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> в тексте. Будет
+<p>Пример Footnote<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> в тексте. Будет
 вынесена вниз страницы.
 <!-- Такие штуки надо размещать сразу же: --></p>
 <dl>
@@ -326,104 +315,94 @@
 <dd>книга, содержащая перечень слов
 с пояснениями и толкованиями</dd>
 </dl>
-<p>пример аббревиатуры: <abbr title="Имею Мнение &amp;mdash; Хрен Оспоришь">ИМХО</abbr>
+<p>пример аббревиатуры: <abbr title="Имею Мнение &mdash; Хрен Оспоришь">ИМХО</abbr>
 <!-- Такие штуки тоже надо размещать сразу же: --></p>
 <p>Абзац создается разделением
 пустыми строками, 
 даже если строки абзаца
 имеют простые переносы.</p>
-<p>Однако, по два пробела<br />
-на концах строк делают<br />
-перенос строки без абзаца:<br />
-<strong>выделение</strong> тегом <strong>strong</strong><br />
-<em>выделение</em> тегом <em>emphasize</em><br />
-<strong><em>можно</em></strong> оба <strong><em>сразу</em></strong><br />
+<p>Однако, по два пробела<br>
+на концах строк делают<br>
+перенос строки без абзаца:<br>
+<strong>выделение</strong> тегом <strong>strong</strong><br>
+<em>выделение</em> тегом <em>emphasize</em><br>
+<strong><em>можно</em></strong> оба <strong><em>сразу</em></strong><br>
 внутристрочный <code>&lt;h1&gt;блок кода&lt;/h1&gt;</code>  </p>
-</div>
-</div>
-
-<p>Некоторые символы могут иметь особое значение. Вот пример их использования:
-<div markdown="1" class="equi_height">
-<div markdown="1"></p>
-<div class="highlight"><pre>Использование HTML-тегов:
-<span class="c1">&lt;span style=&quot;text-shadow: black</span>
-<span class="c1">1px 1px 2px, red 0 0 1em;</span>
-<span class="c1">text-transform: uppercase;&quot;&gt;пример&lt;/span&gt;</span>
+<hr>
+<p>Некоторые символы могут иметь особое значение. Вот пример их использования:</p>
+<div class="highlight"><pre><span></span>Использование HTML-тегов:
+&lt;span style=&quot;text-shadow: black
+1px 1px 2px, red 0 0 1em;
+text-transform: uppercase;&quot;&gt;пример&lt;/span&gt;
 
 использование спецсимволов  
-(пример): <span class="ss">&amp;copy;</span> <span class="ss">&amp;raquo;&amp;mdash;&amp;laquo;</span>
+(пример): &amp;copy; &amp;raquo;&amp;mdash;&amp;laquo;
 
 использование служебных символов:  
-&lt; &gt; * [ ] { } ( ) <span class="se">\ </span>_ # + - . !
+&lt; &gt; <span class="ge">* [ ] { } ( ) \ _</span> # + - . !
 
 использование служебных символов  
 в сложных случаях: 
-&lt;a<span class="se">\&gt;</span> <span class="se">\[</span>a<span class="se">\]\(</span>a<span class="se">\)</span> <span class="se">\`</span>a<span class="se">\`</span> <span class="se">\_</span>a<span class="se">\_</span> #a
+&lt;a\&gt; \[a\]\(a\) \`a\` \_a\_ <span class="ni">#a</span>
 
-<span class="se">\#</span>#a
+\#<span class="ni">#a</span>
 </pre></div>
 
 
-</div>
-
-<div>
+<p>Получится так:</p>
+<hr>
 <p>Использование HTML-тегов:
 <span style="text-shadow: black
 1px 1px 2px, red 0 0 1em;
 text-transform: uppercase;">пример</span></p>
-<p>использование спецсимволов<br />
+<p>использование спецсимволов<br>
 (пример): &copy; &raquo;&mdash;&laquo;</p>
-<p>использование служебных символов:<br />
+<p>использование служебных символов:<br>
 &lt; &gt; * [ ] { } ( ) \ _ # + - . !</p>
-<p>использование служебных символов<br />
+<p>использование служебных символов<br>
 в сложных случаях: 
 &lt;a> [a](a) `a` _a_ #a </p>
 <p>##a</p>
-</div>
-</div>
-
+<hr>
 <p>В общих случаях генератор веб-страниц достаточно умен, чтобы понять, используется угловая скобка для обозначения HTML-тега или сама по себе, в других целях. То же касается и прочих символов, которые могут быть служебными как для HTML, так и для самого Markdown. Также он догадывается, что если <code>#</code> не в начале строки &mdash; то это не заголовок, если скобки [] и () не вплотную друг к другу &mdash; то это не ссылка. В тех же случаях, когда использование таких символов очень уж похоже на служебное, следует подсказать генератору оставить символ в покое при помощи традиционного обратного слэша. Причем, для угловых скобок достаточно закрыть закрывающую (простите за тавтологию, но так уж есть).</p>
 <h3 id="2_5">Блочная разметка: цитаты и блоки кода</h3>
-<p>Под блоками кода подразумеваются блоки предварительно отформатированного текста, которые будут отображаться так, как их напечатали, а не по правилам HTML или Markdown. При этом, в них можно включить подсветку синтаксиса, если это действительно программный код. Подсветку необходимо предварительно настроить, добавив файл CSS для кода, а также подключить способом, предусмотренным в используемой теме: либо в файле конфигурации, либо напрямую в шаблоне. Цитаты упаковываются в теги <code>&lt;blockquote&gt;</code>, и их отображение можно настроить в стилевом файле.</p>
-<div class="equi_height">
-<div markdown="1">
-
-<div class="highlight"><pre><span class="k">&gt; </span>Цитата умного человека <span class="ss">&amp;mdash;</span> 
+<p>Под блоками кода подразумеваются блоки предварительно отформатированного текста, которые будут отображаться так, как их напечатали, а не по правилам HTML или Markdown. При этом, в них можно включить подсветку синтаксиса, если это действительно программный код. Подсветку необходимо предварительно настроить, добавив файл CSS для кода, а также подключить способом, предусмотренным в используемой теме: либо в файле конфигурации, либо напрямую в шаблоне. Цитаты упаковываются в теги <code>&lt;blockquote&gt;</code>, и их отображение можно настроить в стилевом файле. Вод код примера:</p>
+<div class="highlight"><pre><span></span><span class="k">&gt; </span><span class="ge">Цитата умного человека &amp;mdash; </span>
 почти афоризм.
 
 или так (то же самое):
 
-<span class="k">&gt; </span>Цитата умного человека <span class="ss">&amp;mdash;</span> 
-<span class="k">&gt; </span>почти афоризм.
+<span class="k">&gt; </span><span class="ge">Цитата умного человека &amp;mdash; </span>
+<span class="k">&gt; </span><span class="ge">почти афоризм.</span>
 
     Отступ в 4 пробела или 1 таб:
     будет окружено тегом &lt;pre&gt;,
     а если включена подсветка -
     то и подсвечено. Можно печатать
-    всё: [a](http://a) &lt;html&gt; <span class="k">`</span><span class="sb">ы</span><span class="k">`</span>
+    всё: [<span class="nt">a</span>](<span class="na">http://a</span>) &lt;html&gt; <span class="sb">`ы`</span>
     Сделано для блоков кода.
 
-<span class="k">```</span><span class="cp"></span>
-<span class="cp">:::c</span>
-<span class="cp">void sample_func(int j) {</span>
-<span class="cp">    printf(j);</span>
-<span class="cp">}</span>
+<span class="s">```</span>
+:::c
+void sample_func(int j) {
+    printf(j);
+}
 
-<span class="cp">for (int i = 0; i &lt; 9; i++) {</span>
-<span class="cp">    sample_func(i);</span>
-<span class="cp">}</span>
-<span class="cp">/* </span>
-<span class="cp"> * по сути, то же самое, плюс</span>
-<span class="cp"> * указание языка для подсветки.</span>
-<span class="cp"> * вместо ``` можно </span>
-<span class="cp"> * использовать ~~~</span>
-<span class="cp"> */</span>
-<span class="k">```</span>
+for (int i = 0; i &lt; 9; i++) {
+    sample_func(i);
+}
+/* 
+ * по сути, то же самое, плюс
+ * указание языка для подсветки.
+ * вместо ``` можно 
+ * использовать ~~~
+ */
+<span class="s">```</span>
 </pre></div>
 
 
-</div>
-<div style="max-width:350px">
+<p>Вот результат обработки:</p>
+<hr>
 <blockquote>
 <p>Цитата умного 
 человека &mdash; 
@@ -435,7 +414,7 @@ text-transform: uppercase;">пример</span></p>
 человека &mdash; 
 почти афоризм.</p>
 </blockquote>
-<div class="highlight"><pre>Отступ в 4 пробела или 1 таб:
+<div class="highlight"><pre><span></span>Отступ в 4 пробела или 1 таб:
 будет окружено тегом &lt;pre&gt;,
 а если включена подсветка -
 то и подсвечено. Можно печатать
@@ -444,7 +423,7 @@ text-transform: uppercase;">пример</span></p>
 </pre></div>
 
 
-<div class="highlight"><pre><span class="kt">void</span> <span class="nf">sample_func</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">sample_func</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">printf</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -460,49 +439,44 @@ text-transform: uppercase;">пример</span></p>
 </pre></div>
 
 
-</div>
-</div>
-
+<hr>
 <p>Цитаты могут быть вложенными, если угловые скобочки удвоить. Кроме того, в цитаты можно вкладывать другие форматированные штучки, типа внутристрочного кода или списков.</p>
 <h3 id="2_6">Списки</h3>
-<div class="equi_height">
-<div markdown="1">
+<p>Код разных вариантов списков:</p>
+<div class="highlight"><pre><span></span>Маркированный:
 
-<div class="highlight"><pre>Маркированный:
-
-<span class="k">* </span>пункт
-<span class="k">* </span>еще пункт
+<span class="k">*</span> пункт
+<span class="k">*</span> еще пункт
 
 Нумерованный:
 
-<span class="k">1. </span>первый
-<span class="k">2. </span>второй
+<span class="k">1.</span> первый
+<span class="k">2.</span> второй
 
 Смешанный:
 
-<span class="k">1. </span>пунктик с подпунктиками
-<span class="k">    * </span>4 пробела дают
-<span class="k">    + </span>вложенность, а маркеры
-<span class="k">    - </span>могут быть разными
-<span class="k">3. </span>Цифры тоже неважны,
-<span class="k">98. </span>лишь бы цифры.
+<span class="k">1.</span> пунктик с подпунктиками
+    <span class="k">*</span> 4 пробела дают
+    + вложенность, а маркеры
+    <span class="k">-</span> могут быть разными
+<span class="k">3.</span> Цифры тоже неважны,
+<span class="k">98.</span> лишь бы цифры.
 
     Можно сделать абзац
     внутри списка
 
-<span class="k">    * </span>и даже внутри подпункта
+    <span class="k">*</span> и даже внутри подпункта
 
         тоже можно сделать абзац.
 
-<span class="k">    * </span>Еще одна вложенность.
+    <span class="k">*</span> Еще одна вложенность.
 
-<span class="k">7. </span>Надо только не забывать 
+<span class="k">7.</span> Надо только не забывать 
 отступы и пустые строки.
 </pre></div>
 
 
-</div>
-<div>
+<h2 id="_3">А вот и сами списки:</h2>
 <p>Маркированный:</p>
 <ul>
 <li>пункт</li>
@@ -541,18 +515,13 @@ text-transform: uppercase;">пример</span></p>
 отступы и пустые строки.</p>
 </li>
 </ol>
-</div>
-</div>
-
+<hr>
 <h3 id="2_7">Ссылки, картинки и их комбинация</h3>
-<div class="equi_height">
-<div markdown="1">
-
-<div class="highlight"><pre>Простая автоматическая ссылка:  
+<div class="highlight"><pre><span></span>Простая автоматическая ссылка:  
 &lt;http://romeogolf.github.io&gt;  
 
 Чуть посложнее:
-[Мой сайт](http://romeogolf.github.io &quot;Ссылка&quot;)
+[<span class="nt">Мой сайт</span>](<span class="na">http://romeogolf.github.io &quot;Ссылка&quot;</span>)
 
 Ссылочная (сносочная? референсная?)  
 ссылка: [Снова мой сайт][my_site]
@@ -562,24 +531,25 @@ text-transform: uppercase;">пример</span></p>
 определить ссылку по указанному  
 идентификатору.
 
-Ссылка на [заголовок](#id_header2),  
+Ссылка на [<span class="nt">заголовок</span>](<span class="na">#id_header2</span>),  
 который мы пометили идентификатором выше
 
 Ссылка на собственную страницу,  
 еще в исходном тексте:  
 абсолютная (от корня content)  
-[Рыба]({filename}/pages/test_page.md)  
+[<span class="nt">Рыба</span>](<span class="na">{filename}/pages/test_page.md</span>)  
 или относительно этой страницы  
-[Рыба]({filename}../../pages/test_page.md)
+[<span class="nt">Рыба</span>](<span class="na">{filename}../../pages/test_page.md</span>)
 
-Статьи с тегом [pelican]({tag}pelican)  
-или в категории [Блог]({category}Блог)
+Статьи с тегом [<span class="nt">pelican</span>](<span class="na">{tag}pelican</span>)  
+или в категории [<span class="nt">Блог</span>](<span class="na">{category}Блог</span>)
 
 Картинка напрямую:
-![флаги](./images/rg.png &quot;romeo golf&quot;)  
+![<span class="nt">флаги</span>](<span class="na">./images/rg.png &quot;romeo golf&quot;</span>)  
 или через исходное размещение:
-![флаги]
-({filename}/images/rg.png &quot;romeo golf&quot;)
+&lt;!-- устаревший вариант:
+![<span class="nt">флаги</span>](<span class="na">{filename}/images/rg.png &quot;romeo golf&quot;</span>)--&gt;
+![<span class="nt">флаги</span>](<span class="na">{static}/images/rg.png &quot;romeo golf&quot;</span>)
 
 Картинка через сноску:
 ![флаги romeo и golf][flags]
@@ -587,7 +557,7 @@ text-transform: uppercase;">пример</span></p>
 Картинка и ссылка вместе:
 [![флаги][flags]][my_site]
 или так:
-[![флаги](./images/rg.png)](http://romeogolf.github.io/)
+[<span class="nt">![флаги</span>](<span class="na">./images/rg.png</span>)](http://romeogolf.github.io/)
 
 [my_site]: http://romeogolf.github.io/
 [Site]: http://romeogolf.github.io/  &quot;Ссылка&quot;
@@ -595,41 +565,38 @@ text-transform: uppercase;">пример</span></p>
 </pre></div>
 
 
-</div>
-<div>
-<p>Простая автоматическая ссылка:<br />
-<a href="http://romeogolf.github.io">http://romeogolf.github.io</a></p>
+<hr>
+<p>Простая автоматическая ссылка:<br>
+<a href="http://romeogolf.github.io">http://romeogolf.github.io</a>  </p>
 <p>Чуть посложнее:
 <a href="http://romeogolf.github.io" title="Ссылка">Мой сайт</a></p>
-<p>Ссылочная (сносочная? референсная?)<br />
-ссылка: <a href="http://romeogolf.github/io/">Снова мой сайт</a>
-или так: <a href="http://romeogolf.github/io/" title="Ссылка">Site</a></p>
-<p>А где-нибудь ниже по тексту надо<br />
-определить ссылку по указанному<br />
+<p>Ссылочная (сносочная? референсная?)<br>
+ссылка: <a href="http://romeogolf.github.io/">Снова мой сайт</a>
+или так: <a href="http://romeogolf.github.io/" title="Ссылка">Site</a></p>
+<p>А где-нибудь ниже по тексту надо<br>
+определить ссылку по указанному<br>
 идентификатору.</p>
-<p>Ссылка на <a href="#id_header2">заголовок</a>,<br />
+<p>Ссылка на <a href="#id_header2">заголовок</a>,<br>
 который мы пометили идентификатором выше</p>
-<p>Ссылка на собственную страницу,<br />
-еще в исходном тексте:<br />
-абсолютная (от корня content)<br />
-<a href="http://romeogolf.github.io/pages/testovaia-stranitsa.html">Рыба</a><br />
-или относительно этой страницы<br />
+<p>Ссылка на собственную страницу,<br>
+еще в исходном тексте:<br>
+абсолютная (от корня content)<br>
+<a href="http://romeogolf.github.io/pages/testovaia-stranitsa.html">Рыба</a><br>
+или относительно этой страницы<br>
 <a href="http://romeogolf.github.io/pages/testovaia-stranitsa.html">Рыба</a></p>
-<p>Статьи с тегом <a href="http://romeogolf.github.io/tag/pelican.html">pelican</a><br />
+<p>Статьи с тегом <a href="http://romeogolf.github.io/tag/pelican.html">pelican</a><br>
 или в категории <a href="http://romeogolf.github.io/category/blog.html">Блог</a></p>
 <p>Картинка напрямую:
-<img alt="флаги" src="./images/rg.png" title="romeo golf" /><br />
+<img alt="флаги" src="./images/rg.png" title="romeo golf"><br>
 или через исходное размещение:
-<img alt="флаги" src="http://romeogolf.github.io/images/rg.png" title="romeo golf" /></p>
+<img alt="флаги" src="http://romeogolf.github.io/images/rg.png" title="romeo golf"></p>
 <p>Картинка через сноску:
-<img alt="флаги romeo и golf" src="./images/rg.png" title="romeo golf" /></p>
+<img alt="флаги romeo и golf" src="./images/rg.png" title="romeo golf"></p>
 <p>Картинка и ссылка вместе:
-<a href="http://romeogolf.github/io/"><img alt="флаги" src="./images/rg.png" title="romeo golf" /></a>
+<a href="http://romeogolf.github.io/"><img alt="флаги" src="./images/rg.png" title="romeo golf"></a>
 или так:
-<a href="http://romeogolf.github.io/"><img alt="флаги" src="./images/rg.png" /></a></p>
-</div>
-</div>
-
+<a href="http://romeogolf.github.io/"><img alt="флаги" src="./images/rg.png"></a></p>
+<hr>
 <p>Как видно из примера, картинка отличается от ссылки восклицательным знаком перед первой скобкой. В первых квадратных скобках идет текст ссылки или альтернативный текст для картинки (который отображается, если картинку по какой-то причине не видно), в круглых скобках &mdash; путь к объекту, а также необязательный текст в кавычках, который будет атрибутом title (во всплывающей подсказке при наведении мыши на ссылку или картинку).</p>
 <p>Удобно пользоваться сносочноым типом ссылки, когда вместо адреса в круглых скобках пишется идентификатор в квадратных, а ниже дается расшифровка &mdash; тоже путь к объекту и необязательный title в кавычках (одинарных или двойных) или скобках. Ссылка через сноску хороша тем, что можно использовать одну и ту же ссылку или картинку в нескольких местах по тексту. Кроме того, удобно держать все ссылки рядом, на случай, если придется их перестраивать.</p>
 <p>При сносочном типе ссылки можно вторую пару квадратных скобок оставить пустой или вообще не ставить, тогда текст ссылки сам будет сноской, которую надо использовать ниже при указании адреса.</p>
@@ -645,26 +612,37 @@ text-transform: uppercase;">пример</span></p>
 <li>Чтобы запихать блок кода в список, надо &laquo;утопить&raquo; его отступами дважды &mdash; восемь пробелов для первого уровня, при этом оформить абзацным методом, без <code>~~~</code>.</li>
 <li>Чтобы использовать HTML-код в Markdown по прямому назначению, он не должен быть &laquo;утоплен&raquo; на четыре пробела, иначе будет восприниматься, как блок кода, то есть, не для использования, а для отображения.</li>
 <li>Блочные HTML-теги, например, <code>&lt;div&gt;</code>, должны быть отделены выше и ниже пустой строкой.</li>
-<li>В HTML-коде внутри блочных тегов не работает разметка Markdown, ее конструкции будут выводиться без обработки, как есть. Вопрос, в принципе, решаемый, но об этом в другой раз.</li>
+<li>В HTML-коде внутри блочных тегов не работает разметка Markdown, ее конструкции будут выводиться без обработки, как есть. Вопрос частично решаемый, но об этом в другой раз.</li>
 </ul>
 <div class="equi_height">
+
 <div markdown="1">
 
-<div class="highlight"><pre>&lt;div style=&quot;float:right&quot;&gt; 
-  ![флаги romeo и golf]({filename}/images/rg.png)
+
+<div class="highlight"><pre><span></span>&lt;div style=&quot;float:right&quot;&gt; 
+  &lt;!-- устаревший вариант:
+  ![<span class="nt">флаги romeo и golf</span>](<span class="na">{filename}/images/rg.png</span>)--&gt;
+  ![<span class="nt">флаги romeo и golf</span>](<span class="na">{static}/images/rg.png</span>)
 &lt;/div&gt;
-<span class="cp">&lt;div style=&quot;display:inline-block; margin:10px&quot;&gt;</span>
-<span class="cp">Попытка вставить картинку  </span>
-<span class="cp">в плавающий блок &lt;/div&gt;</span>
+&lt;div style=&quot;display:inline-block; margin:10px&quot;&gt;
+Попытка вставить картинку  
+в плавающий блок &lt;/div&gt;
 </pre></div>
 
 
+
 </div>
+
 <div style="max-width:250px;">
+
 <div style="float:right"> 
-  ![флаги romeo и golf]({filename}/images/rg.png)
+  <!-- устаревший вариант:
+  ![флаги romeo и golf]({filename}/images/rg.png)-->
+  ![флаги romeo и golf]({static}/images/rg.png)
 </div>
+
 <div style="display:inline-block; margin:10px">
+
 Попытка вставить картинку  
 в плавающий блок </div>
 </div>
@@ -676,10 +654,10 @@ text-transform: uppercase;">пример</span></p>
 <li>Существуют расширения Markdown, которые позволяют обойти некоторые ограничения и добавить функциональные возможности. Одни расширения фактически являются общими для разных реализаций Markdown (потому что написаны для разных языков &mdash; Perl, Python, Ruby, Java, &hellip; Там, вообще-то, приличный список.) Другие присутствуют только в некоторых реализациях. Расширения могут быть встроенными в реализацию, а могут быть установлены отдельно. Их можно включать и отключать. Расширения, которые можно использовать в реализации для Python, могут оказаться удобными и полезными при создании сайта (если хотите &mdash; блога) на Pelican. Но это тема для отдельного разговора.</li>
 </ul>
 <div class="footnote">
-<hr />
+<hr>
 <ol>
 <li id="fn:1">
-<p>Footnote по-русски &mdash; сноска&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Footnote по-русски &mdash; сноска&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

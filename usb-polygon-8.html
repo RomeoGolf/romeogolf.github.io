@@ -152,13 +152,13 @@
 <h2 id="_1">Завершая этап</h2>
 <p>В результате проделанной работы получилось &laquo;сырое&raquo; с точки зрения файловой системы MassStorage-устройство, приспособленное к обмену информацией с ПК по USB. С определенными ограничениями, конечно: во-первых, требуется некоторый самописный код для ПК, причем, требующий прав администратора; во-вторых, на устройстве программа тоже выглядит не особенно изящно, нужно городить какие-то конструкции для идентификации запрашиваемой и получаемой информации по ее адресу, а также какое-то распределение в адресном пространстве источников и приемников информации. Ну, это уже зависит от конкретной задачи, а текущая задача &mdash; учебная &mdash; фактически выполнена.</p>
 <p>Теперь хотелось бы развить тему: сделать устройство, более точно имитирующее флэш-накопитель. То есть, надо добавить некоторое подобие файловой системы.</p>
-<p>Однако, перед этим хотелось бы провести еще пару экспериментов с &laquo;сырым&raquo; устройством.</p>
+<p>Однако перед этим хотелось бы провести еще пару экспериментов с &laquo;сырым&raquo; устройством.</p>
 <h2 id="_2">Физическое устройство</h2>
 <p>Первая &laquo;доделка&raquo; касается кода для ПК. Доступ к устройству осуществляется при помощи дескриптора (HANDLE), который возвращает функция <code>CreateFile</code>. Этой функции сейчас передается в качестве параметра <code>DevicePath</code>, который, в свою очередь, возвращается функцией <code>SetupDiEnumDeviceInterfaces</code>, принимающей среди параметров в том числе GUID интерфейса, можно диска, можно тома.</p>
 <p>Хочу попробовать достучаться до платы, как до физического устройства, PhysicalDrive. Есть мнение, что это будет более единообразно для разных версий ОС Windows, а также должно снять сомнения, к чему же правильнее обращаться &mdash; к диску или к тому. </p>
 <p>Для этого снова пригодится функция <code>DeviceIoControl</code>, которой вторым параметром нужно передать <code>IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</code>.</p>
 <p>В коде после комментария <code>// ----- работа с устройством -----</code> надо добавить объявление новых переменных:</p>
-<div class="highlight"><pre>                    <span class="kt">int</span> <span class="n">diskNum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                <span class="c1">// количество дисков</span>
+<div class="highlight"><pre><span></span>                    <span class="kt">int</span> <span class="n">diskNum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                <span class="c1">// количество дисков</span>
                     <span class="kt">char</span> <span class="n">physicalDrive</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span> <span class="c1">// строка под &quot;\\\\.\\PhysicalDrive%d&quot;</span>
                     <span class="n">DWORD</span> <span class="n">bufsize</span><span class="p">,</span> <span class="n">bufsizeret</span><span class="p">;</span>      <span class="c1">// размеры буфера</span>
                     <span class="n">VOLUME_DISK_EXTENTS</span> <span class="n">buf_ioctl</span><span class="p">;</span>  <span class="c1">// буфер для GET_VOLUME_DISK_EXTENTS</span>
@@ -166,8 +166,8 @@
 </pre></div>
 
 
-<p>Однако, парочку появившихся типов этот код не знает. Не буду подключать соответствующий заголовок, просто запишу после объявления <code>struct scsi_st</code>:</p>
-<div class="highlight"><pre><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_DISK_EXTENT</span> <span class="p">{</span>
+<p>Однако парочку появившихся типов этот код не знает. Не буду подключать соответствующий заголовок, просто запишу после объявления <code>struct scsi_st</code>:</p>
+<div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_DISK_EXTENT</span> <span class="p">{</span>
   <span class="n">DWORD</span> <span class="n">DiskNumber</span><span class="p">;</span>
   <span class="n">LARGE_INTEGER</span> <span class="n">StartingOffset</span><span class="p">;</span>
   <span class="n">LARGE_INTEGER</span> <span class="n">ExtentLength</span><span class="p">;</span>
@@ -179,14 +179,14 @@
 
 
 <p>А также такие <code>#define</code> после всех <code>#include</code>:</p>
-<div class="highlight"><pre><span class="cp">#define IOCTL_VOLUME_BASE   ((ULONG) &#39;V&#39;)</span>
+<div class="highlight"><pre><span></span><span class="cp">#define IOCTL_VOLUME_BASE   ((ULONG) &#39;V&#39;)</span>
 <span class="cp">#define IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS \</span>
 <span class="cp">  CTL_CODE(IOCTL_VOLUME_BASE, 0, METHOD_BUFFERED, FILE_ANY_ACCESS)</span>
 </pre></div>
 
 
 <p>Теперь ниже  <code>// ----- работа с устройством -----</code> после обявления переменных можно добавить код:</p>
-<div class="highlight"><pre>                    <span class="n">result</span> <span class="o">=</span> <span class="n">DeviceIoControl</span><span class="p">(</span><span class="n">hDevice</span><span class="p">,</span>
+<div class="highlight"><pre><span></span>                    <span class="n">result</span> <span class="o">=</span> <span class="n">DeviceIoControl</span><span class="p">(</span><span class="n">hDevice</span><span class="p">,</span>
                             <span class="n">IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</span><span class="p">,</span>
                             <span class="nb">NULL</span><span class="p">,</span>
                             <span class="mi">0</span><span class="p">,</span>
@@ -210,7 +210,7 @@
 
 
 <p>Теперь в консольном выводе появятся новые строки:</p>
-<div class="highlight"><pre>. . .
+<div class="highlight"><pre><span></span>. . .
 --- This is my device! ---
 DiscNum = 1
 Disk = 1
@@ -224,7 +224,7 @@ len = 1024
 
 
 <p>То есть, дисков 1, номер диска 1, строка для <code>CreateFile</code> сформирована. Можно сразу после пытаться получить дескриптор устройства по номеру физического диска:</p>
-<div class="highlight"><pre>                    <span class="n">HANDLE</span> <span class="n">hDevice2</span><span class="o">=</span><span class="n">CreateFile</span><span class="p">(</span>
+<div class="highlight"><pre><span></span>                    <span class="n">HANDLE</span> <span class="n">hDevice2</span><span class="o">=</span><span class="n">CreateFile</span><span class="p">(</span>
                             <span class="n">physicalDrive</span><span class="p">,</span>
                             <span class="n">GENERIC_READ</span> <span class="o">|</span> <span class="n">GENERIC_WRITE</span><span class="p">,</span>
                             <span class="c1">//0,</span>
@@ -260,7 +260,7 @@ len = 1024
 <p>Открываю <code>/Lib/SCSI.c</code>, нахожу там функцию <code>bool SCSI_DecodeSCSICommand(void)</code>, в ней переключатель <code>switch (CommandBlock.SCSICommandData[0])</code>, благо, кроме него там почти ничего нет. Сразу под строкой <code>case SCSI_CMD_WRITE_10:</code> добавляю строку <code>case 0xC1:</code>. Тем самым заставляю устройство реагировать на команду 0xC1 так же, как и на команду 0x2A.</p>
 <p>Проверяю &mdash; работает. То есть, запись снова проходит, и на светодиодах отображается переданный с ПК байт.</p>
 <p>Таким образом можно дублировать имеющиеся команды, можно писать совсем собственные. Для самописных команд можно особым образом обрабатывать Command Descriptor Block (CDB), а как это сделать &mdash; можно подсмотреть в используемой здесь функции <code>SCSI_Command_ReadWrite_10</code>, например. Там есть ближе к началу строки</p>
-<div class="highlight"><pre>    <span class="n">BlockAddress</span> <span class="o">=</span> <span class="n">SwapEndian_32</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">CommandBlock</span><span class="p">.</span><span class="n">SCSICommandData</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+<div class="highlight"><pre><span></span>    <span class="n">BlockAddress</span> <span class="o">=</span> <span class="n">SwapEndian_32</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">CommandBlock</span><span class="p">.</span><span class="n">SCSICommandData</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
     <span class="n">TotalBlocks</span>  <span class="o">=</span> <span class="n">SwapEndian_16</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">uint16_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">CommandBlock</span><span class="p">.</span><span class="n">SCSICommandData</span><span class="p">[</span><span class="mi">7</span><span class="p">]);</span>
 </pre></div>
 

@@ -158,18 +158,18 @@
 <p>В папке <code>usb-polygon-embed/MassStorage/Lib</code> остались файлы (кода на С и заголовочный) модуля <code>DataflashManager</code> Он уже не нужен, важные строки из него перенесены в модуль <code>SCSI</code>, подключение этих файлов через <code>#include</code> закрыто комментарием. Удаляю это всё &mdash; файлы и закомментированное подключение &mdash; и компилирую. Работает. Добавляю два файла: <code>fake_fs.c</code> и <code>fake_fs.h</code>, пока пустые. Подключаю новый заголовочник в <code>SCSI.h</code> вместо <code>DataflashManager</code>.</p>
 <p>То, что получилось, компилируется и работает: по сути, ничего не изменилось. Но сохраняю этот коммит в GIT, чтобы обозначить начало очередного этапа.</p>
 <p>Далее, в <code>fake_fs.h</code> надо вставить традиционный финт ушами для предотвращения повторного включения заголовочников:</p>
-<div class="highlight"><pre><span class="cp">#ifndef _FAKE_FS_H_</span>
+<div class="highlight"><pre><span></span><span class="cp">#ifndef _FAKE_FS_H_</span>
 <span class="cp">#define _FAKE_FS_H_</span>
 </pre></div>
 
 
 <p>в начале файла и</p>
-<div class="highlight"><pre><span class="cp">#endif</span>
+<div class="highlight"><pre><span></span><span class="cp">#endif</span>
 </pre></div>
 
 
 <p>в конце. А между ними нужно вставить вырезанный из <code>SCCI.h</code> кусок, который был туда вставлен из <code>DataflashManager</code> и <code>..\..\LUFA\CodeTemplates\DriverStubs\Dataflash.h</code>:</p>
-<div class="highlight"><pre><span class="cm">/* ----- instead DataflashManager ----- */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* ----- instead DataflashManager ----- */</span>
 <span class="cm">/* from ..\..\LUFA\CodeTemplates\DriverStubs\Dataflash.h */</span>
     <span class="cm">/* Public Interface - May be used in end-application: */</span>
         <span class="cm">/* Macros: */</span>
@@ -221,13 +221,13 @@
 
 <p>А в файл <code>fake_fs.c</code> из <code>SCSI.c</code> переношу код функций <code>WriteBlocks</code> и <code>ReadBlocks</code>.</p>
 <p>В начале файла <code>fake_fs.c</code> должна быть строка <code>#include "fake_fs.h"</code>, а внутри конструкции <code>#ifndef _FAKE_FS_H_</code> файла <code>fake_fs.h</code> должна быть строка <code>#include "../MassStorage.h"</code>. И надо не забыть поправить Makefile, добавив к определению <code>SRC</code> новый модуль:</p>
-<div class="highlight"><pre><span class="nv">SRC</span>          <span class="o">=</span> <span class="k">$(</span>TARGET<span class="k">)</span>.c Descriptors.c Lib/SCSI.c Lib/fake_fs.c <span class="k">$(</span>LUFA_SRC_USB<span class="k">)</span>
+<div class="highlight"><pre><span></span><span class="nv">SRC</span>          <span class="o">=</span> <span class="k">$(</span>TARGET<span class="k">)</span>.c Descriptors.c Lib/SCSI.c Lib/fake_fs.c <span class="k">$(</span>LUFA_SRC_USB<span class="k">)</span>
 </pre></div>
 
 
 <p>В результате этих изменений проект компилируется, загружается и работает. Отличий в работе от версии, которая была до изменений, не видно, и не должно быть видно. Это только подготовка. Но уже можно сохранить еще один GIT-коммит.</p>
 <p>До сих пор были только перестановки кусков кода из файла в файл. Пора начать вносить изменения в сам код. Добавляю объявления двух функций:</p>
-<div class="highlight"><pre><span class="cm">/* data &quot;device -&gt; PC&quot; */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* data &quot;device -&gt; PC&quot; */</span>
 <span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
 <span class="cm">/* data &quot;PC -&gt; device&quot; */</span>
 <span class="kt">void</span> <span class="nf">process_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
@@ -235,7 +235,7 @@
 
 
 <p>Эти функции вызываются в <code>ReadBlocks</code> и <code>WriteBlocks</code> соответственно, в первом случае перед блоком операций <code>Endpoint_Write_8</code>, во втором &mdash; после блока <code>Endpoint_Read_8</code>, а строчки, которые раньше отвечали за обмен с <abbr title="Персональный компьютер">ПК</abbr> байтами <code>data_PC</code> и <code>data_device</code> теперь будут вызываться из них:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
     <span class="n">data_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_device</span><span class="p">;</span>
     <span class="k">return</span> <span class="n">data_buf</span><span class="p">;</span>
 <span class="p">}</span>
@@ -255,7 +255,7 @@
 <h2 id="_3">Имитация <abbr title="файловая система">ФС</abbr></h2>
 <p>То, что делает функция обработки полученных данных <code>process_data</code> в рамках имитации <abbr title="файловая система">ФС</abbr> неважно. А вот подготовка данных для передачи &mdash; это то, что в первую очередь интересует. Нужно, чтобы на запрос <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr> она подсовывала что-то, похожее на <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr>, при запросе <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> &mdash; что-то, похожее на <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> и так далее.</p>
 <p>А что может запросить <abbr title="операционная система">ОС</abbr>? <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr>, загрузочную запись раздела, <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>, корневой каталог &mdash; это минимум. Значит, для начала в <code>fake_fs.c</code> определяю константы, которые описал в предыдущем <a href="http://romeogolf.github.io/usb-polygon-10.html#const">выпуске</a>:</p>
-<div class="highlight"><pre><span class="cp">#define ATTR_READ 0x01</span>
+<div class="highlight"><pre><span></span><span class="cp">#define ATTR_READ 0x01</span>
 <span class="cp">#define ATTR_HIDDEN 0x02</span>
 <span class="cp">#define ATTR_SYSTEM 0x04</span>
 <span class="cp">#define ATTR_VOL_LABEL 0x08</span>
@@ -294,7 +294,7 @@
 
 
 <p>Далее - функции подготовки данных при попытке чтения <abbr title="(Master Boot Record) Главная загрузочная запись">MBR</abbr>, загрузочного сектора раздела и <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>, которые передают набор байтов, соответствующий запрошенным адресам, как описано в предыдущем <a href="http://romeogolf.github.io/usb-polygon-10.html">выпуске</a>. Здесь важна колонка &laquo;r:c&raquo; таблиц <a href="http://romeogolf.github.io/usb-polygon-10.html#table3">3</a> и <a href="http://romeogolf.github.io/usb-polygon-10.html#table4">4</a>, где &laquo;r&raquo; соответствует пачке байтов <code>BytesInBlockDiv16</code>, а &laquo;c&raquo; &mdash; байту внутри пачки:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_mbr</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_mbr</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
     <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>    <span class="cm">/* по умолчанию нули */</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">28</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">data_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0C</span><span class="p">;</span> <span class="cm">/* type FAT32 with LBA */</span>
@@ -412,7 +412,7 @@
 
 
 <p>А вызвать эти функции нужно в подходящий момент, то есть, когда запрашивают соответствующие адреса. Поэтому правлю <code>prepare_data</code>, теперь она выглядит так:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">){</span>
     <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pdata</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">MBR_SECTOR</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">pdata</span> <span class="o">=</span> <span class="n">read_mbr</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
@@ -438,7 +438,7 @@
 
 
 <p>И, чтобы не задумываться, в каком месте файла разместить определение, вставлю в начале файла их объявление:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_mbr</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_mbr</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
 <span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_boot_sect</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
 <span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_fat</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
 </pre></div>
@@ -446,19 +446,19 @@
 
 <p>Еще надо убрать модификатор <code>const</code> с параметров <code>BlockAddress</code> функций <code>ReadBlocks</code> и  <code>WriteBlocks</code>, а также в конце этих функций, после строки <code>TotalBlocks--;</code> добавить <code>BlockAddress++;</code>, потому что до сих пор никто не требовал переходить к следующему сектору в процессе чтения.</p>
 <p>Теперь после компиляции, перепрошивки и перезапуска устройство уже гораздо больше похоже на флэшку. Вот как оно выгляжит при подключении в Windows 7:</p>
-<p><img alt="Device in Win7" src="http://romeogolf.github.io/images/usb-polygon/11/device_7_1.png" title="Устройство в Windows 7" /></p>
+<p><img alt="Device in Win7" src="http://romeogolf.github.io/images/usb-polygon/11/device_7_1.png" title="Устройство в Windows 7"></p>
 <p>И его свойства:</p>
-<p><img alt="Device in Win7" src="http://romeogolf.github.io/images/usb-polygon/11/device_7_2.png" title="Устройство в Windows 7" /></p>
+<p><img alt="Device in Win7" src="http://romeogolf.github.io/images/usb-polygon/11/device_7_2.png" title="Устройство в Windows 7"></p>
 <p>Правда, в Windows XP оно не пустое, а наоборот, полное:</p>
-<p><img alt="Device in WinXP" src="http://romeogolf.github.io/images/usb-polygon/11/device_xp.png" title="Устройство в Windows XP" /></p>
+<p><img alt="Device in WinXP" src="http://romeogolf.github.io/images/usb-polygon/11/device_xp.png" title="Устройство в Windows XP"></p>
 <h2 id="_4">Имитация корневого каталога</h2>
 <p>Добавлю заготовку для имитации содержимого корневого каталога. Пока что вставлю туда один описатель файла, соответствующий идентификатору тома. Объявляю функцию для чтения из области данных:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
 </pre></div>
 
 
 <p>В функции <code>prepare_data</code> перед последним <code>else</code> вставляю четыре строчки:</p>
-<div class="highlight"><pre>    <span class="p">}</span> <span class="k">else</span>
+<div class="highlight"><pre><span></span>    <span class="p">}</span> <span class="k">else</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">BlockAddress</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">ROOT_SECTOR</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">pdata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="n">BytesInBlockDiv16</span><span class="p">);</span>
         <span class="k">return</span> <span class="n">pdata</span><span class="p">;</span>
@@ -466,7 +466,7 @@
 
 
 <p>И сама функция:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
     <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>

@@ -159,7 +159,7 @@
 </ul>
 </div>
 <h2 id="_1">Файлы: какие надо и где их взять</h2>
-<p>В предыдущем <a href="http://romeogolf.github.io/usb-polygon-11.html">выпуске</a> цикла проект для самодельного устройства был доведен до такого состояния, что <abbr title="Операционная система">ОС</abbr> <abbr title="Персональный компьютер">ПК</abbr> определяет его, как двухгигабайтную флэшку, причем, Windows 7 уже не предлагает ее отформатировать. Однако, по мнению <abbr title="Операционная система">ОС</abbr> флэшка пуста. Надо ее &laquo;наполнить&raquo;.</p>
+<p>В предыдущем <a href="http://romeogolf.github.io/usb-polygon-11.html">выпуске</a> цикла проект для самодельного устройства был доведен до такого состояния, что <abbr title="Операционная система">ОС</abbr> <abbr title="Персональный компьютер">ПК</abbr> определяет его, как двухгигабайтную флэшку, причем, Windows 7 уже не предлагает ее отформатировать. Однако по мнению <abbr title="Операционная система">ОС</abbr> флэшка пуста. Надо ее &laquo;наполнить&raquo;.</p>
 <p>Для начала о том, какие файлы я хотел бы видеть.</p>
 <p>Во-первых, текстовый файл с неким идентификатором. Это для того, чтобы собственная программа для <abbr title="Персональный компьютер">ПК</abbr>, проверив наличие воткнутых в порты флэшек и обнаружив несколько одновременно, могла с легкостью отличить нужную (то есть, данное устройство) по наличию файла с определенным именем и определенным содержимым. Очень хорошо на мой взгляд подойдет для этой цели GUID в текстовом виде.</p>
 <p>Во-вторых, некий текстовый файл, скажем, Readme. Для отладки работы с текстами разного размера и содержимого, хранящимися в памяти программ устройства, как с файлами.</p>
@@ -169,7 +169,7 @@
 <h2 id="_2">Подготовка управляющей структуры</h2>
 <p>Именно такое решение &mdash; с таблицей элементов <abbr title="Файловая система">ФС</abbr> &mdash; описано в <a href="https://habrahabr.ru/post/247673/">статье</a> на <a href="https://habrahabr.ru/">Хабрахабре</a>. Эта статья вообще сильно перекликается с тем, что я тут делаю, только для другого процессора. Идея не очень сложная, понятная, только надо ее подогнать под AVR и LUFA.</p>
 <p>Для начала объявляю структуру таблицы файлов с коротким именем файла, длиной файла и подпрограммой подготовки его данных. А непосредственно перед ней объявлю и тип указателя на функцию для этой подпрограммы, чтобы она принимала указатель на порцию данных, размер порции и ее смещение в файле. Так как ничего интерфейсного в этих сущностях я пока не вижу, объявлять буду в файле <code>fake_fs.c</code>, сразу после определения констант, таким образом:</p>
-<div class="highlight"><pre><span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">ProcedureForRead</span><span class="p">)(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="kt">uint8_t</span> <span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">ProcedureForRead</span><span class="p">)(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
   <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">11</span><span class="p">];</span>
@@ -182,19 +182,19 @@
 <p>Имя предполагается короткое, &laquo;8.3&raquo;, поэтому на поле имени отведено 11 символов. Поле будет копироваться в описатель файла как есть, поэтому надо сразу заполнять его правильно: без точки-разделителя, с дополнением пробелами имени до 8 символов и расширения до 3 символов.</p>
 <h2 id="_3">Заготовка для первого файла</h2>
 <p>Чуть выше расположу объявления для файла, содержащего GUID в текстовом виде:</p>
-<div class="highlight"><pre><span class="cp">#define SIZE_OF_KEY 38</span>
+<div class="highlight"><pre><span></span><span class="cp">#define SIZE_OF_KEY 38</span>
 <span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">guidKey</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span> <span class="s">&quot;{7065c23a-3818-43c5-bdf0-55567ade31e7}&quot;</span><span class="p">;</span>
 <span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readKey</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
 </pre></div>
 
 
 <p>Чтобы данные файла лежали в памяти программ и не засоряли оперативную, нужен для начала макрос <code>PROGMEM</code>, и потом еще некоторые макросы из модуля <code>pgmspace.h</code>, который следует подключить в начале файла:</p>
-<div class="highlight"><pre><span class="cp">#include &quot;avr/pgmspace.h&quot;</span>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;avr/pgmspace.h&quot;</span><span class="cp"></span>
 </pre></div>
 
 
 <p>И собственно функция, выдающая данные этого &laquo;файла&raquo;:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readKey</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readKey</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">SIZE_OF_KEY</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="n">SIZE_OF_KEY</span><span class="p">)</span> <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">guidKey</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">offset</span><span class="p">),</span> <span class="n">SIZE_OF_KEY</span> <span class="o">-</span> <span class="n">offset</span><span class="p">);</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -207,7 +207,7 @@
 
 <p>Суть: если адрес очередного запрошенного куска данных (адрес начала плюс размер передаваемого куска) выходит за границы размера файла, то скопировать в отведенный буфер только помещающийся кусок. Если же запрошенный кусок помещается с запасом &mdash; скопировать его весь. А если смещение сразу выходит за границы файла &mdash; ничего не делать.</p>
 <p>Еще после объявления структуры таблицы файлов надо объявить саму таблицу, содержащую приведенный выше &laquo;файл&raquo;, с просьбой разместить ее в памяти программ и с ограничительной записью в конце:</p>
-<div class="highlight"><pre><span class="k">static</span> <span class="k">const</span> <span class="n">FileEntry</span> <span class="n">fileTable</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span>
+<div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="n">FileEntry</span> <span class="n">fileTable</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span>
 <span class="p">{</span>
     <span class="p">{</span><span class="s">&quot;KEY_FILETXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_KEY</span><span class="p">,</span> <span class="n">readKey</span><span class="p">},</span>
     <span class="p">{{</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">}</span>
@@ -217,7 +217,7 @@
 
 <h2 id="fat">Изменения в функциях чтения <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> и чтения данных</h2>
 <p>Функцию чтения данных нужно дописать. Теперь она будет иметь такой вид:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_data</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
     <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">BlockAddress</span> <span class="o">==</span> <span class="n">ROOT_SECTOR</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">BytesInBlockDiv16</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
@@ -331,7 +331,7 @@
 <li>Проверка попадания адреса за пределы корневого каталога для имитации содержимого файла. Тогда файл будет выдаваться 16-байтными кусками, в соответстви с адресом и смещением запрошенного куска.</li>
 </ul>
 <p>Функция <code>read_fat</code> также заметно разрослась и усложнилась:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_fat</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">read_fat</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">BlockAddress</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">BytesInBlockDiv16</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">uint32_t</span> <span class="n">nextClaster</span><span class="p">;</span>
     <span class="kt">uint32_t</span> <span class="n">size</span> <span class="o">=</span> <span class="n">pgm_read_dword</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">fileTable</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">));</span>
     <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
@@ -411,13 +411,13 @@
 
 <p>В нее добавились операции по вычислению положения файла в области данных для заполнения соответствующих элементов таблицы <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>.</p>
 <p>Чтобы эти изменения работали, требуется добавить глобальные переменные, необходимые для вычисления принадлежности запрашиваемых адресов тому или иному файлу. Это количество кластеров, занятых файлами, и номер последнего файла:</p>
-<div class="highlight"><pre><span class="kt">uint32_t</span> <span class="n">nClusters</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">nClusters</span><span class="p">;</span>
 <span class="kt">uint32_t</span> <span class="n">lastFileNo</span><span class="p">;</span>
 </pre></div>
 
 
 <p>Их необходимо инициализировать, для чего потребуется функция, определяющая по таблице файлов соответствующие параметры:</p>
-<div class="highlight"><pre><span class="kt">void</span> <span class="nf">fakeFsInit</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">fakeFsInit</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">nClusters</span> <span class="o">=</span> <span class="n">ROOT_CLUSTER</span><span class="p">;</span>
     <span class="kt">uint32_t</span> <span class="n">clustFileSize</span><span class="p">;</span>
     <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
@@ -435,14 +435,14 @@
 
 
 <p>Эту функцию необходимо вызвать в файле <code>MassStorage.c</code> в функции <code>SetupHardware()</code> сразу после вызова <code>USB_Init()</code>, для чего надо не забыть включить <code>#include "Lib/fake_fs.h"</code> в <code>MassStorage</code>.</p>
-<p>Для ускорения работы можно было бы вообще все вычисления, выполняемые при подготовке данных <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> и корневого каталога, сделать в функции инициализации, а не на лету при получении запроса на чтение файла. Однако, тогда надо хранить параметры каждого файла: кластер начала, количество кластеров, размер в байтах, смещение для элемента-описателя в каталоге и для элементов списка в <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>. Но тогда при увеличении числа имитируемых файлов будет разрастаться занимаемая оперативная память, а ее очень-очень мало. А вот код, вычисляющий эти данные на лету, от количества файлов не зависит.</p>
+<p>Для ускорения работы можно было бы вообще все вычисления, выполняемые при подготовке данных <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr> и корневого каталога, сделать в функции инициализации, а не на лету при получении запроса на чтение файла. Однако тогда надо хранить параметры каждого файла: кластер начала, количество кластеров, размер в байтах, смещение для элемента-описателя в каталоге и для элементов списка в <abbr title="(File Allocation Table) Таблица размещения файлов">FAT</abbr>. Но тогда при увеличении числа имитируемых файлов будет разрастаться занимаемая оперативная память, а ее очень-очень мало. А вот код, вычисляющий эти данные на лету, от количества файлов не зависит.</p>
 <p>Если уж на то пошло, то быстрее всего не вычислять ничего, а сложить образ файловой системы где-то в памяти. Получаем в результате обыкновенную флэшку и необходимость иметь солидный объем памяти (по сравнению с имеющейся сейчас). Поэтому жертвую вычислениями в пользу памяти.</p>
 <p>Тем более, результат имеется: теперь устройство, подключенное к <abbr title="Персональный компьютер">ПК</abbr>, можно открыть, как флэшку, на которой в корневом каталоге записан файл <code>KEY_FILE.TXT</code>, и этот файл можно открыть блокнотом (который notepad.exe) и прочитать GUID. Готов очередной GIT-коммит.</p>
 <h2 id="_4">Остальные файлы</h2>
 <p>Имеется заготовка для добавления прочих файлов, перечисленных в начале выпуска. Дальше должно пойти проще: надо вставить в таблицу файлов новое имя файла и имя функции получения данных этого файла, а также ввести его размер. Если это текст &mdash; посчитать вручную, а если нет (например, результат каких-то действий или передачи данных извне) &mdash; задать желаемую величину.</p>
 <h3 id="readme">Файл ReadMe</h3>
 <p>Добавляю текстовый файл размером чуть побольше. Для этого объявляю соответствующие строковую переменную, константу-размер строки и функцию чтения:</p>
-<div class="highlight"><pre><span class="cp">#define SIZE_OF_README  (92 + 53)</span>
+<div class="highlight"><pre><span></span><span class="cp">#define SIZE_OF_README  (92 + 53)</span>
 <span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">readme</span><span class="p">[]</span> <span class="n">PROGMEM</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&quot;This is a test device whithout any flash-memory.</span><span class="se">\r\n</span><span class="s">&quot;</span>
     <span class="s">&quot;This device have a fake file system FAT32.</span><span class="se">\r\n</span><span class="s">&quot;</span>
@@ -452,12 +452,12 @@
 
 
 <p>В таблицу файлов добавляю вторую строку (между строкой файла <code>KEY_FILETXT</code> и ограничительной строкой):</p>
-<div class="highlight"><pre>    <span class="p">{</span><span class="s">&quot;README  TXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_README</span><span class="p">,</span> <span class="n">readMe</span><span class="p">},</span>
+<div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s">&quot;README  TXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_README</span><span class="p">,</span> <span class="n">readMe</span><span class="p">},</span>
 </pre></div>
 
 
 <p>Ну и определяю функцию чтения этого файла, очень похожую на чтение <code>KEY_FILE.TXT</code>. Настолько похожую, что можно бы написать общую унифицированную, но не буду, поскольку текстовых файлов из строковой константы мне больше не надо. А функция такая:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readMe</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readMe</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">SIZE_OF_README</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="n">SIZE_OF_README</span><span class="p">)</span> <span class="n">memcpy_P</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="p">(</span><span class="n">PGM_P</span><span class="p">)(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">readme</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">offset</span><span class="p">),</span> <span class="n">SIZE_OF_README</span> <span class="o">-</span> <span class="n">offset</span><span class="p">);</span>
@@ -474,18 +474,18 @@
 <h3 id="_5">Большой файл</h3>
 <p>Теперь добавлю файл, который не читает данные из памяти программ, а собирает их на лету, в процессе запросов на чтение. Для простоты пусть это будет набор возрастающих чисел, 32-разрядный счетчик. И лучше в текстовом виде, чтобы не заморачиваться с его просмотром, а открыть тем же блокнотом. И пусть он будет, скажем, мегабайтным.</p>
 <p>Объявляю константу-размер и функцию чтения:</p>
-<div class="highlight"><pre><span class="cp">#define SIZE_OF_TEST    0x100000</span>
+<div class="highlight"><pre><span></span><span class="cp">#define SIZE_OF_TEST    0x100000</span>
 <span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readTest</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
 </pre></div>
 
 
 <p>Вставляю третью строчку в таблицу файлов:</p>
-<div class="highlight"><pre>    <span class="p">{</span><span class="s">&quot;TESTFILETXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_TEST</span><span class="p">,</span> <span class="n">readTest</span><span class="p">},</span>
+<div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s">&quot;TESTFILETXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_TEST</span><span class="p">,</span> <span class="n">readTest</span><span class="p">},</span>
 </pre></div>
 
 
 <p>И определяю объявленную функцию:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readTest</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readTest</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">char</span> <span class="n">nibble</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">SIZE_OF_TEST</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
@@ -545,18 +545,18 @@
 <h3 id="_6">Файл, изменяющийся вручную</h3>
 <p>Для оценки поведения устройства в связке с <abbr title="Операционная система">ОС</abbr>, а также для отладки получения изменяющихся данных нужна имитация файла, содержимое которого зависит от действий пользователя, скажем, нажатия на кнопки. Такой счетчик нажатий в программе уже объявлен, это <code>data_device</code> в <code>MassStorage.c</code>. Надо перенести объявление ее (а заодно и <code>data_PC</code>) в интерфейсную часть &mdash; в заголовочный файл, а он уже подключен где надо.</p>
 <p>Опять же, добавляю размер файла и функцию подготовки его данных:</p>
-<div class="highlight"><pre><span class="cp">#define SIZE_OF_USERDATA    0x10</span>
+<div class="highlight"><pre><span></span><span class="cp">#define SIZE_OF_USERDATA    0x10</span>
 <span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readUserData</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">);</span>
 </pre></div>
 
 
 <p>Добавляю четвертую строчку таблицы:</p>
-<div class="highlight"><pre>    <span class="p">{</span><span class="s">&quot;USERDATATXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_USERDATA</span><span class="p">,</span> <span class="n">readUserData</span><span class="p">},</span>
+<div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s">&quot;USERDATATXT&quot;</span><span class="p">,</span> <span class="n">SIZE_OF_USERDATA</span><span class="p">,</span> <span class="n">readUserData</span><span class="p">},</span>
 </pre></div>
 
 
 <p>и определяю функцию:</p>
-<div class="highlight"><pre><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readUserData</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="o">*</span> <span class="nf">readUserData</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data_buf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">&quot;Counter = &quot;</span><span class="p">;</span>
     <span class="n">memset</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
     <span class="n">memcpy</span><span class="p">(</span><span class="n">data_buf</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
@@ -570,12 +570,12 @@
 
 <p>Здесь формируется шестнадцатиричное текстовое представление переменной <code>data_device</code>, которое вставляется в сопроводительную подпись. Вся собранная строка добита пробелами до конца, до 16 символов. Точнее говоря, собирается на 16-символьной заготовке, изначально заполненной пробелами.</p>
 <p>Теперь появился еще один текстовый файл. Если его открыть блокнотом, можно увидеть строку</p>
-<div class="highlight"><pre>Counter = 00h   
+<div class="highlight"><pre><span></span>Counter = 00h   
 </pre></div>
 
 
 <p>Можно понажимать на кнопки устройства, на верхнюю и вторую сверху. Ничего в файле не изменится. Более того, можно закрыть файл, снова понажимать на кнопки и опять открыть файл, а там по-прежнему будет <code>00h</code>. А вот если нажать кнопку &laquo;Reset&raquo; на устройстве (&laquo;флэшка&raquo; на компьютере определится заново), потом нажать разика три на верхнюю кнопку, и уже потом открыть файл, можно увидеть</p>
-<div class="highlight"><pre>Counter = 03h   
+<div class="highlight"><pre><span></span>Counter = 03h   
 </pre></div>
 
 
@@ -584,11 +584,11 @@
 <h2 id="_7">Низкоуровневое чтение</h2>
 <p>Напоследок попробую считать данные из разных областей устройства командой <code>dd</code> и убедиться в том, что &laquo;флэшка&raquo; отвечает на запросы в точности так, как ожидается.</p>
 <p>Для начала MBR:</p>
-<div class="highlight"><pre>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">skip</span><span class="o">=</span>0
+<div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">skip</span><span class="o">=</span><span class="m">0</span>
 </pre></div>
 
 
-<div class="highlight"><pre>00000000: eb 58 90 4d 53 44 4f 53 35 2e 30 00 02 08 01 00  .X.MSDOS5.0.....
+<div class="highlight"><pre><span></span>00000000: eb 58 90 4d 53 44 4f 53 35 2e 30 00 02 08 01 00  .X.MSDOS5.0.....
 00000010: 02 00 00 00 00 f8 00 00 3f 00 ff 00 3e 00 00 00  ........?...&gt;...
 00000020: 00 10 00 00 08 00 00 00 00 00 00 00 02 00 00 00  ................
 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
@@ -624,11 +624,11 @@
 
 
 <p>Потом FAT1:</p>
-<div class="highlight"><pre>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">3</span> <span class="nv">skip</span><span class="o">=</span>1
+<div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">3</span> <span class="nv">skip</span><span class="o">=</span><span class="m">1</span>
 </pre></div>
 
 
-<div class="highlight"><pre>00000000: f8 ff ff 0f ff ff ff 0f ff ff ff 0f ff ff ff 0f  ................
+<div class="highlight"><pre><span></span>00000000: f8 ff ff 0f ff ff ff 0f ff ff ff 0f ff ff ff 0f  ................
 00000010: ff ff ff 0f 06 00 00 00 07 00 00 00 08 00 00 00  ................
 00000020: 09 00 00 00 0a 00 00 00 0b 00 00 00 0c 00 00 00  ................
 00000030: 0d 00 00 00 0e 00 00 00 0f 00 00 00 10 00 00 00  ................
@@ -699,11 +699,11 @@
 
 <p>Дальше до конца кластера &mdash; нули. С параметром skip=9 читается FAT2 с тем же самым результатом.</p>
 <p>Корневой каталог:</p>
-<div class="highlight"><pre>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">3</span> <span class="nv">skip</span><span class="o">=</span>17
+<div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">3</span> <span class="nv">skip</span><span class="o">=</span><span class="m">17</span>
 </pre></div>
 
 
-<div class="highlight"><pre>00000000: 4c 55 46 41 5f 31 20 20 20 20 20 08 00 00 00 00  LUFA_1     .....
+<div class="highlight"><pre><span></span>00000000: 4c 55 46 41 5f 31 20 20 20 20 20 08 00 00 00 00  LUFA_1     .....
 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 00000020: 4b 45 59 5f 46 49 4c 45 54 58 54 20 00 04 72 00  KEY_FILETXT ..r.
 00000030: 79 40 79 40 00 00 00 00 79 40 03 00 26 00 00 00  y@y@....y@..&amp;...
@@ -719,11 +719,11 @@
 
 
 <p>Также показана только непустая часть кластера. И, наконец, для примера один из файлов &mdash; <code>KEY_FILE.TXT</code>:</p>
-<div class="highlight"><pre>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">skip</span><span class="o">=</span>25
+<div class="highlight"><pre><span></span>dd <span class="k">if</span><span class="o">=</span>/dev/sdg1 <span class="nv">of</span><span class="o">=</span>/home/mbr.img <span class="nv">bs</span><span class="o">=</span><span class="m">512</span> <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">skip</span><span class="o">=</span><span class="m">25</span>
 </pre></div>
 
 
-<div class="highlight"><pre>00000000: 7b 37 30 36 35 63 32 33 61 2d 33 38 31 38 2d 34  {7065c23a-3818-4
+<div class="highlight"><pre><span></span>00000000: 7b 37 30 36 35 63 32 33 61 2d 33 38 31 38 2d 34  {7065c23a-3818-4
 00000010: 33 63 35 2d 62 64 66 30 2d 35 35 35 36 37 61 64  3c5-bdf0-55567ad
 00000020: 65 33 31 65 37 7d 00 00 00 00 00 00 00 00 00 00  e31e7}..........
 </pre></div>
